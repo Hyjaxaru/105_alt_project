@@ -91,6 +91,7 @@ LevelWithTiles::LevelWithTiles(sf::RenderWindow& window, Input& input, GameState
 	// setup player 
 	m_player.setInput(&m_input);
 	m_player.setEdges(0, WORLD_SIZE.x);
+	m_player.setWindow(&m_window);
 
 	//m setup text
 	if (!m_font.openFromFile("font/bitcount.ttf")) std::cerr << "no font found";
@@ -237,6 +238,7 @@ void LevelWithTiles::render()
 	m_window.draw(m_lever);
 	for (auto& flag : m_flags) m_window.draw(*flag);
 	m_window.draw(m_player);
+	m_window.draw(m_player.getGun());
 	m_window.draw(m_alertText);
 	endDraw();
 }

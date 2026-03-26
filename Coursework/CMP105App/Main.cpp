@@ -6,13 +6,16 @@
 // @reviser William Kavanagh (2025)
 
 #include <iostream>
+
+#include "Framework/AudioManager.h"
+#include "Framework/GameState.h"
+
+#include "AssetManager.h"
+#include "LevelWithTiles.h"
+#include "LevelTwoWithTiles.h"
 #include "Scene.h"
 #include "Menu.h"
 #include "LevelThatSaves.h"
-#include "Framework/AudioManager.h"
-#include "Framework/GameState.h"
-#include "LevelWithTiles.h"
-#include "LevelTwoWithTiles.h"
 
 #ifndef SFML_VERSION_MAJOR
 	#error "SFML 3 is required for this framework."
@@ -87,9 +90,12 @@ int main()
 	Input input;
 	GameState gameState;
 
+	// prepare assets that need to be persistent
+	auto& assets = AssetManager::Instance();
+	assets.loadTexture("gfx/dino1.png", "player");
+	assets.loadTexture("gfx/gun.png", "gun");
 
 	// Create level objects that may reference manager objects
-
 	Menu menu(window, input, gameState, audioManager);
 	LevelWithTiles tile_level(window, input, gameState, audioManager);
 	LevelTwoWithTiles tile_level_two(window, input, gameState, audioManager);

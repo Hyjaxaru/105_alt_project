@@ -2,20 +2,19 @@
 
 Player::Player()
 {
-	if (!m_dinoTexture.loadFromFile("gfx/dino1.png"))
-		std::cerr << "No dino texture. sad";
+	auto& assets = AssetManager::Instance();
 
-	setTexture(&m_dinoTexture);
+	setTexture(assets.getTexture("player"));
 	// Dino is 24x24, tiles are 18x18
 	// LCM(18,24) = 72.
-	setSize({ 72,72 });		
+	setSize({ 72,72 });
 	setPosition({ 24, 100 });
 
 	for (int i = 0; i < 4; i++)
-		m_idle.addFrame({{ i * 24, 0 }, { 24, 24} });
+		m_idle.addFrame({ { i * 24, 0 }, { 24, 24} });
 	for (int i = 4; i < 10; ++i)
-		m_walk.addFrame({{ i * 24, 0 }, { 24, 24}});
-	for(int i = 16; i < 24; i++)
+		m_walk.addFrame({ { i * 24, 0 }, { 24, 24} });
+	for (int i = 16; i < 24; i++)
 		m_sprint.addFrame({ { i * 24, 0 }, { 24, 24} });
 
 	m_currAnim = &m_walk;
@@ -26,6 +25,12 @@ Player::Player()
 	setCollisionBox({ {12,12}, { 45,51 } });
 
 	m_isGrounded = false;
+
+	// gun setup
+	m_gun.setTexture(assets.getTexture("gun"));
+	m_gun.setSize({ 32, 32 });
+	m_gun.setOrigin({ 16, 16 });
+	m_gun.setScale({ -1, 1 });
 }
 
 void Player::handleInput(float dt)
@@ -80,6 +85,18 @@ void Player::handleInput(float dt)
 		std::cout << getPosition().x << "/" << getPosition().y << "\n";
 	}
 
+	// gun rotation
+	auto centerPos = getPosition();
+	centerPos.x /= 2; centerPos.y /= 2;
+	auto globalMousePos = sf::Vector2i(m_input->getMouseX(), m_input->getMouseY());
+	auto mousePos = m_window->mapPixelToCoords(sf::Vector2i(0,0));
+	//auto gunAngle = centerPos.angleTo(mousePos);
+	
+	std::cout << "Mouse:  [" << mousePos.x << ", " << mousePos.y << "]" << std::endl;
+	std::cout << "Center: [" << centerPos.x << ", " << centerPos.y << "]" << std::endl;
+	//std::cout << "Angle:  " << gunAngle.asDegrees() << std::endl;
+
+	m_gun.setPosition(getPosition() + sf::Vector2f(getSize().x / 2, getSize().y / 2));
 }
 
 void Player::update(float dt)
