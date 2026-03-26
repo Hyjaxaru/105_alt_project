@@ -80,7 +80,6 @@ void windowProcess(sf::RenderWindow& window, Input& in)
 
 int main()
 {
-
 	//Create the window
 	sf::RenderWindow window(sf::VideoMode({ 432, 432 }), "Dino Handyman");
 	window.setVerticalSyncEnabled(true);

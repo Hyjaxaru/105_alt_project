@@ -87,14 +87,16 @@ void Player::handleInput(float dt)
 
 	// gun rotation
 	auto centerPos = getPosition();
-	centerPos.x /= 2; centerPos.y /= 2;
 	auto globalMousePos = sf::Vector2i(m_input->getMouseX(), m_input->getMouseY());
-	auto mousePos = m_window->mapPixelToCoords(sf::Vector2i(0,0));
-	//auto gunAngle = centerPos.angleTo(mousePos);
+	auto mousePos = m_window->mapPixelToCoords(globalMousePos);
+	
+	auto diff = mousePos - centerPos;
+	float radians = std::atan2(diff.x, diff.y);
+	float degrees = radians * 180.f / 3.14159265f;
 	
 	std::cout << "Mouse:  [" << mousePos.x << ", " << mousePos.y << "]" << std::endl;
 	std::cout << "Center: [" << centerPos.x << ", " << centerPos.y << "]" << std::endl;
-	//std::cout << "Angle:  " << gunAngle.asDegrees() << std::endl;
+	std::cout << "Angle:  " << degrees << std::endl;
 
 	m_gun.setPosition(getPosition() + sf::Vector2f(getSize().x / 2, getSize().y / 2));
 }
