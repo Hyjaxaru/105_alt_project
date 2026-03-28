@@ -25,12 +25,6 @@ Player::Player()
 	setCollisionBox({ {12,12}, { 45,51 } });
 
 	m_isGrounded = false;
-
-	// gun setup
-	m_gun.setTexture(assets.getTexture("gun"));
-	m_gun.setSize({ 32, 32 });
-	m_gun.setOrigin({ 16, 16 });
-	m_gun.setScale({ -1, 1 });
 }
 
 void Player::handleInput(float dt)
@@ -41,18 +35,20 @@ void Player::handleInput(float dt)
 		m_accel.x -= SPEED;
 	if (m_input->isKeyDown(sf::Keyboard::Scancode::D))
 		m_accel.x += SPEED;
-	if (m_input->isPressed(sf::Keyboard::Scancode::Space) && m_isGrounded)
-	{
-		m_velocity.y = - JUMP_FORCE;
-		m_isGrounded = false;	// can't be jumping if we're in the air
-		m_audio->playSoundbyName("jump");
-	}
-	else if (m_input->isPressed(sf::Keyboard::Scancode::Space) && !m_isGrounded && m_canDoubleJump && !m_hasDoubleJumped)
-	{
-		m_velocity.y = - JUMP_FORCE;
-		m_hasDoubleJumped = true;
-		m_audio->playSoundbyName("jump");
-	}
+	//if (m_input->isPressed(sf::Keyboard::Scancode::Space) && m_isGrounded)
+	//{
+	//	m_velocity.y = - JUMP_FORCE;
+	//	m_isGrounded = false;	// can't be jumping if we're in the air
+	//	m_audio->playSoundbyName("jump");
+	//}
+	//else if (m_input->isPressed(sf::Keyboard::Scancode::Space) && !m_isGrounded && m_canDoubleJump && !m_hasDoubleJumped)
+	//{
+	//	m_velocity.y = - JUMP_FORCE;
+	//	m_hasDoubleJumped = true;
+	//	m_audio->playSoundbyName("jump");
+	//}
+	if (m_input->isPressed(sf::Keyboard::Scancode::Space))
+		m_velocity = m_gun.fireGunWithRecoil();
 	if (m_input->isKeyDown(sf::Keyboard::Scancode::R))	// Reset (for debugging)
 	{
 		setPosition({ 50,0 });
@@ -84,21 +80,6 @@ void Player::handleInput(float dt)
 	{
 		std::cout << getPosition().x << "/" << getPosition().y << "\n";
 	}
-
-	// gun rotation
-	auto centerPos = getPosition();
-	auto globalMousePos = sf::Vector2i(m_input->getMouseX(), m_input->getMouseY());
-	auto mousePos = m_window->mapPixelToCoords(globalMousePos);
-	
-	auto diff = mousePos - centerPos;
-	float radians = std::atan2(diff.x, diff.y);
-	float degrees = radians * 180.f / 3.14159265f;
-	
-	std::cout << "Mouse:  [" << mousePos.x << ", " << mousePos.y << "]" << std::endl;
-	std::cout << "Center: [" << centerPos.x << ", " << centerPos.y << "]" << std::endl;
-	std::cout << "Angle:  " << degrees << std::endl;
-
-	m_gun.setPosition(getPosition() + sf::Vector2f(getSize().x / 2, getSize().y / 2));
 }
 
 void Player::update(float dt)
@@ -143,6 +124,18 @@ void Player::update(float dt)
 
 	m_currAnim->animate(dt);
 	setTextureRect(m_currAnim->getCurrentFrame());
+
+	// update the gun
+	auto globalMousePos = sf::Vector2i{ m_input->getMouseX(), m_input->getMouseY() };
+	auto mousePos = m_window->mapPixelToCoords(globalMousePos);
+	auto posCenter = getPosition() + sf::Vector2f{ getSize().x * 0.5f, getSize().y * 0.5f };
+	m_gun.setPositionFromReference(posCenter, mousePos);
+}
+
+void Player::render()
+{
+	m_window->draw(*this);
+	m_window->draw(m_gun);
 }
 
 // only used on tiles for now.

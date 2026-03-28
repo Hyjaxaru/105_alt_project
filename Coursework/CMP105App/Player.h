@@ -8,6 +8,7 @@
 #include "Framework/AudioManager.h"
 
 #include "AssetManager.h"
+#include "PlayerGun.h"
 
 class Player :
     public GameObject
@@ -17,6 +18,7 @@ public:
 
     void handleInput(float dt) override;
     void update(float dt) override;
+    void render();
 
     void collisionResponse(GameObject& collider) override;
     void setEdges(float left, float right) { m_leftEdge = left; m_rightEdge = right; };
@@ -30,8 +32,6 @@ public:
     void setCanDoubleJump(bool value) { m_canDoubleJump = value; };
     bool canDoubleJump() { return m_canDoubleJump; };
     void setAudio(AudioManager* audio) { m_audio = audio; };
-
-    GameObject& getGun() { return m_gun; }
 
 private:
     sf::Texture m_dinoTexture;
@@ -52,7 +52,7 @@ private:
     bool m_hasDoubleJumped;
     AudioManager* m_audio;
 
-    GameObject m_gun;
+    PlayerGun m_gun;
 
     const float SPRINT_COOLDOWN = 2.0f;
     const float SPRINT_SPEED_MULT = 2.5f;

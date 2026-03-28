@@ -237,8 +237,7 @@ void LevelWithTiles::render()
 	m_tilemap.render(m_window);
 	m_window.draw(m_lever);
 	for (auto& flag : m_flags) m_window.draw(*flag);
-	m_window.draw(m_player);
-	m_window.draw(m_player.getGun());
+	m_player.render();
 	m_window.draw(m_alertText);
 	endDraw();
 }
