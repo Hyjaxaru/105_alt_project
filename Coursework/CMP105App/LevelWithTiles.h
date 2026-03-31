@@ -5,6 +5,7 @@
 #include "Player.h"
 #include "Lever.h"
 #include "Flag.h"
+#include "Logger.h"
 #include <algorithm>
 
 class LevelWithTiles :

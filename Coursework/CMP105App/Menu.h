@@ -1,6 +1,7 @@
 #pragma once
 #include "Scene.h"
 #include "Framework/Collision.h"
+#include "Logger.h"
 class Menu :
     public Scene
 {
