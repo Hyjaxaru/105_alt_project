@@ -17,10 +17,10 @@ PlayerGun::~PlayerGun()
 void PlayerGun::setPositionFromReference(sf::Vector2f origin, sf::Vector2f target)
 {
 	// calculate the angle from the reference position to the target position
-	auto angle = vm::calculatePointAngle(origin, target).asRadians();
+	auto angle = VMath::calculatePointAngle(origin, target).asRadians();
 
 	// calculate the position the gun should be placed at
-	auto dist = vm::calculatePointDistance(origin, target);
+	auto dist = VMath::calculatePointDistance(origin, target);
 	auto distC = std::clamp(dist, 0.f, MAX_DIST_FROM_REFERENCE);
 	auto pos = sf::Vector2f{
 		origin.x + distC * std::sin(angle),
@@ -45,5 +45,7 @@ sf::Vector2f PlayerGun::fireGunWithRecoil() {
 	// claculate and return the recoil force
 	auto rotation = getRotation().asRadians();
 	auto angle = rotation - PI_ESTIMATION;
-	return vm::calculateVector(sf::Vector2f(), sf::radians(angle), RECOIL_FORCE);
+	auto force = VMath::calculateVector(sf::Vector2f(), sf::radians(angle), RECOIL_FORCE);
+	std::cout << "X: " << force.x << ", Y: " << force.y << ", Angle: " << sf::radians(angle).asDegrees() << std::endl;
+	return force;
 }

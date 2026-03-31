@@ -225,6 +225,7 @@ sfml-network.lib;%(AdditionalDependencies)</AdditionalDependencies>
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerGun.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="VectorMath.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
