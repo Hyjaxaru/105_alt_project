@@ -16,7 +16,7 @@
 #include <SFML/Graphics.hpp>
 #include "Framework/AudioManager.h"
 
-#include "LOGR.h"
+#include "Logger.h"
 
 // sf::Text styling options
 struct TextStyle {
@@ -218,10 +218,6 @@ public:
 	}
 
 private:
-	// Logger instance
-	LOGR m_logger = LOGR("AssetManager");
-
-
 	// --- Texture Management --- //
 
 	// The texture index. Stores all the currently loaded textures

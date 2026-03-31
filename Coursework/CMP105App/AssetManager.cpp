@@ -7,7 +7,7 @@ sf::Texture* AssetManager::loadTexture(sf::Texture tex, const std::string& texNa
 	m_textureIndex.insert({ texName, tex });
 	auto texture = getTexture(texName);
 
-	m_logger.log("Loaded new texture as '" + texName + '\'');
+	LOG_INFO("Loaded new texture as '" + texName + '\'');
 
 	return texture;
 }
@@ -17,14 +17,14 @@ sf::Texture* AssetManager::loadTexture(const std::string& texPath, const std::st
 	sf::Texture newTex;
 	if (!newTex.loadFromFile(texPath))
 	{
-		m_logger.log("Could not load '" + texPath + '\'', LogLevel::ERROR);
+		LOG_ERROR("Could not load '" + texPath + '\'');
 		return nullptr;
 	}
 
 	m_textureIndex.insert({ texName, newTex });
 	auto texture = getTexture(texName);
 
-	m_logger.log("Loaded texture from '" + texPath + "' as '" + texName + '\'');
+	LOG_INFO("Loaded texture from '" + texPath + "' as '" + texName + '\'');
 
 	return texture;
 }
@@ -36,7 +36,7 @@ sf::Texture AssetManager::createTextureFromArea(sf::Texture& source, sf::IntRect
 	auto success = newTex.loadFromImage(image, false, area);
 
 	if (!success)
-		m_logger.log("Failed to create texture from texture area", LogLevel::WARN);
+		LOG_WARN("Failed to create texture from texture area");
 
 	return newTex;
 }
@@ -71,7 +71,7 @@ sf::Font* AssetManager::loadFont(const std::string& fontPath, const std::string&
 	sf::Font newFont;
 	if (!newFont.openFromFile(fontPath))
 	{
-		m_logger.log("Could not load '" + fontPath + '\'', LogLevel::ERROR);
+		LOG_ERROR("Could not load '" + fontPath + '\'');
 		return nullptr;
 	}
 
@@ -89,16 +89,16 @@ sf::Font* AssetManager::loadFont(const std::string& fontPath, const std::string&
 	case LoadOptions::DEFAULT:
 		// Load font as default
 		m_defaultFont = font;
-		m_logger.log("Loaded default font '" + fontPath + "' as '" + fontName + '\'');
+		LOG_INFO("Loaded default font '" + fontPath + "' as '" + fontName + '\'');
 		break;
 	case LoadOptions::DEFAULT | LoadOptions::DYSLEXIA:
 		// Load font as dyslexia default
 		m_defaultDyslexiaFont = font;
-		m_logger.log("Loaded default dyslexia font '" + fontPath + "' as '" + fontName + '\'');
+		LOG_INFO("Loaded default dyslexia font '" + fontPath + "' as '" + fontName + '\'');
 		break;
 	default:
 		// font loaded normally
-		m_logger.log("Loaded font '" + fontPath + "' as '" + fontName + '\'');
+		LOG_INFO("Loaded font '" + fontPath + "' as '" + fontName + '\'');
 		break;
 	}
 
@@ -144,7 +144,7 @@ TextStyle* AssetManager::loadTextStyle(TextStyle style, const std::string& style
 	case DEFAULT:
 		// load text style as default
 		m_defaultTextStyle = styleRef;
-		m_logger.log("Loaded default text style " + styleName + '\'');
+		LOG_INFO("Loaded default text style " + styleName + '\'');
 	}
 
 	return styleRef;
