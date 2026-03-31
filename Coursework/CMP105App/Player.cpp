@@ -35,6 +35,8 @@ void Player::handleInput(float dt)
 		m_accel.x -= SPEED;
 	if (m_input->isKeyDown(sf::Keyboard::Scancode::D))
 		m_accel.x += SPEED;
+
+	// No more jumping :3
 	//if (m_input->isPressed(sf::Keyboard::Scancode::Space) && m_isGrounded)
 	//{
 	//	m_velocity.y = - JUMP_FORCE;
@@ -47,6 +49,7 @@ void Player::handleInput(float dt)
 	//	m_hasDoubleJumped = true;
 	//	m_audio->playSoundbyName("jump");
 	//}
+
 	if (m_input->isPressed(sf::Keyboard::Scancode::Space))
 		m_velocity = m_gun.fireGunWithRecoil();
 	if (m_input->isKeyDown(sf::Keyboard::Scancode::R))	// Reset (for debugging)
