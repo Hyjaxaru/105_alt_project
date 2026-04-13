@@ -4,6 +4,7 @@
 
 #include "Framework/GameObject.h"
 
+#include "Logger.h"
 #include "AssetManager.h"
 #include "VectorMath.h"
 
@@ -12,16 +13,19 @@ class PlayerGun :
 {
 public:
     PlayerGun();
-    PlayerGun(GameObject* parent);
+    PlayerGun(sf::Vector2f* m_origin, sf::Vector2f* m_target);
     ~PlayerGun();
+
+    void update(float dt) override;
     
     sf::Vector2f fireGunWithRecoil();
     
-    void setPositionFromReference(sf::Vector2f origin, sf::Vector2f target);
-    void pointAt(sf::Vector2f target);
+    //void pointAt(sf::Vector2f origin, sf::Vector2f target);
+    void pointAtTarget();
 
 private:
-    GameObject* m_parent = nullptr;
+    sf::Vector2f* m_origin;
+    sf::Vector2f* m_target;
 
     // --- constants --- //
     const float PI_ESTIMATION = 3.141592654f;

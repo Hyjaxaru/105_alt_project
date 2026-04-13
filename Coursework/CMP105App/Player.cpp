@@ -129,10 +129,10 @@ void Player::update(float dt)
 	setTextureRect(m_currAnim->getCurrentFrame());
 
 	// update the gun
-	auto globalMousePos = sf::Vector2i{ m_input->getMouseX(), m_input->getMouseY() };
-	auto mousePos = m_window->mapPixelToCoords(globalMousePos);
-	auto posCenter = getPosition() + sf::Vector2f{ getSize().x * 0.5f, getSize().y * 0.5f };
-	m_gun.setPositionFromReference(posCenter, mousePos);
+	auto mousePos = sf::Vector2i{ m_input->getMouseX(), m_input->getMouseY() };
+	m_gunTarget = m_window->mapPixelToCoords(mousePos);
+	m_gunOrigin = getPosition() + sf::Vector2f{ getSize().x * 0.5f, getSize().y * 0.5f };
+	m_gun.update(dt);
 }
 
 void Player::render()
