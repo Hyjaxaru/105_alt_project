@@ -32,16 +32,17 @@ void PlayerGun::pointAtTarget()
 		m_origin->y + distC * std::cos(angle)
 	};
 
-	// set transform
+	// set position
 	setPosition(pos);
 
+	// rotate the gun in the direction of fire
 	auto isFacingBack = angle < 0.f;
-
 	auto rotOffset = isFacingBack ? PI_ESTIMATION * 1.5f : PI_ESTIMATION * 0.5f;
 	auto rotation = sf::radians(-angle + rotOffset);
 	setRotation(rotation);
 
-	setScale(sf::Vector2f{ isFacingBack ? -1.f : 1.f, 1.f });
+	// if needed, flip the sprite so the gun always looks correctly held
+	setScale({ isFacingBack ? -1.f : 1.f, 1.f });
 }
 
 sf::Vector2f PlayerGun::fireGunWithRecoil() {
