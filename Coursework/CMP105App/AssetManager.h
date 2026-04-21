@@ -53,6 +53,11 @@ public:
 
 	// File loading options. Tells AssetManager how you want assets loaded into the different indexes
 	enum LoadOptions { DEFAULT = 1, DYSLEXIA = 2 };
+
+	// Default index entries
+	enum class Defaults {
+		TILEMAP, PLAYER, WEAPON, PROJECTILE // Textures
+	};
 	
 	// --- Texture Management --- //
 
@@ -67,6 +72,12 @@ public:
 	// @param texName: The name of the texture we are loading
 	// @returns        A reference to the loaded texture in the font index
 	sf::Texture* loadTexture(const std::string& texPath, const std::string& texName);
+
+	// Load a textrue into UIManager's texture index from a file
+	// @param texPath:     The path of the texture file
+	// @param defaultName: The default index value
+	// @returns            A reference to the loaded texture in the font index
+	sf::Texture* loadTexture(const std::string& texPath, Defaults defaultName);
 
 	// Create a new texture from a portion of another
 	// @param source: The source texture
@@ -83,6 +94,11 @@ public:
 	// @param texName: The name of the texture to get
 	// @returns        A reference to the named texture in the texture index
 	sf::Texture* getTexture(const std::string& texName);
+
+	// Gets a loaded texture by it's name. Error if no font is found
+	// @param defaultName: The name of the texture to get
+	// @returns        A reference to the named texture in the texture index
+	sf::Texture* getTexture(Defaults defaultName);
 
 	// Removes a texture from the index by it's name
 	// @param texName: The name of the texture to remove
@@ -218,6 +234,15 @@ public:
 	}
 
 private:
+	std::map<Defaults, std::string> m_defaultIndexNameMap = {
+		{ Defaults::TILEMAP,    "TILEMAP" },
+		{ Defaults::PLAYER,     "PLAYER" },
+		{ Defaults::WEAPON,     "WEAPON" },
+		{ Defaults::PROJECTILE, "PROJECTILE" }
+	};
+
+	std::string defaultIndexEnumNameToString(Defaults value);
+
 	// --- Texture Management --- //
 
 	// The texture index. Stores all the currently loaded textures

@@ -4,7 +4,7 @@ PlayerGun::PlayerGun(sf::Vector2f* origin, sf::Vector2f* target)
 	: m_origin(origin), m_target(target)
 {
 	auto& assets = AssetManager::Instance();
-	setTexture(assets.getTexture("gun"));
+	setTexture(assets.getTexture(AssetManager::Defaults::WEAPON));
 	setSize({ 32, 32 });
 	setOrigin({ 16, 16 });
 	setScale({ -1, 1 });
@@ -21,7 +21,13 @@ void PlayerGun::update(float dt)
 
 	// update all the bullets
 	for (auto* bullet : m_bullets)
+	{
 		bullet->update(dt);
+
+		// destroy the bullet if it is expired (lifetime ran out)
+		if (bullet->isExpired())
+			m_bullets.erase(std::find(m_bullets.begin(), m_bullets.end(), bullet));
+	}
 }
 
 void PlayerGun::render(sf::RenderWindow* window)

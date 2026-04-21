@@ -4,7 +4,7 @@ Player::Player()
 {
 	auto& assets = AssetManager::Instance();
 
-	setTexture(assets.getTexture("player"));
+	setTexture(assets.getTexture(AssetManager::Defaults::PLAYER));
 	// Dino is 24x24, tiles are 18x18
 	// LCM(18,24) = 72.
 	setSize({ 72,72 });

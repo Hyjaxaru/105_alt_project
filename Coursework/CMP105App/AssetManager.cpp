@@ -29,6 +29,12 @@ sf::Texture* AssetManager::loadTexture(const std::string& texPath, const std::st
 	return texture;
 }
 
+sf::Texture* AssetManager::loadTexture(const std::string& texPath, Defaults defaultName)
+{
+	std::string texName = defaultIndexEnumNameToString(defaultName);
+	return loadTexture(texPath, texName);
+}
+
 sf::Texture AssetManager::createTextureFromArea(sf::Texture& source, sf::IntRect area)
 {
 	sf::Texture newTex;
@@ -51,6 +57,12 @@ sf::Texture* AssetManager::createTextureFromArea(const std::string& sourceName, 
 sf::Texture* AssetManager::getTexture(const std::string& texName)
 {
 	return &m_textureIndex.at(texName);
+}
+
+sf::Texture* AssetManager::getTexture(Defaults defaultName)
+{
+	std::string texName = defaultIndexEnumNameToString(defaultName);
+	return getTexture(texName);
 }
 
 void AssetManager::removeTexture(const std::string& texName)
@@ -191,4 +203,13 @@ void AssetManager::removeTextStyle(const std::string& styleName)
 void AssetManager::clearTextStyleIndex()
 {
 	m_textStyleIndex.clear();
+}
+
+// --- Misc --- //
+
+std::string AssetManager::defaultIndexEnumNameToString(Defaults value)
+{
+	auto pair = m_defaultIndexNameMap.find(value);
+	auto string = (pair != m_defaultIndexNameMap.end()) ? pair->second : "UNKNOWN";
+	return "DEFAULT_" + string;
 }

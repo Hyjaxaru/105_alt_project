@@ -13,7 +13,13 @@ public:
 
 	void update(float dt) override;
 
+	bool isExpired() const { return expireTimer >= 0; }
+
 private:
-	const float BULLET_SPEED = 1.f;
+	int expireTimer;
+
+
+	const float SPEED = 1.f;
+	const int LIFETIME_FRAMES = 600; // 10 seconds @ 60FPS
 };
 
