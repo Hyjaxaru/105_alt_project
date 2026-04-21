@@ -22,23 +22,20 @@ void PlayerGun::update(float dt)
 void PlayerGun::pointAtTarget()
 {
 	// calculate the angle from the reference position to the target position
-	auto angle = VMath::calculatePointAngle(*m_origin, *m_target).asRadians();
+	auto angle = VMath::calculatePointAngle(*m_origin, *m_target);
 
 	// calculate the position the gun should be placed at
 	auto dist = VMath::calculatePointDistance(*m_origin, *m_target);
 	auto distC = std::clamp(dist, 0.f, MAX_DIST_FROM_REFERENCE);
-	auto pos = sf::Vector2f{
-		m_origin->x + distC * std::sin(angle),
-		m_origin->y + distC * std::cos(angle)
-	};
+	auto pos = VMath::calculateVector(*m_origin, angle, distC);
 
 	// set position
 	setPosition(pos);
 
 	// rotate the gun in the direction of fire
-	auto isFacingBack = angle < 0.f;
-	auto rotOffset = isFacingBack ? PI_ESTIMATION * 1.5f : PI_ESTIMATION * 0.5f;
-	auto rotation = sf::radians(-angle + rotOffset);
+	auto isFacingBack = angle.asRadians() < 0.f;
+	auto rotOffset = sf::radians(isFacingBack ? PI_ESTIMATION * 1.5f : PI_ESTIMATION * 0.5f);
+	auto rotation = -angle + rotOffset;
 	setRotation(rotation);
 
 	// if needed, flip the sprite so the gun always looks correctly held
