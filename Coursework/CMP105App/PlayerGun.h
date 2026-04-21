@@ -20,7 +20,7 @@ public:
     sf::Vector2f fireGunWithRecoil();
     
     void pointAtTarget();
-    void setOrigin(sf::Vector2f* newValue) { m_origin = newValue; }
+    void setRotationCenter(sf::Vector2f* newValue) { m_origin = newValue; }
     void setTarget(sf::Vector2f* newValue) { m_target = newValue; }
 
 private:
