@@ -48,16 +48,8 @@ sf::Vector2f PlayerGun::fireGunWithRecoil() {
 	// TODO: Fire the gun
 
 	// claculate and return the recoil force
-	/*auto rotation = getRotation().asRadians();
-	auto angle = rotation - PI_ESTIMATION;
-	auto force = VMath::calculateVector(sf::Vector2f(), sf::radians(angle), RECOIL_FORCE);
-	std::cout << "X: " << force.x << ", Y: " << force.y << ", Angle: " << sf::radians(angle).asDegrees() << std::endl;
-	return force;*/
-
-	// calculate force but the better way
 	auto dir = getPosition() - *m_origin;
-
-	Logger::Debug("X: " + dir.x + ", Y: " + dir.y);
-	LOG_DEBUG("TEST")
-	return sf::Vector2f();
+	auto force = dir * RECOIL_FORCE;
+	std::cout << "X: " << force.x << ", Y: " << force.y << ", Angle: " << VMath::calculatePointAngle(dir).asDegrees() << std::endl;
+	return force;
 }

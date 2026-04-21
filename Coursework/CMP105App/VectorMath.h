@@ -7,10 +7,20 @@
 
 class VMath {
 public:
+	static sf::Angle calculatePointAngle(sf::Vector2f target)
+	{
+		return VMath::calculatePointAngle(sf::Vector2f{ 0, 0 }, target);
+	}
+
 	static sf::Angle calculatePointAngle(sf::Vector2f origin, sf::Vector2f target)
 	{
 		auto diff = target - origin;
 		return sf::radians(std::atan2(diff.x, diff.y));
+	}
+
+	static float calculatePointDistance(sf::Vector2f target)
+	{
+		return VMath::calculatePointDistance(sf::Vector2f{ 0, 0 }, target);
 	}
 
 	static float calculatePointDistance(sf::Vector2f origin, sf::Vector2f target)
