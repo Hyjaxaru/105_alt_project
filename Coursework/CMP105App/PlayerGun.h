@@ -12,7 +12,6 @@ class PlayerGun :
     public GameObject
 {
 public:
-    PlayerGun();
     PlayerGun(sf::Vector2f* m_origin, sf::Vector2f* m_target);
     ~PlayerGun();
 
@@ -30,6 +29,6 @@ private:
     // --- constants --- //
     const float PI_ESTIMATION = 3.141592654f;
     const float MAX_DIST_FROM_REFERENCE = 64.f;
-    const float RECOIL_FORCE = 25.f;
+    const float RECOIL_FORCE = 20.f;
 };
 

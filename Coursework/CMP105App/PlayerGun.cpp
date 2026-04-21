@@ -47,9 +47,20 @@ void PlayerGun::pointAtTarget()
 sf::Vector2f PlayerGun::fireGunWithRecoil() {
 	// TODO: Fire the gun
 
-	// claculate and return the recoil force
+	// claculate the angle to fire
 	auto dir = getPosition() - *m_origin;
-	auto force = dir * RECOIL_FORCE;
-	std::cout << "X: " << force.x << ", Y: " << force.y << ", Angle: " << VMath::calculatePointAngle(dir).asDegrees() << std::endl;
+	auto norm = dir.normalized();
+
+	// fire the gun
+
+	// calculate the recoil of the gun (in the opposite direction to fired)
+	auto force = -norm * RECOIL_FORCE;
+	
+	// log
+	std::stringstream logstream;
+	logstream << "Gun Fired, Force applied - X: " << force.x << ", Y: " << force.y << ", Angle: " << VMath::calculatePointAngle(dir).asDegrees();
+	LOG_DEBUG(logstream.str());
+
+	// return the recoil force
 	return force;
 }
