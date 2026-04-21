@@ -1,12 +1,14 @@
 #pragma once
 
 #include <cmath>
+#include <vector>
 
 #include "Framework/GameObject.h"
 
 #include "Logger.h"
 #include "AssetManager.h"
 #include "VectorMath.h"
+#include "Bullet.h"
 
 class PlayerGun :
     public GameObject
@@ -16,6 +18,7 @@ public:
     ~PlayerGun();
 
     void update(float dt) override;
+    void render(sf::RenderWindow* window);
     
     sf::Vector2f fireGunWithRecoil();
     
@@ -26,6 +29,8 @@ public:
 private:
     sf::Vector2f* m_origin;
     sf::Vector2f* m_target;
+
+    std::vector<Bullet*> m_bullets;
 
     // --- constants --- //
     const float PI_ESTIMATION = 3.141592654f;

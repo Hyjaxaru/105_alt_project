@@ -138,7 +138,7 @@ void Player::update(float dt)
 void Player::render()
 {
 	m_window->draw(*this);
-	m_window->draw(m_gun);
+	m_gun.render(m_window);
 }
 
 // only used on tiles for now.

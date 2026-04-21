@@ -93,6 +93,7 @@ int main()
 	auto& assets = AssetManager::Instance();
 	assets.loadTexture("gfx/dino1.png", "player");
 	assets.loadTexture("gfx/gun.png", "gun");
+	assets.loadTexture("gfx/bullet.png", "bullet");
 
 	// Create level objects that may reference manager objects
 	Menu menu(window, input, gameState, audioManager);
