@@ -19,8 +19,9 @@ public:
     
     sf::Vector2f fireGunWithRecoil();
     
-    //void pointAt(sf::Vector2f origin, sf::Vector2f target);
     void pointAtTarget();
+    void setOrigin(sf::Vector2f* newValue) { m_origin = newValue; }
+    void setTarget(sf::Vector2f* newValue) { m_target = newValue; }
 
 private:
     sf::Vector2f* m_origin;
