@@ -40,6 +40,11 @@ namespace LoggerConfig {
 #define LOG_WARN(msg)  Logger::Log(msg, LogLevel::WARN,  __FILENAME__, __LINE__);
 #define LOG_ERROR(msg) Logger::Log(msg, LogLevel::ERROR, __FILENAME__, __LINE__);
 
+#define LOG_DEBUG_NOLINE(msg) Logger::Log(msg, LogLevel::DEBUG, __FILENAME__);
+#define LOG_INFO_NOLINE(msg)  Logger::Log(msg, LogLevel::INFO,  __FILENAME__);
+#define LOG_WARN_NOLINE(msg)  Logger::Log(msg, LogLevel::WARN,  __FILENAME__);
+#define LOG_ERROR_NOLINE(msg) Logger::Log(msg, LogLevel::ERROR, __FILENAME__);
+
 // A stupid simple loging class!
 class Logger
 {
@@ -55,7 +60,7 @@ public:
 	// Write a log message to the console
 	// @param message: The message to be sent in the log
 	// @param level:   The level of the log message.
-	static void Log(std::string message, uint8_t level, const char* file, int line);
+	static void Log(std::string message, uint8_t level, const char* file, int line = -1);
 
 	// Write a DEBUG log to the terminal
 	// @param message: The message to be sent in the log
@@ -74,25 +79,28 @@ public:
 	static void Error(std::string message) { Log(message, LogLevel::ERROR); }
 
 private:
-	// Outputs the formatted time the log was logged
+	// Adds the formatted time the log was... well, logged
 	// @param stream: The log string stream being constructed
-	static void outputCurrentTime(std::stringstream& stream);
+	static void addCurrentTime(std::stringstream& stream);
 
-	// Outputs the log level of the log message
+	// Adds the log level of the log
 	// @param stream: The log string stream being constructed
 	// @param level:  The level of the log message.
-	static void outputLogLevel(std::stringstream& stream, uint8_t level);
+	static void addLogLevel(std::stringstream& stream, uint8_t level);
 
-	// Outputs the file and line number to the log message
+	// Adds an arbitrary string into the log before the message
+	static void addString(std::stringstream& stream, std::string message);
+
+	// Adds the file and line number to the log
 	// @param stream: The log string stream being constructed
 	// @param file:   The name of the c++ file the log comes from. Intended to be used with `__file__`
 	// @param line:	  The line the log was triggered from. Intended to be used with `__line__`
-	static void outputFileAndLine(std::stringstream& stream, const char* file, int line);
+	static void addFileAndLine(std::stringstream& stream, const char* file, int line);
 
-	// Sets the terminal text color, if we should
+	// Sets the terminal text color
 	// @param stream: The log string stream being constructed
 	// @param level:  The level of the log message.
-	static void changeTerminalColour(std::stringstream& stream, uint8_t level);
+	static void setTerminalColour(std::stringstream& stream, uint8_t level);
 
 	// Resets the terminal colour
 	// @param stream: The log string stream being constructed

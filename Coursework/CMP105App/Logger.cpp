@@ -14,9 +14,9 @@ void Logger::Log(std::string message, uint8_t level)
 	std::stringstream ostream;
 
 	// prepare the log stream
-	changeTerminalColour(ostream, level);
-	outputCurrentTime(ostream);
-	outputLogLevel(ostream, level);
+	setTerminalColour(ostream, level);
+	addCurrentTime(ostream);
+	addLogLevel(ostream, level);
 	ostream << message << std::endl;
 	resetTerminalColour(ostream);
 
@@ -33,10 +33,10 @@ void Logger::Log(std::string message, uint8_t level, const char* file, int line)
 	std::stringstream ostream;
 
 	// prepare the log stream
-	changeTerminalColour(ostream, level);
-	outputCurrentTime(ostream);
-	outputLogLevel(ostream, level);
-	outputFileAndLine(ostream, file, line);
+	setTerminalColour(ostream, level);
+	addCurrentTime(ostream);
+	addLogLevel(ostream, level);
+	addFileAndLine(ostream, file, line);
 	ostream << message << std::endl;
 	resetTerminalColour(ostream);
 
@@ -46,7 +46,7 @@ void Logger::Log(std::string message, uint8_t level, const char* file, int line)
 
 // --- private --- //
 
-void Logger::outputCurrentTime(std::stringstream& stream)
+void Logger::addCurrentTime(std::stringstream& stream)
 {
 	// get the current time
 	time_t timestamp = time(NULL);
@@ -56,7 +56,7 @@ void Logger::outputCurrentTime(std::stringstream& stream)
 	stream << time << " | ";
 }
 
-void Logger::outputLogLevel(std::stringstream& stream, uint8_t level)
+void Logger::addLogLevel(std::stringstream& stream, uint8_t level)
 {
 	std::string levelString;
 	switch (level)
@@ -70,13 +70,22 @@ void Logger::outputLogLevel(std::stringstream& stream, uint8_t level)
 	stream << levelString << " | ";
 }
 
-void Logger::outputFileAndLine(std::stringstream& stream, const char* file, int line)
+void Logger::addString(std::stringstream& stream, std::string string)
 {
-	//stream << '[' << file << ':' << line << "] ";
-	stream << file << ':' << line << " | ";
+	stream << string << " | ";
 }
 
-void Logger::changeTerminalColour(std::stringstream& stream, uint8_t level)
+void Logger::addFileAndLine(std::stringstream& stream, const char* file, int line)
+{
+	//stream << '[' << file << ':' << line << "] ";
+
+	if (line > 0)
+		stream << file << ':' << line << " | ";
+	else
+		stream << file << " | ";
+}
+
+void Logger::setTerminalColour(std::stringstream& stream, uint8_t level)
 {
 	int colour = 0;
 	switch (level)
