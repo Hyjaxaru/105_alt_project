@@ -56,8 +56,7 @@ sf::Texture* AssetManager::createTextureFromArea(const std::string& sourceName, 
 
 sf::Texture* AssetManager::getTexture(const std::string& texName)
 {
-	auto found = m_textureIndex.find(texName);
-	if (found != m_textureIndex.end())
+	if (resourceLoaded(m_textureIndex, texName))
 		return &m_textureIndex.at(texName);
 	return nullptr;
 }
@@ -133,8 +132,7 @@ sf::Font* AssetManager::getDefaultFont()
 
 sf::Font* AssetManager::getFont(const std::string& fontName)
 {
-	auto found = m_fontIndex.find(fontName);
-	if (found != m_fontIndex.end())
+	if (resourceLoaded(m_fontIndex, fontName))
 		return &m_fontIndex.at(fontName);
 	return nullptr;
 }
@@ -177,8 +175,7 @@ TextStyle* AssetManager::getDefaultTextStyle()
 
 TextStyle* AssetManager::getTextStyle(const std::string& styleName)
 {
-	auto found = m_textStyleIndex.find(styleName);
-	if (found != m_textStyleIndex.end())
+	if (resourceLoaded(m_textStyleIndex, styleName))
 		return &m_textStyleIndex.at(styleName);
 	return nullptr;
 }

@@ -60,7 +60,7 @@ public:
 	};
 
 	std::string defaultIndexEnumNameToString(Defaults value);
-	
+
 	// --- Texture Management --- //
 
 	// Load a textrue into UIManager's texture index
@@ -106,7 +106,7 @@ public:
 	// @param texName: The name of the texture to remove
 	void removeTexture(const std::string& texName);
 
-	
+
 	// --- Font Management --- //
 
 	// Font loading options. See `UI::UIManager::LoadOptions`
@@ -186,7 +186,7 @@ public:
 	// @param styleName: The name of the text style we want to remove
 	void removeTextStyle(const std::string& styleName);
 
-	
+
 	// --- Audio --- //
 
 	// Since AudioManager is already provided,
@@ -242,6 +242,13 @@ private:
 		{ Defaults::WEAPON,     "WEAPON" },
 		{ Defaults::PROJECTILE, "PROJECTILE" }
 	};
+
+	// check if a value is loaded in an index by it's key
+	template <typename T>
+	inline bool resourceLoaded(std::map<std::string, T>& index, std::string const key)
+	{
+		return index.find(key) != index.end();
+	}
 
 	// --- Texture Management --- //
 
