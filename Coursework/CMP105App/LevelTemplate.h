@@ -19,6 +19,9 @@ public:
 	void onBegin() override;
 	void onEnd() override;
 
+	void setTilemap(TileMap tilemap) { m_tilemap = tilemap; }
+	void setBackgroundTilemap(TileMap tilemap) { m_bgTilemap = tilemap; }
+
 	sf::Vector2i getWorldSize() { return m_worldSize; }
 	void setWorldSize(sf::Vector2i const size) { m_worldSize = size; }
 

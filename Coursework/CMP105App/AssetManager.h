@@ -56,7 +56,7 @@ public:
 
 	// Default index entries
 	enum class Defaults {
-		TILEMAP, PLAYER, WEAPON, PROJECTILE // Textures
+		TERRAIN, BACKGROUND, PLAYER, WEAPON, PROJECTILE // Textures
 	};
 
 	std::string defaultIndexEnumNameToString(Defaults value);
@@ -237,7 +237,8 @@ public:
 
 private:
 	std::map<Defaults, std::string> m_defaultIndexNameMap = {
-		{ Defaults::TILEMAP,    "TILEMAP" },
+		{ Defaults::TERRAIN,    "TERRAIN" },
+		{ Defaults::BACKGROUND, "BACKGROUND" },
 		{ Defaults::PLAYER,     "PLAYER" },
 		{ Defaults::WEAPON,     "WEAPON" },
 		{ Defaults::PROJECTILE, "PROJECTILE" }
