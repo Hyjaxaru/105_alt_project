@@ -58,6 +58,8 @@ public:
 	enum class Defaults {
 		TILEMAP, PLAYER, WEAPON, PROJECTILE // Textures
 	};
+
+	std::string defaultIndexEnumNameToString(Defaults value);
 	
 	// --- Texture Management --- //
 
@@ -240,8 +242,6 @@ private:
 		{ Defaults::WEAPON,     "WEAPON" },
 		{ Defaults::PROJECTILE, "PROJECTILE" }
 	};
-
-	std::string defaultIndexEnumNameToString(Defaults value);
 
 	// --- Texture Management --- //
 
