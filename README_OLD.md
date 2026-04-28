@@ -1,39 +1,3 @@
-# CMP105 2026 Final Submission 
-
-## Game 
-
-Dino Handyman: The Gun
-
-You play as a little dino guy, who needs to needs to get from A to B quickly so that he can do his job. [FINISH THIS LATER]
-
-**Controls:** 
-
-WASD to move,
-SPACE to shoot,
-ESCAPE to pause.
-
-## Student Details
-
-**Student Name:** Noah Albrock
-
-**Student Number:** 2502258
-
-**Course:** _CGAD_
-
-## Changelist
-
-* Jumping has been disabled in favour of using the gun as your main movement mechanic
-* Levels are no longer hard-coded, and are loaded from a file upon request
-
-## Known Bugs
-
-* If you move fast enough, you can phase through the ground. I believe this is a by-product of how collisions work since this behaviour is quite common in video games generally.
-
----
----
-
-# Proposal from March
-
 # CMP105 Extension Proposal
 
 ## Student Details
