@@ -92,10 +92,10 @@ int main()
 
 	// prepare assets that need to be persistent
 	auto& assets = AssetManager::Instance();
-	assets.loadTexture("gfx/tilemap.png", AssetManager::Defaults::TERRAIN);
-	assets.loadTexture("gfx/dino1.png",   AssetManager::Defaults::PLAYER);
-	assets.loadTexture("gfx/gun.png",     AssetManager::Defaults::WEAPON);
-	assets.loadTexture("gfx/bullet.png",  AssetManager::Defaults::PROJECTILE);
+	assets.loadTexture("gfx/tilemap.png", AssetManager::Textures::TERRAIN);
+	assets.loadTexture("gfx/dino1.png",   AssetManager::Textures::PLAYER);
+	assets.loadTexture("gfx/gun.png",     AssetManager::Textures::WEAPON);
+	assets.loadTexture("gfx/bullet.png",  AssetManager::Textures::PROJECTILE);
 
 	// Create level objects that may reference manager objects
 	LevelManager lvlManager(window, input, gameState, audioManager);

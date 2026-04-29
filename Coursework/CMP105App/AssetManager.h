@@ -60,7 +60,7 @@ public:
 
 	// Default index entries
 	enum class Textures {
-		TERRAIN, BACKGROUND, PLAYER, WEAPON, PROJECTILE // Textures
+		TERRAIN, BACKGROUND, PLAYER, WEAPON, PROJECTILE
 	};
 
 	std::string defaultIndexEnumNameToString(Textures value);
@@ -202,13 +202,17 @@ public:
 	TileMap* getTileMap(TileMaps defaultName);
 
 private:
-	std::map<Textures, std::string> m_defaultIndexNameMap = {
+	std::map<Textures, std::string> m_textureDefaultIndexMap = {
 		{ Textures::TERRAIN,    "TERRAIN" },
 		{ Textures::BACKGROUND, "BACKGROUND" },
 		{ Textures::PLAYER,     "PLAYER" },
 		{ Textures::WEAPON,     "WEAPON" },
 		{ Textures::PROJECTILE, "PROJECTILE" }
 	};
+	std::map<TileMaps, std::string> m_tilemapDefaultIndexMap = {
+		{ TileMaps::TERRAIN,    "TERRAIN" },
+		{ TileMaps::BACKGROUND, "BACKGROUND" },
+	}
 
 	// check if a value is loaded in an index by it's key
 	template <typename T>
