@@ -16,6 +16,7 @@
 #include "Scene.h"
 #include "Menu.h"
 #include "LevelThatSaves.h"
+#include "LevelManager.h"
 
 #ifndef SFML_VERSION_MAJOR
 	#error "SFML 3 is required for this framework."
@@ -97,6 +98,8 @@ int main()
 	assets.loadTexture("gfx/bullet.png",  AssetManager::Defaults::PROJECTILE);
 
 	// Create level objects that may reference manager objects
+	LevelManager lvlManager(window, input, gameState, audioManager);
+
 	Menu menu(window, input, gameState, audioManager);
 	LevelWithTiles tile_level(window, input, gameState, audioManager);
 	LevelTwoWithTiles tile_level_two(window, input, gameState, audioManager);

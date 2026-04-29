@@ -22,14 +22,14 @@ public:
 	void loadLevels() { loadLevels(DEFAULT_LEVEL_DIR); }
 
 private:
-	std::map<std::string, int> m_levelIndex;
-
 	struct Level {
 		std::ifstream& file;
 		std::string path;
 		std::string name;
 		LevelTemplate level;
 	};
+
+	std::map<std::string, Level> m_levelIndex;
 
 	enum class TileMapType { TERRAIN, BACKGROUND };
 
@@ -47,7 +47,7 @@ private:
 	AudioManager& m_audio;
 
 	const std::string DEFAULT_LEVEL_DIR = "levels/";
-	const std::string LEVEL_FILE_EXT = "level";
+	const std::string LEVEL_FILE_EXT = "txt";
 	const int LOADER_VERSION = 1;
 };
 

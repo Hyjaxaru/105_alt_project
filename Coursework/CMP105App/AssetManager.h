@@ -15,6 +15,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "Framework/AudioManager.h"
+#include "Framework/TileMap.h"
 
 #include "Logger.h"
 
@@ -54,14 +55,15 @@ public:
 	// File loading options. Tells AssetManager how you want assets loaded into the different indexes
 	enum LoadOptions { DEFAULT = 1, DYSLEXIA = 2 };
 
+
+	// --- Textures --- //
+
 	// Default index entries
-	enum class Defaults {
+	enum class Textures {
 		TERRAIN, BACKGROUND, PLAYER, WEAPON, PROJECTILE // Textures
 	};
 
-	std::string defaultIndexEnumNameToString(Defaults value);
-
-	// --- Texture Management --- //
+	std::string defaultIndexEnumNameToString(Textures value);
 
 	// Load a textrue into UIManager's texture index
 	// @param tex:     The texture to load into the index
@@ -79,7 +81,7 @@ public:
 	// @param texPath:     The path of the texture file
 	// @param defaultName: The default index value
 	// @returns            A reference to the loaded texture in the font index
-	sf::Texture* loadTexture(const std::string& texPath, Defaults defaultName);
+	sf::Texture* loadTexture(const std::string& texPath, Textures defaultName);
 
 	// Create a new texture from a portion of another
 	// @param source: The source texture
@@ -100,14 +102,14 @@ public:
 	// Gets a loaded texture by it's name. Error if no font is found
 	// @param defaultName: The name of the texture to get
 	// @returns        A reference to the named texture in the texture index
-	sf::Texture* getTexture(Defaults defaultName);
+	sf::Texture* getTexture(Textures defaultName);
 
 	// Removes a texture from the index by it's name
 	// @param texName: The name of the texture to remove
 	void removeTexture(const std::string& texName);
 
 
-	// --- Font Management --- //
+	// --- Fonts --- //
 
 	// Font loading options. See `UI::UIManager::LoadOptions`
 	using FontOptions = LoadOptions;
@@ -187,61 +189,25 @@ public:
 	void removeTextStyle(const std::string& styleName);
 
 
-	// --- Audio --- //
+	// --- TileMaps --- //
 
-	// Since AudioManager is already provided,
-	// This is just a stored version of it that can be accessed anywhere through AssetManager's singleton
+	enum class TileMaps { TERRAIN, BACKGROUND };
 
-	// Get AssetManager's instance of AudioManager
-	AudioManager* getAudioManager() { return &m_audioManager; }
+	TileMap* loadTileMap(TileMap tm, std::string const tmName);
 
-	// Loads a sound from a file and associates it with a tag for later use.
-	void addSound(const std::string& tag, const std::string& filename) {
-		m_audioManager.addSound(tag, filename);
-	}
+	TileMap* loadTileMap(TileMap tm, TileMaps defaultName);
 
-	// Plays a sound based on the tag it was loaded with.
-	void playSoundbyName(const std::string& tag) {
-		m_audioManager.playSoundbyName(tag);
-	}
+	TileMap* getTileMap(std::string const tmName);
 
-	// Stops all currently playing sounds.
-	void stopAllSounds() {
-		m_audioManager.stopAllSounds();
-	}
-
-	// Returns a pointer to a sound for direct manipulation (e.g., setting volume, looping).
-	// Returns nullptr if the tag is not found.
-	sf::Sound* getSound(const std::string& tag) {
-		return m_audioManager.getSound(tag);
-	}
-
-	// Loads a music file for streaming and associates it with a tag.
-	void addMusic(const std::string& tag, const std::string& filename) {
-		m_audioManager.addMusic(tag, filename);
-	}
-
-	// Plays a music stream based on its tag.
-	void playMusicbyName(const std::string& tag) {
-		m_audioManager.playMusicbyName(tag);
-	}
-
-	// Stops all currently playing music streams.
-	void stopAllMusic() { m_audioManager.stopAllMusic(); }
-
-	// Returns a pointer to a music stream for direct manipulation.
-	// Returns nullptr if the tag is not found.
-	sf::Music* getMusic(const std::string& tag) {
-		return m_audioManager.getMusic(tag);
-	}
+	TileMap* getTileMap(TileMaps defaultName);
 
 private:
-	std::map<Defaults, std::string> m_defaultIndexNameMap = {
-		{ Defaults::TERRAIN,    "TERRAIN" },
-		{ Defaults::BACKGROUND, "BACKGROUND" },
-		{ Defaults::PLAYER,     "PLAYER" },
-		{ Defaults::WEAPON,     "WEAPON" },
-		{ Defaults::PROJECTILE, "PROJECTILE" }
+	std::map<Textures, std::string> m_defaultIndexNameMap = {
+		{ Textures::TERRAIN,    "TERRAIN" },
+		{ Textures::BACKGROUND, "BACKGROUND" },
+		{ Textures::PLAYER,     "PLAYER" },
+		{ Textures::WEAPON,     "WEAPON" },
+		{ Textures::PROJECTILE, "PROJECTILE" }
 	};
 
 	// check if a value is loaded in an index by it's key
