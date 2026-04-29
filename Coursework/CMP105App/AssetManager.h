@@ -212,7 +212,7 @@ private:
 	std::map<TileMaps, std::string> m_tilemapDefaultIndexMap = {
 		{ TileMaps::TERRAIN,    "TERRAIN" },
 		{ TileMaps::BACKGROUND, "BACKGROUND" },
-	}
+	};
 
 	// check if a value is loaded in an index by it's key
 	template <typename T>

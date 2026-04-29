@@ -4,7 +4,7 @@ Bullet::Bullet(sf::Vector2f position, sf::Vector2f dir)
 {
 	// set up the underlying GameObject
 	auto& assets = AssetManager::Instance();
-	setTexture(assets.getTexture(AssetManager::Defaults::PROJECTILE));
+	setTexture(assets.getTexture(AssetManager::Textures::PROJECTILE));
 	setSize({ 32, 32 });
 	setOrigin({ 16, 16 });
 	setScale({ 0.5, 0.5 });

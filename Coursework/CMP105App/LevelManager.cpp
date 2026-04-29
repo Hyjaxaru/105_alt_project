@@ -72,8 +72,8 @@ bool LevelManager::loadTilemap(Level& level, TileMapType type)
 	sf::Texture* tex = nullptr;
 	if (useDefault)
 		tex = assets.getTexture(type == TileMapType::BACKGROUND
-			? AssetManager::Defaults::BACKGROUND
-			: AssetManager::Defaults::TERRAIN);
+			? AssetManager::Textures::BACKGROUND
+			: AssetManager::Textures::TERRAIN);
 	else
 		tex = assets.getTexture(path);
 

@@ -4,7 +4,7 @@ PlayerGun::PlayerGun(sf::Vector2f* origin, sf::Vector2f* target)
 	: m_origin(origin), m_target(target)
 {
 	auto& assets = AssetManager::Instance();
-	setTexture(assets.getTexture(AssetManager::Defaults::WEAPON));
+	setTexture(assets.getTexture(AssetManager::Textures::WEAPON));
 	setSize({ 32, 32 });
 	setOrigin({ 16, 16 });
 	setScale({ -1, 1 });
