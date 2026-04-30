@@ -1,5 +1,7 @@
 #pragma once
 
+#include <algorithm>
+
 #include "Framework/Collision.h"
 #include "Framework/TileMap.h"
 
@@ -19,6 +21,8 @@ public:
 	void onBegin() override;
 	void onEnd() override;
 
+	void updateCameraAndBackground();
+
 	void setTilemap(TileMap tilemap) { m_tilemap = tilemap; }
 	void setBackgroundTilemap(TileMap tilemap) { m_bgTilemap = tilemap; }
 
@@ -29,10 +33,13 @@ public:
 	void setViewSize(sf::Vector2i const size) { m_viewSize = size; }
 
 private:
+	std::string m_name;
+
 	TileMap m_tilemap;
 	TileMap m_bgTilemap;
 	Player m_player;
-	sf::Texture* m_tileTexture;
+
+	sf::Clock m_timer;
 
 	sf::Vector2i m_worldSize;
 	sf::Vector2i m_viewSize;
