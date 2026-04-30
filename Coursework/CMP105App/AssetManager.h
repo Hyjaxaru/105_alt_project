@@ -36,7 +36,7 @@ public:
 	// --- Singleton Instance --- //
 
 	// I understand how singletons and instances work. I use them a lot in Swift!
-	// However, this appears to be the recommended implementation in C++, that also trys to stop extra instances from appearing.
+	// However, this appears to be the recommended implementation in C++, that trys to stop extra instances from appearing.
 	// Source: https://andreasfertig.com/blog/2026/01/singleton-done-right-in-cpp/
 
 	AssetManager(const AssetManager&) = delete;
