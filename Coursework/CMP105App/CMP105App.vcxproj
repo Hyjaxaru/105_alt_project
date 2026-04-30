@@ -207,6 +207,7 @@ sfml-network.lib;%(AdditionalDependencies)</AdditionalDependencies>
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerGun.cpp" />
+    <ClCompile Include="DataManager.cpp" />
     <ClCompile Include="Scene.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -235,6 +236,7 @@ sfml-network.lib;%(AdditionalDependencies)</AdditionalDependencies>
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerGun.h" />
+    <ClInclude Include="DataManager.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="VectorMath.h" />
   </ItemGroup>
