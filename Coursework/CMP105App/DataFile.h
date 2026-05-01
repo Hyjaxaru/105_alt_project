@@ -18,15 +18,17 @@ public:
 
 	std::optional<std::string> get(const std::string& key);
 
+	std::optional<int> getInt(const std::string& key);
+	std::optional<float> getFloat(const std::string& key);
+
+
 	void insert(const std::string& key, std::string value);
 
 	void replace(const std::string& key, std::string value);
 
 	void eraze(const std::string& key);
 
-	template <typename T>
-	std::optional<T> get(const std::string& key) { return (T)get(key); }
-
+	
 	template <typename T>
 	void insert(const std::string& key, T value) { insert(key, (std::string)value); }
 

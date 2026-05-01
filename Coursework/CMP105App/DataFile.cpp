@@ -16,12 +16,15 @@ DataFile::DataFile(const std::string& path)
 			while (file >> key >> value)
 				m_kv.insert({ key, value });
 
-			LOG_INFO('\'' + m_path + "' finsihed loading successfully!");
+			LOG_DEBUG('\'' + m_path + "' finished loading successfully!");
 		}
 		else
 		{
 			LOG_WARN('\'' + m_path + "' could not be opened. load failed, creating new");
 		}
+	}
+	else {
+		LOG_DEBUG("DataFile at '" + m_path + "' not found, creating new");
 	}
 }
 
@@ -36,7 +39,7 @@ void DataFile::save()
 		for (auto& pair : m_kv)
 			file << pair.first << ' ' << pair.second << '\n';
 
-		LOG_INFO('\'' + m_path + "' finsihed saving successfully!")
+		LOG_DEBUG('\'' + m_path + "' finsihed saving successfully!")
 	}
 	else
 	{
@@ -53,6 +56,20 @@ std::optional<std::string> DataFile::get(const std::string& key)
 		return pair->second;
 	else
 		return {};
+}
+
+std::optional<int> DataFile::getInt(const std::string& key)
+{
+	auto data = get(key);
+	if (!data.has_value()) return {};
+	return stoi(data.value());
+}
+
+std::optional<float> DataFile::getFloat(const std::string& key)
+{
+	auto data = get(key);
+	if (!data.has_value()) return {};
+	return stof(data.value());
 }
 
 void DataFile::insert(const std::string& key, std::string value)
