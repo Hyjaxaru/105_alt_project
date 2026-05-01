@@ -96,7 +96,7 @@
     <ClCompile Include="LevelThatSaves.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DataManager.cpp">
+    <ClCompile Include="DataFile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -182,7 +182,7 @@
     <ClInclude Include="LevelThatSaves.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DataManager.h">
+    <ClInclude Include="DataFile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
