@@ -99,7 +99,8 @@ int main()
 	assets.loadTexture("gfx/bullet.png",  AssetManager::Textures::PROJECTILE);
 
 	// Create level objects that may reference manager objects
-	LevelManager lvlManager(window, input, gameState, audioManager);
+	LevelManager levels(window, input, gameState, audioManager);
+	levels.loadLevels();
 
 	Menu menu(window, input, gameState, audioManager);
 	LevelWithTiles tile_level(window, input, gameState, audioManager);

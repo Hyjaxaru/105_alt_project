@@ -1,0 +1,9 @@
+name Level1
+version 1
+author Hyjaxaru
+worldX 40
+worldY 40
+playerX 5
+playerY 5
+goalX 100
+goalY 5

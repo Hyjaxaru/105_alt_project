@@ -10,40 +10,34 @@
 #include "AssetManager.h"
 #include "Logger.h"
 #include "LevelTemplate.h"
+#include "DataFile.h"
+
+struct LevelContainer {
+	DataFile config;
+	std::vector<int> tilemap;
+};
 
 class LevelManager
 {
 public:
 	LevelManager(sf::RenderWindow& window, Input& input, GameState& gameState, AudioManager& audio);
 
-	void loadLevel(std::string levelPath);
-
-	void loadLevels(std::string dirPath);
-	void loadLevels() { loadLevels(DEFAULT_LEVEL_DIR); }
+	void loadLevels();
+	void loadLevel(std::string fileName);
 
 private:
-	struct Level {
-		std::ifstream& file;
-		std::string path;
-		std::string name;
-		LevelTemplate level;
-	};
-
-	std::map<std::string, Level> m_levelIndex;
-
-	enum class TileMapType { TERRAIN, BACKGROUND };
-
-	inline std::string makeFileLoadFailErrorMessage(std::string filePath, std::string message) {
-		return "Failed to load level '" + filePath + "', " + message;
-	}
+	
 
 	sf::RenderWindow& m_window;
 	Input& m_input;
 	GameState& m_gameState;
 	AudioManager& m_audio;
 
-	const std::string DEFAULT_LEVEL_DIR = "levels/";
-	const std::string LEVEL_FILE_EXT = "txt";
-	const int LOADER_VERSION = 1;
-};
+	std::map<std::string, LevelTemplate> m_levelIndex;
 
+	// Constants
+	const std::string LEVELS_DIR = "levels/";
+	const std::string LEVEL_LIST_FILE = "_levels.txt";
+	const std::string EXTENSION_CONFIG = ".config.txt";
+	const std::string EXTENSION_TERRAIN = ".terrain.txt";
+};

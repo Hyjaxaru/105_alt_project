@@ -1,52 +1,69 @@
 #include "LevelManager.h"
 
+namespace fs = std::filesystem;
+
 LevelManager::LevelManager(sf::RenderWindow& window, Input& input, GameState& gameState, AudioManager& audio) :
 	m_window(window), m_input(input), m_gameState(gameState), m_audio(audio)
 {
 }
 
-void LevelManager::loadLevels(std::string dirPath)
+void LevelManager::loadLevels()
 {
+	// get the list of levels to load from the manifest file
+	std::ifstream levelsFile(LEVELS_DIR + LEVEL_LIST_FILE);
+	if (!levelsFile.good())
+	{
+		// if the index cant be loaded, then there won't be any levels
+		LOG_ERROR("Cannot load level index file.");
+		throw std::runtime_error("Cannot load level index file.");
+	}
 
+	// for each item in this list
+	std::string levelName;
+	while (levelsFile >> levelName)
+		loadLevel(levelName);
+
+	LOG_INFO_NOLINE("Level loading complete!")
 }
 
-void LevelManager::loadLevel(std::string filePath)
+void LevelManager::loadLevel(std::string fileName)
 {
-	LOG_INFO_NOLINE("Loading level '" + filePath + '\'')
+	// create the level container
+	LevelContainer container{ DataFile(LEVELS_DIR + fileName + EXTENSION_CONFIG) };
 
-	// get the level and ensure we can access it
-	std::ifstream file(filePath);
-
-	if (!file.good()) {
-		LOG_ERROR_NOLINE(makeFileLoadFailErrorMessage(filePath, "File not found."));
+	// load the terrain file, adn check if it's good
+	std::ifstream terrainFile(LEVELS_DIR + fileName + EXTENSION_TERRAIN);
+	if (!terrainFile.good())
+	{
+		LOG_ERROR(fileName + " | load failed. Cannot access terrain file");
 		return;
 	}
 
-	// create the level creation struct that contains all the information
-	// required for the creation process
-	auto level = Level{
-		file,	  // the file
-		filePath, // the path to the level file
-		filePath, // the name of the level (using path for now, overriden later)
-		LevelTemplate(m_window, m_input, m_gameState, m_audio)
-	};
+	// get the data from the terrain file
+	int tile;
+	while (terrainFile >> tile) container.tilemap.push_back(tile);
 
-	// decode all of the keywords 
-	std::string keyword;
-	bool validLevel = false, validVersion = false, validTerrain = false;
+	// create the level in the index and grab a reference to it
+	m_levelIndex.insert({ fileName, LevelTemplate(m_window, m_input, m_gameState, m_audio) });
+	auto& level = m_levelIndex.at(fileName);
 
-	while (file >> keyword)
-	{
-		// I tried to make switch statements work here
-		// unfortunately there isn't enough time to fight with it
+	// set the world size
+	level.setWorldSize({
+		container.config.getInt("worldX").value_or(0),
+		container.config.getInt("worldY").value_or(0)
+	});
 
-		// detect the level header
-		// if found, fill in the level name
-		// this should must occur only once. no LEVEL = invalid, more than one = ignored
-		if (keyword == "LEVEL" && !validLevel)
-		{
-			file >> level.name;
-			validLevel = true;
-		}
-	}
+	// set the player spawn location
+	level.setPlayerSpawn({
+		container.config.getFloat("playerX").value_or(0.f),
+		container.config.getFloat("playerY").value_or(0.f)
+	});
+
+	// set the position of the goal
+	level.setGoalLocation({
+		container.config.getFloat("goalX").value_or(0.f),
+		container.config.getFloat("goalY").value_or(0.f)
+	});
+
+	LOG_INFO_NOLINE(fileName + " | loaded successfully!");
 }
