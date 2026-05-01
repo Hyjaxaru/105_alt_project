@@ -58,30 +58,61 @@ public:
 
 	// --- Textures --- //
 
-	// Default index entries
-	enum class Textures {
-		TERRAIN, BACKGROUND, PLAYER, WEAPON, PROJECTILE
+	
+	// instead of an enum class, we use a normal class with an unscoped enum.
+	// this allows us to have methods that appear to be in the enum
+	// source: https://stackoverflow.com/questions/21295935/can-a-c-enum-class-have-methods
+	
+	class Stringable {
+	public:
+		virtual enum Value;
+
+		template <typename T>
+		std::string enumToString(std::map<T, std::string>& map, T key) {
+			auto pair = map.find(key);
+			return (pair != map.end()) ? pair->second : "UNKNOWN";
+		}
 	};
 
-	std::string defaultIndexEnumNameToString(Textures value);
+	// Default index entries
+	class Textures: Stringable {
+	public:
+		enum Value { TERRAIN, BACKGROUND, PLAYER, WEAPON, PROJECTILE };
 
-	// Load a textrue into UIManager's texture index
+		Textures() = default;
+		constexpr Textures(Value name) : m_value(name) {}
+
+		std::string toString() const { return enumToString(m_stringIndex, m_value); };
+		std::string toIndexValue() const { return "DEFAULT_" + toString(); };
+	private:
+		Value m_value;
+
+		std::map<Value, std::string> m_stringIndex = {
+			{ TERRAIN,    "TERRAIN" },
+			{ BACKGROUND, "BACKGROUND" },
+			{ PLAYER,     "PLAYER" },
+			{ WEAPON,     "WEAPON" },
+			{ PROJECTILE, "PROJECTILE" }
+		};
+	};
+
+	// Load a textrue into the texture index
 	// @param tex:     The texture to load into the index
 	// @param texName: The name of the texture we are loading
 	// @returns        A reference to the loaded texture in the font index
 	sf::Texture* loadTexture(sf::Texture tex, const std::string& texName);
 
-	// Load a textrue into UIManager's texture index from a file
+	// Load a textrue into the texture index from a file
 	// @param texPath: The path of the texture file
 	// @param texName: The name of the texture we are loading
 	// @returns        A reference to the loaded texture in the font index
 	sf::Texture* loadTexture(const std::string& texPath, const std::string& texName);
 
-	// Load a textrue into UIManager's texture index from a file
+	// Load a textrue into the texture index from a file
 	// @param texPath:     The path of the texture file
 	// @param defaultName: The default index value
 	// @returns            A reference to the loaded texture in the font index
-	sf::Texture* loadTexture(const std::string& texPath, Textures defaultName);
+	sf::Texture* loadTexture(const std::string& texPath, Textures defaultName) { return loadTexture(texPath, defaultName.toIndexValue()); };
 
 	// Create a new texture from a portion of another
 	// @param source: The source texture
@@ -114,7 +145,7 @@ public:
 	// Font loading options. See `UI::UIManager::LoadOptions`
 	using FontOptions = LoadOptions;
 
-	// Load a font into UIManager's font index. Will become the default font if one is not set
+	// Load a font into the font index. Will become the default font if one is not set
 	// @param fontPath: The path to the font file
 	// @param fontName: The name of the font we are loading
 	// @param options:  Loading options. See `UI::UIManager::FontOptions`
@@ -191,7 +222,23 @@ public:
 
 	// --- TileMaps --- //
 
-	enum class TileMaps { TERRAIN, BACKGROUND };
+	class TileMaps {
+	public:
+		enum Value { TERRAIN, BACKGROUND };
+
+		TileMaps() = default;
+		constexpr TileMaps(Value name) : m_value(name) {}
+
+		std::string toString() const;
+		std::string toIndexValue() const { return "DEFAULT_" + toString(); };
+	private:
+		Value m_value;
+
+		std::map<Value, std::string> m_stringIndex = {
+			{ TERRAIN,    "TERRAIN" },
+			{ BACKGROUND, "BACKGROUND" }
+		};
+	};
 
 	TileMap* loadTileMap(TileMap tm, std::string const tmName);
 
@@ -202,18 +249,6 @@ public:
 	TileMap* getTileMap(TileMaps defaultName);
 
 private:
-	std::map<Textures, std::string> m_textureDefaultIndexMap = {
-		{ Textures::TERRAIN,    "TERRAIN" },
-		{ Textures::BACKGROUND, "BACKGROUND" },
-		{ Textures::PLAYER,     "PLAYER" },
-		{ Textures::WEAPON,     "WEAPON" },
-		{ Textures::PROJECTILE, "PROJECTILE" }
-	};
-	std::map<TileMaps, std::string> m_tilemapDefaultIndexMap = {
-		{ TileMaps::TERRAIN,    "TERRAIN" },
-		{ TileMaps::BACKGROUND, "BACKGROUND" },
-	};
-
 	// check if a value is loaded in an index by it's key
 	template <typename T>
 	inline bool resourceLoaded(std::map<std::string, T>& index, std::string const key)
