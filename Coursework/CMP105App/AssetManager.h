@@ -64,29 +64,7 @@ public:
 	// source: https://stackoverflow.com/questions/21295935/can-a-c-enum-class-have-methods
 	
 	// Default index entries
-	class Textures{
-	public:
-		enum Value { TERRAIN, BACKGROUND, PLAYER, WEAPON, PROJECTILE };
-
-		Textures() = default;
-		constexpr Textures(Value name) : m_value(name) {}
-
-		std::string toString() const {
-			auto pair = m_stringIndex.find(m_value);
-			return (pair != m_stringIndex.end()) ? pair->second : "UNKNOWN";
-		};
-		std::string toIndexValue() const { return "DEFAULT_" + toString(); };
-	private:
-		Value m_value;
-
-		std::map<Value, std::string> m_stringIndex = {
-			{ TERRAIN,    "TERRAIN" },
-			{ BACKGROUND, "BACKGROUND" },
-			{ PLAYER,     "PLAYER" },
-			{ WEAPON,     "WEAPON" },
-			{ PROJECTILE, "PROJECTILE" }
-		};
-	};
+	enum class Textures { TERRAIN, BACKGROUND, PLAYER, WEAPON, PROJECTILE };
 
 	// Load a textrue into the texture index
 	// @param tex:     The texture to load into the index
@@ -104,7 +82,7 @@ public:
 	// @param texPath:     The path of the texture file
 	// @param defaultName: The default index value
 	// @returns            A reference to the loaded texture in the font index
-	sf::Texture* loadTexture(const std::string& texPath, Textures defaultName) { return loadTexture(texPath, defaultName.toIndexValue()); };
+	sf::Texture* loadTexture(const std::string& texPath, Textures defaultName) { return loadTexture(texPath, textureDefaultsToStringValue(defaultName)); };
 
 	// Create a new texture from a portion of another
 	// @param source: The source texture
@@ -125,7 +103,7 @@ public:
 	// Gets a loaded texture by it's name. Error if no font is found
 	// @param defaultName: The name of the texture to get
 	// @returns        A reference to the named texture in the texture index
-	sf::Texture* getTexture(Textures defaultName) { return getTexture(defaultName.toIndexValue()); };
+	sf::Texture* getTexture(Textures defaultName) { return getTexture(textureDefaultsToStringValue(defaultName)); };
 
 	// Removes a texture from the index by it's name
 	// @param texName: The name of the texture to remove
@@ -249,6 +227,18 @@ private:
 	}
 
 	// --- Texture Management --- //
+	std::map<Textures, std::string> m_textureDefaultsStringIndex = {
+		{ Textures::TERRAIN,    "TERRAIN" },
+		{ Textures::BACKGROUND, "BACKGROUND" },
+		{ Textures::PLAYER,     "PLAYER" },
+		{ Textures::WEAPON,     "WEAPON" },
+		{ Textures::PROJECTILE, "PROJECTILE" }
+	};
+
+	std::string textureDefaultsToStringValue(const Textures& name) const {
+		auto pair = m_textureDefaultsStringIndex.find(name);
+		return "DEFAULT_" + (pair != m_textureDefaultsStringIndex.end()) ? pair->second : "UNKNOWN";
+	};
 
 	// The texture index. Stores all the currently loaded textures
 	std::map<std::string, sf::Texture> m_textureIndex;

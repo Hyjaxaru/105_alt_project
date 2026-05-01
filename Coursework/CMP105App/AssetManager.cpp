@@ -2,17 +2,6 @@
 
 // --- Texture Management --- //
 
-std::string AssetManager::Textures::toString() const
-{
-	
-}
-
-std::string AssetManager::TileMaps::toString() const
-{
-	auto pair = m_stringIndex.find(m_value);
-	return (pair != m_stringIndex.end()) ? pair->second : "UNKNOWN";
-}
-
 sf::Texture* AssetManager::loadTexture(sf::Texture tex, const std::string& texName)
 {
 	m_textureIndex.insert({ texName, tex });
