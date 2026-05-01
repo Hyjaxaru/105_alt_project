@@ -55,7 +55,7 @@ public:
 	// Write a log message to the console
 	// @param message: The message to be sent in the log
 	// @param level:   The level of the log message.
-	static void Log(std::string message, uint8_t level, const char* file, int line = -1);
+	static void Log(std::string message, uint8_t level, const char* file = "EXCLUDE", int line = -1);
 
 	// Write a DEBUG log to the terminal
 	// @param message: The message to be sent in the log
