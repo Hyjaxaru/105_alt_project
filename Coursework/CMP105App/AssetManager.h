@@ -60,29 +60,21 @@ public:
 
 	
 	// instead of an enum class, we use a normal class with an unscoped enum.
-	// this allows us to have methods that appear to be in the enum
+	// this allows us to have methods that appear to be inside the enum
 	// source: https://stackoverflow.com/questions/21295935/can-a-c-enum-class-have-methods
 	
-	class Stringable {
-	public:
-		virtual enum Value;
-
-		template <typename T>
-		std::string enumToString(std::map<T, std::string>& map, T key) {
-			auto pair = map.find(key);
-			return (pair != map.end()) ? pair->second : "UNKNOWN";
-		}
-	};
-
 	// Default index entries
-	class Textures: Stringable {
+	class Textures{
 	public:
 		enum Value { TERRAIN, BACKGROUND, PLAYER, WEAPON, PROJECTILE };
 
 		Textures() = default;
 		constexpr Textures(Value name) : m_value(name) {}
 
-		std::string toString() const { return enumToString(m_stringIndex, m_value); };
+		std::string toString() const {
+			auto pair = m_stringIndex.find(m_value);
+			return (pair != m_stringIndex.end()) ? pair->second : "UNKNOWN";
+		};
 		std::string toIndexValue() const { return "DEFAULT_" + toString(); };
 	private:
 		Value m_value;
@@ -133,7 +125,7 @@ public:
 	// Gets a loaded texture by it's name. Error if no font is found
 	// @param defaultName: The name of the texture to get
 	// @returns        A reference to the named texture in the texture index
-	sf::Texture* getTexture(Textures defaultName);
+	sf::Texture* getTexture(Textures defaultName) { return getTexture(defaultName.toIndexValue()); };
 
 	// Removes a texture from the index by it's name
 	// @param texName: The name of the texture to remove

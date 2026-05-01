@@ -40,14 +40,6 @@ sf::Texture* AssetManager::loadTexture(const std::string& texPath, const std::st
 	return texture;
 }
 
-void AssetManager::loadTextures(const std::map<std::string, std::string>& texMap)
-{
-	for (auto& pair : texMap)
-	{
-		loadTexture(pair.first, pair.second);
-	}
-}
-
 sf::Texture AssetManager::createTextureFromArea(sf::Texture& source, sf::IntRect area)
 {
 	sf::Texture newTex;

@@ -17,6 +17,7 @@
 #include "Menu.h"
 #include "LevelThatSaves.h"
 #include "LevelManager.h"
+#include "DataFile.h"
 
 #ifndef SFML_VERSION_MAJOR
 	#error "SFML 3 is required for this framework."
@@ -96,6 +97,9 @@ int main()
 	assets.loadTexture("gfx/dino1.png",   AssetManager::Textures::PLAYER);
 	assets.loadTexture("gfx/gun.png",     AssetManager::Textures::WEAPON);
 	assets.loadTexture("gfx/bullet.png",  AssetManager::Textures::PROJECTILE);
+
+	// load persistent data
+	DataFile levelTimes("data/levelTimes.txt");
 
 	// Create level objects that may reference manager objects
 	LevelManager lvlManager(window, input, gameState, audioManager);
