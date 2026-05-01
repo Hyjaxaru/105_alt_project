@@ -189,35 +189,6 @@ public:
 	// @param styleName: The name of the text style we want to remove
 	void removeTextStyle(const std::string& styleName);
 
-
-	// --- TileMaps --- //
-
-	class TileMaps {
-	public:
-		enum Value { TERRAIN, BACKGROUND };
-
-		TileMaps() = default;
-		constexpr TileMaps(Value name) : m_value(name) {}
-
-		std::string toString() const;
-		std::string toIndexValue() const { return "DEFAULT_" + toString(); };
-	private:
-		Value m_value;
-
-		std::map<Value, std::string> m_stringIndex = {
-			{ TERRAIN,    "TERRAIN" },
-			{ BACKGROUND, "BACKGROUND" }
-		};
-	};
-
-	TileMap* loadTileMap(TileMap tm, std::string const tmName);
-
-	TileMap* loadTileMap(TileMap tm, TileMaps defaultName);
-
-	TileMap* getTileMap(std::string const tmName);
-
-	TileMap* getTileMap(TileMaps defaultName);
-
 private:
 	// check if a value is loaded in an index by it's key
 	template <typename T>

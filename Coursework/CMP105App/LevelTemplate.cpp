@@ -82,5 +82,5 @@ void LevelTemplate::updateCameraAndBackground()
 	view.setCenter(player_pos);
 	m_window.setView(view);
 
-	m_bgtilemap.setPosition({ player_pos.x - halfViewWidth, 0 });
+	m_bgTilemap.setPosition({ player_pos.x - halfViewWidth, 0 });
 }

@@ -48,51 +48,5 @@ void LevelManager::loadLevel(std::string filePath)
 			file >> level.name;
 			validLevel = true;
 		}
-
-		// load the terrain tilemap
-		else if (keyword == "TILEMAP")
-		{
-			std::string type;
-			file >> type;
-			if (type == "terrain" && !validTerrain)
-				validTerrain = loadTilemap(file, LevelManager::TileMapType::TERRAIN)
-		}
-	}
-}
-
-bool LevelManager::loadTilemap(Level& level, TileMapType type)
-{
-	std::string path;
-	int x, y;
-	level.file >> path >> x >> y;
-	bool useDefault = path == "default";
-
-	// check if the tilemap texture  is loaded into AssetManager. if not we fail
-	auto& assets = AssetManager::Instance();
-	sf::Texture* tex = nullptr;
-	if (useDefault)
-		tex = assets.getTexture(type == TileMapType::BACKGROUND
-			? AssetManager::Textures::BACKGROUND
-			: AssetManager::Textures::TERRAIN);
-	else
-		tex = assets.getTexture(path);
-
-	// if we are using default and we cant find it, fail load immediately
-	if (tex != nullptr && useDefault)
-	{
-		LOG_ERROR(makeFileLoadFailErrorMessage(level.path, "Attempted to use default tileset before load."));
-		return false;
-	}
-
-	// if we arnt using default, and the tileset isnt loaded, try load it.
-	// if we cant, fail the level load as the tiles don't exist at all
-	else if (tex != nullptr && !useDefault)
-	{
-		auto* result = assets.loadTexture(path, "terrain_" + level.name);
-		if (result == nullptr)
-		{
-			LOG_ERROR(makeFileLoadFailErrorMessage(level.path, "Tileset '" + path + "' does not exist"));
-			return false;
-		}
 	}
 }

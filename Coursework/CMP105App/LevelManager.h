@@ -33,10 +33,6 @@ private:
 
 	enum class TileMapType { TERRAIN, BACKGROUND };
 
-	bool loadVersion(Level& level);
-	bool loadTileset(Level& level, TileMapType type);
-	bool loadTilemap(Level& level, TileMapType type);
-
 	inline std::string makeFileLoadFailErrorMessage(std::string filePath, std::string message) {
 		return "Failed to load level '" + filePath + "', " + message;
 	}
