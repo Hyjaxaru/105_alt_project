@@ -5,25 +5,6 @@
 
 // --- public --- //
 
-void Logger::Log(std::string message, uint8_t level)
-{
-	if (level > LoggerConfig::CURRENT_LEVEL)
-		return;
-
-	// create the output stream
-	std::stringstream ostream;
-
-	// prepare the log stream
-	setTerminalColour(ostream, level);
-	addCurrentTime(ostream);
-	addLogLevel(ostream, level);
-	ostream << message << std::endl;
-	resetTerminalColour(ostream);
-
-	// output
-	std::cout << ostream.str();
-}
-
 void Logger::Log(std::string message, uint8_t level, const char* file, int line)
 {
 	if (level > LoggerConfig::CURRENT_LEVEL)
@@ -52,7 +33,6 @@ void Logger::addCurrentTime(std::stringstream& stream)
 	time_t timestamp = time(NULL);
 	std::string time = ctime(&timestamp);
 	time.pop_back(); // ctime adds a newline to the end of the string, so we remove it
-	//stream << '[' << time << "] ";
 	stream << time << " | ";
 }
 
@@ -66,7 +46,6 @@ void Logger::addLogLevel(std::stringstream& stream, uint8_t level)
 	case LogLevel::WARN:  levelString = "WARN "; break;
 	case LogLevel::ERROR: levelString = "ERROR"; break;
 	}
-	//stream << '[' << levelString << "] ";
 	stream << levelString << " | ";
 }
 
@@ -77,8 +56,6 @@ void Logger::addString(std::stringstream& stream, std::string string)
 
 void Logger::addFileAndLine(std::stringstream& stream, const char* file, int line)
 {
-	//stream << '[' << file << ':' << line << "] ";
-
 	if (line > 0)
 		stream << file << ':' << line << " | ";
 	else
