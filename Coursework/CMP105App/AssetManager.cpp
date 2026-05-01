@@ -198,3 +198,11 @@ void AssetManager::clearTextStyleIndex()
 {
 	m_textStyleIndex.clear();
 }
+
+// --- Misc --- //
+
+std::string AssetManager::textureDefaultsToStringValue(const Textures& name) const {
+	auto pair = m_textureDefaultsStringIndex.find(name);
+	auto string = (pair != m_textureDefaultsStringIndex.end()) ? pair->second : "UNKNOWN";
+	return "DEFAULT_" + string;
+};

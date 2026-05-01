@@ -206,10 +206,7 @@ private:
 		{ Textures::PROJECTILE, "PROJECTILE" }
 	};
 
-	std::string textureDefaultsToStringValue(const Textures& name) const {
-		auto pair = m_textureDefaultsStringIndex.find(name);
-		return "DEFAULT_" + (pair != m_textureDefaultsStringIndex.end()) ? pair->second : "UNKNOWN";
-	};
+	std::string textureDefaultsToStringValue(const Textures& name) const;
 
 	// The texture index. Stores all the currently loaded textures
 	std::map<std::string, sf::Texture> m_textureIndex;
