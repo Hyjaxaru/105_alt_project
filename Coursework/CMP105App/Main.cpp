@@ -98,9 +98,6 @@ int main()
 	assets.loadTexture("gfx/gun.png",     AssetManager::Textures::WEAPON);
 	assets.loadTexture("gfx/bullet.png",  AssetManager::Textures::PROJECTILE);
 
-	// load persistent data
-	DataFile levelTimes("data/levelTimes.txt");
-
 	// Create level objects that may reference manager objects
 	LevelManager lvlManager(window, input, gameState, audioManager);
 
