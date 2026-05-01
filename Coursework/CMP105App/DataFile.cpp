@@ -46,27 +46,34 @@ void DataFile::save()
 	file.close();
 }
 
-void DataFile::insert(const std::string& key, std::string value)
-{
-	m_kv.insert({ key, value });
-}
-
 std::optional<std::string> DataFile::get(const std::string& key)
 {
 	auto pair = m_kv.find(key);
 	if (pair != m_kv.end())
 		return pair->second;
 	else
-		return {}
+		return {};
+}
+
+void DataFile::insert(const std::string& key, std::string value)
+{
+	m_kv.insert({ key, value });
+
+	if (m_autosave) save();
+}
+
+void DataFile::replace(const std::string& key, std::string value)
+{
+	eraze(key);
+	insert(key, value);
+
+	if (m_autosave) save();
 }
 
 void DataFile::eraze(const std::string& key)
 {
 	if (m_kv.find(key) != m_kv.end())
 		m_kv.erase(key);
-}
 
-bool DataFile::fileExists() const
-{
-	return std::filesystem::exists(m_path);
+	if (m_autosave) save();
 }
