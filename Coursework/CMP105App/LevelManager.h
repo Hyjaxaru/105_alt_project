@@ -12,11 +12,6 @@
 #include "LevelTemplate.h"
 #include "DataFile.h"
 
-struct LevelContainer {
-	DataFile config;
-	std::vector<int> tilemap;
-};
-
 class LevelManager
 {
 public:

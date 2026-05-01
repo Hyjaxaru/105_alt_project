@@ -28,8 +28,8 @@ void LevelManager::loadLevels()
 
 void LevelManager::loadLevel(std::string fileName)
 {
-	// create the level container
-	LevelContainer container{ DataFile(LEVELS_DIR + fileName + EXTENSION_CONFIG) };
+	DataFile config(LEVELS_DIR + fileName + EXTENSION_CONFIG);
+	std::vector<int> tilemap;
 
 	// load the terrain file, adn check if it's good
 	std::ifstream terrainFile(LEVELS_DIR + fileName + EXTENSION_TERRAIN);
@@ -41,7 +41,7 @@ void LevelManager::loadLevel(std::string fileName)
 
 	// get the data from the terrain file
 	int tile;
-	while (terrainFile >> tile) container.tilemap.push_back(tile);
+	while (terrainFile >> tile) tilemap.push_back(tile);
 
 	// create the level in the index and grab a reference to it
 	m_levelIndex.insert({ fileName, LevelTemplate(m_window, m_input, m_gameState, m_audio) });
@@ -49,20 +49,20 @@ void LevelManager::loadLevel(std::string fileName)
 
 	// set the world size
 	level.setWorldSize({
-		container.config.getInt("worldX").value_or(0),
-		container.config.getInt("worldY").value_or(0)
+		config.getInt("worldX").value_or(0),
+		config.getInt("worldY").value_or(0)
 	});
 
 	// set the player spawn location
 	level.setPlayerSpawn({
-		container.config.getFloat("playerX").value_or(0.f),
-		container.config.getFloat("playerY").value_or(0.f)
+		config.getFloat("playerX").value_or(0.f),
+		config.getFloat("playerY").value_or(0.f)
 	});
 
 	// set the position of the goal
 	level.setGoalLocation({
-		container.config.getFloat("goalX").value_or(0.f),
-		container.config.getFloat("goalY").value_or(0.f)
+		config.getFloat("goalX").value_or(0.f),
+		config.getFloat("goalY").value_or(0.f)
 	});
 
 	LOG_INFO_NOLINE(fileName + " | loaded successfully!");
