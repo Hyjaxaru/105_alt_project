@@ -14,13 +14,16 @@ DataFile::DataFile(const std::string& path)
 		{
 			std::string key, value;
 			while (file >> key >> value)
+			{
 				m_kv.insert({ key, value });
+				LOG_DEBUG(key + ": " + value);
+			}
 
-			LOG_DEBUG('\'' + m_path + "' finished loading successfully!");
+			LOG_DEBUG(m_path + " finished loading successfully!");
 		}
 		else
 		{
-			LOG_WARN('\'' + m_path + "' could not be opened. load failed, creating new");
+			LOG_WARN(m_path + " could not be opened. load failed, creating new");
 		}
 	}
 	else {

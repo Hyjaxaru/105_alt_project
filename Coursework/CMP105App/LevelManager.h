@@ -7,15 +7,23 @@
 #include "Framework/TileMap.h"
 #include "Framework/GameObject.h"
 
+#include "Scene.h"
 #include "AssetManager.h"
 #include "Logger.h"
 #include "LevelTemplate.h"
 #include "DataFile.h"
 
 class LevelManager
+	: public Scene
 {
 public:
 	LevelManager(sf::RenderWindow& window, Input& input, GameState& gameState, AudioManager& audio);
+
+	void onBegin() override             { m_current->onBegin(); }
+	void onEnd() override               { m_current->onEnd(); }
+	void handleInput(float dt) override { m_current->handleInput(dt); }
+	void update(float dt) override      { m_current->update(dt); }
+	void render() override              { m_current->render(); }
 
 	void loadLevels();
 	std::vector<std::string> loadLevelManifest();
@@ -23,16 +31,15 @@ public:
 
 	LevelTemplate* getLevel(std::string name);
 
-private:
-	sf::RenderWindow& m_window;
-	Input& m_input;
-	GameState& m_gameState;
-	AudioManager& m_audio;
+	std::string getActiveLevel() { return m_current->getLevelMetadata().first; }
+	void setActiveLevel(std::string name);
 
+private:
 	std::vector<GameObject> m_tsTerrain;
 	std::vector<GameObject> m_tsBackground;
 
 	std::map<std::string, LevelTemplate> m_levelIndex;
+	LevelTemplate* m_current;
 	
 	void createTerrainTileSet();
 	void createBackgroundTileSet();

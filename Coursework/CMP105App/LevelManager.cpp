@@ -3,7 +3,7 @@
 namespace fs = std::filesystem;
 
 LevelManager::LevelManager(sf::RenderWindow& window, Input& input, GameState& gameState, AudioManager& audio) :
-	m_window(window), m_input(input), m_gameState(gameState), m_audio(audio)
+	Scene(window, input, gameState, audio)
 {
 	createTerrainTileSet();
 	createBackgroundTileSet();
@@ -17,7 +17,13 @@ void LevelManager::loadLevels()
 	{
 		auto level = loadLevel(levelName);
 		if (level.has_value())
+		{
 			m_levelIndex.insert({ levelName, level.value() });
+
+			// if no current level is loaded, load this
+			if (m_current == nullptr)
+				m_current = &m_levelIndex.at(levelName);
+		}
 	}
 
 	LOG_INFO_NOLINE("Level loading complete!");
@@ -59,16 +65,32 @@ std::optional<LevelTemplate> LevelManager::loadLevel(std::string fileName)
 	int tile;
 	while (terrainFile >> tile) tilemap.push_back(tile);
 
+	sf::Vector2u terrainSize = {
+		static_cast<unsigned int>(config.getInt("terrainX").value_or(0)),
+		static_cast<unsigned int>(config.getInt("terrainY").value_or(0))
+	};
+	
+	sf::Vector2u backgroundSize = {
+		static_cast<unsigned int>(config.getInt("backgroundX").value_or(0)),
+		static_cast<unsigned int>(config.getInt("backgroundY").value_or(0))
+	};
+
 	// begin creating the world
-	auto level = LevelTemplate(m_window, m_input, m_gameState, m_audio);
+	auto level = LevelTemplate(m_window, m_input, m_gameState, m_audio, tilemap, terrainSize, backgroundSize);
 
 	// set level metadata
-	level.setLevelMetadata(fileName, config.get("author").value_or("Author Unknown"));
+	level.setLevelMetadata({fileName, config.get("author").value_or("Author Unknown")});
 
 	// set the world size
 	level.setWorldSize({
 		config.getInt("worldX").value_or(0),
 		config.getInt("worldY").value_or(0)
+	});
+
+	// set the view size
+	level.setViewSize({
+		config.getInt("viewX").value_or(0),
+		config.getInt("viewY").value_or(0)
 	});
 
 	// set the player spawn location
@@ -83,20 +105,6 @@ std::optional<LevelTemplate> LevelManager::loadLevel(std::string fileName)
 		config.getFloat("goalY").value_or(0.f)
 	});
 
-	// create and set the terrain tilemap
-	sf::Vector2u terrainSize = {
-		config.getInt("terrainX").value_or(0),
-		config.getInt("terrainY").value_or(0),
-	};
-	level.setTerrainTileMap(createTerrainTileMap(tilemap, terrainSize));
-
-	// create and set the background tilemap
-	sf::Vector2u backgroundSize = {
-		config.getInt("terrainX").value_or(0),
-		config.getInt("terrainY").value_or(0),
-	};
-	level.setBackgroundTileMap(createBackgroundTileMap(backgroundSize));
-
 	LOG_INFO_NOLINE(fileName + " | loaded successfully!");
 	return level;
 }
@@ -105,6 +113,13 @@ LevelTemplate* LevelManager::getLevel(std::string name)
 {
 	if (m_levelIndex.find(name) == m_levelIndex.end()) return nullptr;
 	return &m_levelIndex.at(name);
+}
+
+void LevelManager::setActiveLevel(std::string name)
+{
+	m_current->onEnd();
+	m_current = getLevel(name);
+	m_current->onBegin();
 }
 
 void LevelManager::createTerrainTileSet()
@@ -177,13 +192,14 @@ void LevelManager::createBackgroundTileSet()
 
 TileMap LevelManager::createTerrainTileMap(std::vector<int> tilemap, const sf::Vector2u& dimensions)
 {
-	// get last item for background
+	// get last item for background, and replace the file placeholder (-1) with it
 	int b = m_tsTerrain.size() - 1;
+	std::replace(tilemap.begin(), tilemap.end(), -1, b);
 
 	TileMap tileMap;
-	tileMap.setTexture(*m_assets.getTexture(AssetManager::Textures::TERRAIN));
+	tileMap.setTexture(m_assets.getTexture(AssetManager::Textures::TERRAIN));
 	tileMap.setTileMap(tilemap, dimensions);
-	tileMap.setPosition({ 0, 100 });
+	tileMap.setPosition({ 100, 0 });
 	tileMap.buildLevel();
 
 	return tileMap;
@@ -202,7 +218,7 @@ TileMap LevelManager::createBackgroundTileMap(const sf::Vector2u& dimensions)
 	};
 
 	TileMap tileMap;
-	tileMap.setTexture(*m_assets.getTexture(AssetManager::Textures::BACKGROUND));
+	tileMap.setTexture(m_assets.getTexture(AssetManager::Textures::BACKGROUND));
 	tileMap.setTileMap(tilemap, dimensions);
 	tileMap.setPosition({ 0, 0 });
 	tileMap.buildLevel();

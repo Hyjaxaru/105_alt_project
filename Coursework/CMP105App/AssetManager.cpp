@@ -7,7 +7,7 @@ sf::Texture* AssetManager::loadTexture(sf::Texture tex, const std::string& texNa
 	m_textureIndex.insert({ texName, tex });
 	auto texture = getTexture(texName);
 
-	LOG_INFO_NOLINE("Loaded new texture as '" + texName + '\'');
+	LOG_DEBUG_NOLINE("Loaded new texture as '" + texName + '\'');
 
 	return texture;
 }
@@ -24,7 +24,7 @@ sf::Texture* AssetManager::loadTexture(const std::string& texPath, const std::st
 	m_textureIndex.insert({ texName, newTex });
 	auto texture = getTexture(texName);
 
-	LOG_INFO_NOLINE("Loaded texture from '" + texPath + "' as '" + texName + '\'');
+	LOG_DEBUG_NOLINE("Loaded texture from '" + texPath + "' as '" + texName + '\'');
 
 	return texture;
 }
@@ -91,16 +91,16 @@ sf::Font* AssetManager::loadFont(const std::string& fontPath, const std::string&
 	case LoadOptions::DEFAULT:
 		// Load font as default
 		m_defaultFont = font;
-		LOG_INFO_NOLINE("Loaded default font '" + fontPath + "' as '" + fontName + '\'');
+		LOG_DEBUG_NOLINE("Loaded default font '" + fontPath + "' as '" + fontName + '\'');
 		break;
 	case LoadOptions::DEFAULT | LoadOptions::DYSLEXIA:
 		// Load font as dyslexia default
 		m_defaultDyslexiaFont = font;
-		LOG_INFO_NOLINE("Loaded default dyslexia font '" + fontPath + "' as '" + fontName + '\'');
+		LOG_DEBUG_NOLINE("Loaded default dyslexia font '" + fontPath + "' as '" + fontName + '\'');
 		break;
 	default:
 		// font loaded normally
-		LOG_INFO_NOLINE("Loaded font '" + fontPath + "' as '" + fontName + '\'');
+		LOG_DEBUG_NOLINE("Loaded font '" + fontPath + "' as '" + fontName + '\'');
 		break;
 	}
 
@@ -148,7 +148,7 @@ TextStyle* AssetManager::loadTextStyle(TextStyle style, const std::string& style
 	case DEFAULT:
 		// load text style as default
 		m_defaultTextStyle = styleRef;
-		LOG_INFO_NOLINE("Loaded default text style " + styleName + '\'');
+		LOG_DEBUG_NOLINE("Loaded default text style " + styleName + '\'');
 	}
 
 	return styleRef;

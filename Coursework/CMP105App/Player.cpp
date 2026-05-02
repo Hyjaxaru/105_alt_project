@@ -2,9 +2,7 @@
 
 Player::Player()
 {
-	auto& assets = AssetManager::Instance();
-
-	setTexture(assets.getTexture(AssetManager::Textures::PLAYER));
+	setTexture(AssetManager::Instance().getTexture(AssetManager::Textures::PLAYER));
 	// Dino is 24x24, tiles are 18x18
 	// LCM(18,24) = 72.
 	setSize({ 72,72 });
@@ -65,18 +63,18 @@ void Player::handleInput(float dt)
 			m_velocity.x = -SPEED * SPRINT_SPEED_MULT;
 		m_sprintTimer = SPRINT_COOLDOWN;
 	}
-	if (m_input->isPressed(sf::Keyboard::Scancode::F))
-	{
-		if (inLeverRange() && !m_leverPulled)
-		{
-			m_leverPulled = true;
-			m_audio->playSoundbyName("wind");
-		}
-		if (m_leverPulled && inEndRange())
-		{
-			m_gameEndTriggered = true;
-		}
-	}
+	//if (m_input->isPressed(sf::Keyboard::Scancode::F))
+	//{
+	//	if (inLeverRange() && !m_leverPulled)
+	//	{
+	//		m_leverPulled = true;
+	//		//m_audio->playSoundbyName("wind");
+	//	}
+	//	if (m_leverPulled && inEndRange())
+	//	{
+	//		m_gameEndTriggered = true;
+	//	}
+	//}
 
 	// for debugging: "Where am I?"
 	if (m_input->isPressed(sf::Keyboard::Scancode::T))
