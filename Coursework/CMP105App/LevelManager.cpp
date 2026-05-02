@@ -65,8 +65,18 @@ std::optional<LevelTemplate> LevelManager::loadLevel(std::string fileName)
 	int tile;
 	while (terrainFile >> tile) tilemap.push_back(tile);
 
+	sf::Vector2u terrainSize = {
+		static_cast<unsigned int>(config.getInt("terrainX").value_or(0)),
+		static_cast<unsigned int>(config.getInt("terrainY").value_or(0))
+	};
+	
+	sf::Vector2u backgroundSize = {
+		static_cast<unsigned int>(config.getInt("backgroundX").value_or(0)),
+		static_cast<unsigned int>(config.getInt("backgroundY").value_or(0))
+	};
+
 	// begin creating the world
-	auto level = LevelTemplate(m_window, m_input, m_gameState, m_audio);
+	auto level = LevelTemplate(m_window, m_input, m_gameState, m_audio, tilemap, terrainSize, backgroundSize);
 
 	// set level metadata
 	level.setLevelMetadata({fileName, config.get("author").value_or("Author Unknown")});
@@ -94,20 +104,6 @@ std::optional<LevelTemplate> LevelManager::loadLevel(std::string fileName)
 		config.getFloat("goalX").value_or(0.f),
 		config.getFloat("goalY").value_or(0.f)
 	});
-
-	// create and set the terrain tilemap
-	sf::Vector2u terrainSize = {
-		static_cast<unsigned int>(config.getInt("terrainX").value_or(0)),
-		static_cast<unsigned int>(config.getInt("terrainY").value_or(0)),
-	};
-	level.setTerrainTileMap(createTerrainTileMap(tilemap, terrainSize));
-
-	// create and set the background tilemap
-	sf::Vector2u backgroundSize = {
-		static_cast<unsigned int>(config.getInt("backgroundX").value_or(0)),
-		static_cast<unsigned int>(config.getInt("backgroundY").value_or(0)),
-	};
-	level.setBackgroundTileMap(createBackgroundTileMap(backgroundSize));
 
 	LOG_INFO_NOLINE(fileName + " | loaded successfully!");
 	return level;
@@ -201,9 +197,10 @@ TileMap LevelManager::createTerrainTileMap(std::vector<int> tilemap, const sf::V
 	std::replace(tilemap.begin(), tilemap.end(), -1, b);
 
 	TileMap tileMap;
-	tileMap.setTexture(*m_assets.getTexture(AssetManager::Textures::TERRAIN));
+	tileMap.setTexture(m_assets.getTexture(AssetManager::Textures::TERRAIN));
 	tileMap.setTileMap(tilemap, dimensions);
-	tileMap.setPosition({ 0, 0 });
+	tileMap.setPosition({ 100, 0 });
+	tileMap.buildLevel();
 
 	return tileMap;
 }
@@ -221,9 +218,10 @@ TileMap LevelManager::createBackgroundTileMap(const sf::Vector2u& dimensions)
 	};
 
 	TileMap tileMap;
-	tileMap.setTexture(*m_assets.getTexture(AssetManager::Textures::BACKGROUND));
+	tileMap.setTexture(m_assets.getTexture(AssetManager::Textures::BACKGROUND));
 	tileMap.setTileMap(tilemap, dimensions);
 	tileMap.setPosition({ 0, 0 });
+	tileMap.buildLevel();
 
 	return tileMap;
 }

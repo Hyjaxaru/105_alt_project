@@ -138,6 +138,7 @@ int main()
 			std::string levelName = gameState.getCurrentLevel();
 			if (levels.getActiveLevel() != levelName)
 			{
+				LOG_INFO("Switching Level");
 				levels.setActiveLevel(levelName);
 			}
 		}
@@ -145,6 +146,7 @@ int main()
 		// manage overall scene change
 		if (sceneRegistry[requestedState] != currentScene)
 		{
+			LOG_INFO("Switching Scene");
 			currentScene->onEnd();
 			currentScene = sceneRegistry[requestedState];
 			currentScene->onBegin();

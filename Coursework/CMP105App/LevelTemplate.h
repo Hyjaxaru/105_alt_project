@@ -14,7 +14,14 @@ class LevelTemplate :
 	public Scene
 {
 public:
-	LevelTemplate(sf::RenderWindow& window, Input& input, GameState& gameState, AudioManager& audio);
+	LevelTemplate(
+		sf::RenderWindow& window,
+		Input& input, GameState& gameState,
+		AudioManager& audio,
+		std::vector<int> terrainSet,
+		sf::Vector2u terrainSize,
+		sf::Vector2u backgroundSize
+	);
 
 	void handleInput(float dt) override;
 	void update(float dt) override;
@@ -24,8 +31,6 @@ public:
 
 	void updateCameraAndBackground();
 
-	void setTerrainTileMap(TileMap tilemap) { m_tilemap = tilemap; }
-	void setBackgroundTileMap(TileMap tilemap) { m_bgTilemap = tilemap; }
 	void setWorldSize(sf::Vector2i const size) { m_worldSize = size; }
 	void setViewSize(sf::Vector2i const size) { m_viewSize = size; }
 	void setPlayerSpawn(sf::Vector2f const pos) { m_playerSpawn = pos; }
