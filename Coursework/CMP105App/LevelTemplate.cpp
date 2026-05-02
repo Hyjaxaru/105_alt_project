@@ -3,6 +3,13 @@
 LevelTemplate::LevelTemplate(sf::RenderWindow& window, Input& input, GameState& gameState, AudioManager& audio) :
 	Scene(window, input, gameState, audio)
 {
+	m_tilemap.buildLevel();
+	m_bgTilemap.buildLevel();
+
+	// set up player
+	m_player.setInput(&m_input);
+	m_player.setEdges(0, m_worldSize.x);
+	m_player.setWindow(&m_window);
 }
 
 void LevelTemplate::onBegin()
@@ -28,6 +35,8 @@ void LevelTemplate::onEnd()
 
 void LevelTemplate::handleInput(float dt)
 {
+	LOG_DEBUG(debugLevelIdentifier() + " | Handle Input");
+
 	m_player.handleInput(dt);
 
 	if (m_input.isPressed(sf::Keyboard::Scancode::Escape))
@@ -36,6 +45,8 @@ void LevelTemplate::handleInput(float dt)
 
 void LevelTemplate::update(float dt)
 {
+	LOG_DEBUG(debugLevelIdentifier() + " | Update");
+
 	std::vector<GameObject>& level = *m_tilemap.getLevel();
 	for (auto& t : level)
 	{
@@ -58,6 +69,8 @@ void LevelTemplate::update(float dt)
 
 void LevelTemplate::render()
 {
+	LOG_DEBUG(debugLevelIdentifier() + " | Render");
+
 	beginDraw();
 
 	m_bgTilemap.render(m_window);

@@ -93,10 +93,11 @@ int main()
 
 	// prepare assets that need to be persistent
 	auto& assets = AssetManager::Instance();
-	assets.loadTexture("gfx/tilemap.png", AssetManager::Textures::TERRAIN);
-	assets.loadTexture("gfx/dino1.png",   AssetManager::Textures::PLAYER);
-	assets.loadTexture("gfx/gun.png",     AssetManager::Textures::WEAPON);
-	assets.loadTexture("gfx/bullet.png",  AssetManager::Textures::PROJECTILE);
+	assets.loadTexture("gfx/tilemap.png",             AssetManager::Textures::TERRAIN);
+	assets.loadTexture("gfx/tilemap-backgrounds.png", AssetManager::Textures::BACKGROUND);
+	assets.loadTexture("gfx/dino1.png",               AssetManager::Textures::PLAYER);
+	assets.loadTexture("gfx/gun.png",                 AssetManager::Textures::WEAPON);
+	assets.loadTexture("gfx/bullet.png",              AssetManager::Textures::PROJECTILE);
 
 	// Create level objects that may reference manager objects
 	LevelManager levels(window, input, gameState, audioManager);
@@ -116,8 +117,7 @@ int main()
 	std::map<State, Scene*> sceneRegistry =
 	{
 		{State::MENU, &menu},
-		{State::LEVELONE, &tile_level},
-		{State::LEVELTWO, &tile_level_two}
+		{State::LEVEL, &levels},
 	};
 	
 	// Game Loop
@@ -131,6 +131,7 @@ int main()
 		deltaTime = clock.restart().asSeconds();
 		if (deltaTime > 0.1f) deltaTime = 0.1f; // Clamp delta time to avoid large jumps
 
+		// manage overall scene change
 		State requestedState = gameState.getCurrentState();
 		if (sceneRegistry[requestedState] != currentScene)
 		{
@@ -138,6 +139,17 @@ int main()
 			currentScene = sceneRegistry[requestedState];
 			currentScene->onBegin();
 		}
+
+		// handle level manager level change
+		if (requestedState == State::LEVEL)
+		{
+			std::string levelName = gameState.getCurrentLevel();
+			if (levels.getActiveLevel() != levelName)
+			{
+				levels.setActiveLevel(levelName);
+			}
+		}
+
 		// run the core loop for the current scene
 		currentScene->handleInput(deltaTime);
 		currentScene->update(deltaTime);

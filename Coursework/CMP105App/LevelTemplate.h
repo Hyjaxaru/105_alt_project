@@ -30,11 +30,13 @@ public:
 	void setViewSize(sf::Vector2i const size) { m_viewSize = size; }
 	void setPlayerSpawn(sf::Vector2f const pos) { m_playerSpawn = pos; }
 	void setGoalLocation(sf::Vector2f const pos) { m_goalPosition = pos; }
-	void setLevelMetadata(std::string name, std::string author) { m_metaName = name; m_metaAuthor = author; }
+
+	std::pair<std::string, std::string> getLevelMetadata() { return m_metadata; }
+	void setLevelMetadata(std::pair<std::string, std::string> metadata) { m_metadata = metadata; }
+
 
 private:
-	std::string m_metaName;
-	std::string m_metaAuthor;
+	std::pair<std::string, std::string> m_metadata;
 
 	TileMap m_tilemap;
 	TileMap m_bgTilemap;
@@ -51,7 +53,7 @@ private:
 
 	inline std::string debugLevelIdentifier() const
 	{
-		return m_metaName + ':' + m_metaAuthor;
+		return m_metadata.first + ':' + m_metadata.second;
 	}
 };
 
