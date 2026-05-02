@@ -77,6 +77,12 @@ std::optional<LevelTemplate> LevelManager::loadLevel(std::string fileName)
 		config.getInt("worldY").value_or(0)
 	});
 
+	// set the view size
+	level.setViewSize({
+		config.getInt("viewX").value_or(0),
+		config.getInt("viewY").value_or(0)
+	});
+
 	// set the player spawn location
 	level.setPlayerSpawn({
 		config.getFloat("playerX").value_or(0.f),

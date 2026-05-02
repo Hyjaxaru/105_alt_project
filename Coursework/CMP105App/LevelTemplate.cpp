@@ -10,6 +10,7 @@ LevelTemplate::LevelTemplate(sf::RenderWindow& window, Input& input, GameState& 
 	m_player.setInput(&m_input);
 	m_player.setEdges(0, m_worldSize.x);
 	m_player.setWindow(&m_window);
+	m_player.setPosition(m_playerSpawn);
 }
 
 void LevelTemplate::onBegin()
@@ -19,8 +20,9 @@ void LevelTemplate::onBegin()
 
 void LevelTemplate::onEnd()
 {
-	// reset the player
+	// reset player
 	m_player.reset();
+	m_player.setPosition(m_playerSpawn);
 
 	// reset audio
 	m_audio.stopAllMusic();

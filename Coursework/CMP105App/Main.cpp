@@ -131,16 +131,8 @@ int main()
 		deltaTime = clock.restart().asSeconds();
 		if (deltaTime > 0.1f) deltaTime = 0.1f; // Clamp delta time to avoid large jumps
 
-		// manage overall scene change
-		State requestedState = gameState.getCurrentState();
-		if (sceneRegistry[requestedState] != currentScene)
-		{
-			currentScene->onEnd();
-			currentScene = sceneRegistry[requestedState];
-			currentScene->onBegin();
-		}
-
 		// handle level manager level change
+		State requestedState = gameState.getCurrentState();
 		if (requestedState == State::LEVEL)
 		{
 			std::string levelName = gameState.getCurrentLevel();
@@ -149,6 +141,16 @@ int main()
 				levels.setActiveLevel(levelName);
 			}
 		}
+
+		// manage overall scene change
+		if (sceneRegistry[requestedState] != currentScene)
+		{
+			currentScene->onEnd();
+			currentScene = sceneRegistry[requestedState];
+			currentScene->onBegin();
+		}
+
+		
 
 		// run the core loop for the current scene
 		currentScene->handleInput(deltaTime);
