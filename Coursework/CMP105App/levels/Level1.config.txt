@@ -1,9 +1,10 @@
+TYPE LEVELCONFIG
 name Level1
 version 1
 author Hyjaxaru
-worldX 40
-worldY 40
-playerX 5
-playerY 5
-goalX 100
-goalY 5
+worldX 40.0
+worldY 40.0
+playerX 5.0
+playerY 5.0
+goalX 100.0
+goalY 5.0
