@@ -14,21 +14,21 @@ class PlayerGun :
     public GameObject
 {
 public:
-    PlayerGun(sf::Vector2f* m_origin, sf::Vector2f* m_target);
+    PlayerGun();
     ~PlayerGun();
 
     void update(float dt) override;
     void render(sf::RenderWindow* window);
-    
+
     sf::Vector2f fireGunWithRecoil();
     
-    void pointAtTarget();
-    void setRotationCenter(sf::Vector2f* newValue) { m_origin = newValue; }
-    void setTarget(sf::Vector2f* newValue) { m_target = newValue; }
+    void pointAtTarget(sf::Vector2f origin, sf::Vector2f target);
+    void setRotationCenter(sf::Vector2f& newValue) { m_origin = newValue; }
+    void setTarget(sf::Vector2f& newValue) { m_target = newValue; }
 
 private:
-    sf::Vector2f* m_origin;
-    sf::Vector2f* m_target;
+    sf::Vector2f m_origin;
+    sf::Vector2f m_target;
 
     std::vector<Bullet*> m_bullets;
 

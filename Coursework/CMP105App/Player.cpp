@@ -41,15 +41,16 @@ void Player::handleInput(float dt)
 	//	m_isGrounded = false;	// can't be jumping if we're in the air
 	//	m_audio->playSoundbyName("jump");
 	//}
-	//else if (m_input->isPressed(sf::Keyboard::Scancode::Space) && !m_isGrounded && m_canDoubleJump && !m_hasDoubleJumped)
-	//{
-	//	m_velocity.y = - JUMP_FORCE;
-	//	m_hasDoubleJumped = true;
-	//	m_audio->playSoundbyName("jump");
-	//}
+	/*else if (m_input->isPressed(sf::Keyboard::Scancode::Space) && !m_isGrounded && m_canDoubleJump && !m_hasDoubleJumped)
+	{
+		m_velocity.y = - JUMP_FORCE;
+		m_hasDoubleJumped = true;
+		m_audio->playSoundbyName("jump");
+	}*/
 
 	if (m_input->isPressed(sf::Keyboard::Scancode::Space))
 		m_velocity = m_gun.fireGunWithRecoil();
+
 	if (m_input->isKeyDown(sf::Keyboard::Scancode::R))	// Reset (for debugging)
 	{
 		setPosition({ 50,0 });
@@ -128,8 +129,9 @@ void Player::update(float dt)
 
 	// update the gun
 	auto mousePos = sf::Vector2i{ m_input->getMouseX(), m_input->getMouseY() };
-	m_gunTarget = m_window->mapPixelToCoords(mousePos);
-	m_gunOrigin = getPosition() + sf::Vector2f{ getSize().x * 0.5f, getSize().y * 0.5f };
+	auto gunTarget = m_window->mapPixelToCoords(mousePos);
+	auto gunOrigin = getPosition() + sf::Vector2f{ getSize().x * 0.5f, getSize().y * 0.5f };
+	m_gun.pointAtTarget(gunOrigin, gunTarget);
 	m_gun.update(dt);
 }
 

@@ -1,7 +1,6 @@
 #include "PlayerGun.h"
 
-PlayerGun::PlayerGun(sf::Vector2f* origin, sf::Vector2f* target)
-	: m_origin(origin), m_target(target)
+PlayerGun::PlayerGun()
 {
 	auto& assets = AssetManager::Instance();
 	setTexture(assets.getTexture(AssetManager::Textures::WEAPON));
@@ -16,9 +15,6 @@ PlayerGun::~PlayerGun()
 
 void PlayerGun::update(float dt)
 {
-	// transform the gun
-	pointAtTarget();
-
 	// update all the bullets
 	for (auto* bullet : m_bullets)
 	{
@@ -39,15 +35,18 @@ void PlayerGun::render(sf::RenderWindow* window)
 		window->draw(*bullet);
 }
 
-void PlayerGun::pointAtTarget()
+void PlayerGun::pointAtTarget(sf::Vector2f origin, sf::Vector2f target)
 {
+	// set the stored values so recoil can still be calcuated
+	m_origin = origin; m_target = target;
+
 	// calculate the angle from the reference position to the target position
-	auto angle = VMath::calculatePointAngle(*m_origin, *m_target);
+	auto angle = VMath::calculatePointAngle(m_origin, m_target);
 
 	// calculate the position the gun should be placed at
-	auto dist = VMath::calculatePointDistance(*m_origin, *m_target);
+	auto dist = VMath::calculatePointDistance(m_origin, m_target);
 	auto distC = std::clamp(dist, 0.f, MAX_DIST_FROM_REFERENCE);
-	auto pos = VMath::calculateVector(*m_origin, angle, distC);
+	auto pos = VMath::calculateVector(m_origin, angle, distC);
 
 	// set position
 	setPosition(pos);
@@ -65,7 +64,7 @@ void PlayerGun::pointAtTarget()
 sf::Vector2f PlayerGun::fireGunWithRecoil() {
 	// claculate the angle to fire
 	auto pos = getPosition();
-	auto dir = pos - *m_origin;
+	auto dir = pos - m_origin;
 	if (dir.lengthSquared() <= 0)
 	{
 		std::stringstream s;

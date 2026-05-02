@@ -52,9 +52,7 @@ private:
     bool m_hasDoubleJumped;
     AudioManager* m_audio;
 
-    sf::Vector2f m_gunOrigin;
-    sf::Vector2f m_gunTarget;
-    PlayerGun m_gun = PlayerGun(&m_gunOrigin, &m_gunTarget);
+    PlayerGun m_gun;
 
     const float SPRINT_COOLDOWN = 2.0f;
     const float SPRINT_SPEED_MULT = 2.5f;
