@@ -1,10 +1,10 @@
-# CMP105 2026 Final Submission 
+# CMP105 2026 Final Submission
 
-## Game 
+## Game
 
 Dino Handyman: The Gun
 
-You play as a little dino guy, who needs to needs to get from A to B quickly so that he can do his job. [FINISH THIS LATER]
+You play as a little dino handyman! His friends have problems so he needs to get to their front door as soon as possible to help out. Your goal is to get yourself across the level as fast as you can and enter the door.
 
 **Controls:** 
 
@@ -22,17 +22,22 @@ ESCAPE to pause.
 
 ## Changelist
 
-* Jumping has been disabled in favour of using the gun as your main movement mechanic
-* Levels are no longer hard-coded, and are loaded from a file upon request
+* Nearly all texture management has been moved to the global singleton "AssetManager""
+* The player how has a gun that fires a bullet in the direction of the mouse relative to the player. The player is then given recoil in the opposite direction
+* Jumping has been disabled in favour of using the gun mentioned above as your main movement mechanic
+* Levels are no longer hard-coded, and are loaded from files and managed by LevelManager
+* [dc1fa5d](https://github.com/Hyjaxaru/105_alt_project/commit/dc1fa5d9b5d60928ad9989c7fccea4d66aed1b97): Framework/TileMap no longer stores a texture. They hold a pointer to a texture which is filled by AssetManager. This was to fix a strange bug I had with the game crashing when attempting the background and terrain.
+* And more
 
 ## Known Bugs
 
 * If you move fast enough, you can phase through the ground. I believe this is a by-product of how collisions work since this behaviour is quite common in video games generally.
+* If the either of a levels files are malformed, the game will likely just crash. This could be a formatting issue, incorrect value type, incorrectly sized terrain in terrain file, etc. All of the levels included will be loadable but keep this in mind if you decide to attempt making your own (or if you have a mac, use the config editor I made)
+* 
 
 ---
----
 
-# Proposal from March
+---
 
 # CMP105 Extension Proposal
 
@@ -47,6 +52,7 @@ ESCAPE to pause.
 **Abertay id:** 2502258
 
 ## Game Extended
+
 Dino Handyman
 
 _supplied project_
@@ -55,9 +61,9 @@ _supplied project_
 
 Dino Handyman: The Gun
 
-## Brief Overview of game 
+## Brief Overview of game
 
-[TODO: Game Name] will be a multi-level metroidvania platformer where the player controls a small dinosaur. Along with the usual walk, run and jump; the player will also be introduced to every american's favourite item: The Gun. Because our dino friend is so light, they will be knocked back by the recoil, allowing them to jump higher and move faster. The player's goal is to fix the problems around the world as fast as possible.
+**UPDATED:** Dino Handyman: The Gun will be a multi-level metroidvania platformer where the player controls a small dinosaur. Along with the usual walk, run ~~and jump~~; the player will also be introduced to every american's favourite item: The Gun. Because our dino friend is so light, they will be knocked back by the recoil, allowing them to jump higher and move faster. The player's goal is to fix the problems around the world as fast as possible.
 
 ## Must Have Features
 
@@ -81,7 +87,6 @@ Dino Handyman: The Gun
 
 * Enhanced UI: During each level, the player will be shown the current time taken, their health, ammo, and loading spinners for reloading. Other general UI/UX enhancements will be considdered.
 
-* User-created Levels: The player will be able to load a file containing enough information to create a new level challenge. These will not count towards the players progression / acheivements, but are a fun feature for players to challenge eachother. These level files will need to be created manually, but will have a clean and semi-human-readable syntax
+* **NEW:** User-created Levels: ~~The player will be able to load a file containing enough information to create a new level challenge.~~ All levels are loaded from files, and the user will be able to add custom levels. Custom levels will not count towards the players progression / acheivements, but are a fun feature for players to challenge eachother. These level files will need to be created manually, but will have a clean and semi-human-readable syntax
 
-* Level Builder: If enough time is left after everything else is done, I may attempt to create a visual level creator program. This will be written in Swift using SwiftUI, and not C++. I do not expect to be graded on this contribution, but it seems like a nice to have, so i have mentioned it :)
-
+* Level Builder: If enough time is left after everything else is done, I may attempt to create a visual level creator program. This will be written in Swift using SwiftUI, and not C++. I do not expect to be graded on this contribution, but it seems like a nice to have, so i have mentioned it :) ***UPDATE:*** *I made a level.config editor but no terrain editor*
