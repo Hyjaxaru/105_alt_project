@@ -4,7 +4,7 @@ version 1
 author NoahAlbrock
 worldX 2880
 worldY 648
-terrainY 40
+terrainX 40
 terrainY 8
 backgroundX 14
 backgroundY 3

@@ -66,6 +66,14 @@ sf::Vector2f PlayerGun::fireGunWithRecoil() {
 	// claculate the angle to fire
 	auto pos = getPosition();
 	auto dir = pos - *m_origin;
+	if (dir.lengthSquared() <= 0)
+	{
+		std::stringstream s;
+		s << dir.length();
+		LOG_WARN("Calculated direction <= 0: " + s.str())
+		return {};
+	}
+
 	auto norm = dir.normalized();
 
 	// create the bullet in the bullet list
