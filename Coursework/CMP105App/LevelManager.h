@@ -18,17 +18,29 @@ public:
 	LevelManager(sf::RenderWindow& window, Input& input, GameState& gameState, AudioManager& audio);
 
 	void loadLevels();
-	void loadLevel(std::string fileName);
+	std::vector<std::string> loadLevelManifest();
+	std::optional<LevelTemplate> loadLevel(std::string fileName);
+
+	LevelTemplate* getLevel(std::string name);
 
 private:
-	
-
 	sf::RenderWindow& m_window;
 	Input& m_input;
 	GameState& m_gameState;
 	AudioManager& m_audio;
 
+	std::vector<GameObject> m_tsTerrain;
+	std::vector<GameObject> m_tsBackground;
+
 	std::map<std::string, LevelTemplate> m_levelIndex;
+	
+	void createTerrainTileSet();
+	void createBackgroundTileSet();
+
+	TileMap createTerrainTileMap(std::vector<int> tilemap, const sf::Vector2u& dimensions);
+	TileMap createBackgroundTileMap(const sf::Vector2u& dimensions);
+
+	AssetManager& m_assets = AssetManager::Instance();
 
 	// Constants
 	const std::string LEVELS_DIR = "levels/";
