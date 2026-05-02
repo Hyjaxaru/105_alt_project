@@ -341,3 +341,6 @@ ASALocalRun/
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
 /Coursework/x64/Debug/CMP105App.pdb
+
+# noah was here! :)
+.DS_Store
