@@ -1,6 +1,7 @@
 #pragma once
 
 #include <algorithm>
+#include <vector>
 
 #include "Framework/Collision.h"
 #include "Framework/TileMap.h"
@@ -23,15 +24,17 @@ public:
 
 	void updateCameraAndBackground();
 
-	void setTilemap(TileMap tilemap) { m_tilemap = tilemap; }
-	void setBackgroundTilemap(TileMap tilemap) { m_bgTilemap = tilemap; }
+	void setTerrainTileMap(TileMap tilemap) { m_tilemap = tilemap; }
+	void setBackgroundTileMap(TileMap tilemap) { m_bgTilemap = tilemap; }
 	void setWorldSize(sf::Vector2i const size) { m_worldSize = size; }
 	void setViewSize(sf::Vector2i const size) { m_viewSize = size; }
 	void setPlayerSpawn(sf::Vector2f const pos) { m_playerSpawn = pos; }
 	void setGoalLocation(sf::Vector2f const pos) { m_goalPosition = pos; }
+	void setLevelMetadata(std::string name, std::string author) { m_metaName = name; m_metaAuthor = author; }
 
 private:
-	std::string m_name;
+	std::string m_metaName;
+	std::string m_metaAuthor;
 
 	TileMap m_tilemap;
 	TileMap m_bgTilemap;
@@ -46,5 +49,9 @@ private:
 	sf::Vector2i m_worldSize;
 	sf::Vector2i m_viewSize;
 
+	inline std::string debugLevelIdentifier() const
+	{
+		return m_metaName + ':' + m_metaAuthor;
+	}
 };
 

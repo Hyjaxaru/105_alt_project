@@ -7,7 +7,7 @@ LevelTemplate::LevelTemplate(sf::RenderWindow& window, Input& input, GameState& 
 
 void LevelTemplate::onBegin()
 {
-	LOG_INFO_NOLINE(m_name + "Loaded")
+	LOG_INFO_NOLINE(debugLevelIdentifier() + " | Loaded")
 }
 
 void LevelTemplate::onEnd()
@@ -23,7 +23,7 @@ void LevelTemplate::onEnd()
 	m_timer.stop();
 	m_timer.reset();
 
-	LOG_INFO_NOLINE(m_name + "Reset")
+	LOG_INFO_NOLINE(debugLevelIdentifier() + " | Reset")
 }
 
 void LevelTemplate::handleInput(float dt)
