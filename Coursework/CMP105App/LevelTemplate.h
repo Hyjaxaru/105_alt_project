@@ -16,7 +16,8 @@ class LevelTemplate :
 public:
 	LevelTemplate(
 		sf::RenderWindow& window,
-		Input& input, GameState& gameState,
+		Input& input,
+		GameState& gameState,
 		AudioManager& audio,
 		std::vector<int> terrainSet,
 		sf::Vector2u terrainSize,

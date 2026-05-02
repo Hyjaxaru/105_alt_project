@@ -3,7 +3,6 @@
 LevelTemplate::LevelTemplate(sf::RenderWindow& window, Input& input, GameState& gameState, AudioManager& audio, std::vector<int> terrainSet, sf::Vector2u terrainSize, sf::Vector2u backgroundSize) :
 	Scene(window, input, gameState, audio)
 {
-
 	GameObject tile;
 	std::vector<GameObject> tileSet;
 
@@ -12,7 +11,7 @@ LevelTemplate::LevelTemplate(sf::RenderWindow& window, Input& input, GameState& 
 	int tile_size = 18;      // Visual size of the tile
 	int sheet_spacing = 1;   // Gap between tiles
 
-	m_worldSize.x = terrainSize.x * (tile_size * 4);
+	m_worldSize = sf::Vector2i(terrainSize) * (tile_size * 4);
 
 
 	// Set GameObject size (Scaling up 4x for visibility)
@@ -85,6 +84,7 @@ LevelTemplate::LevelTemplate(sf::RenderWindow& window, Input& input, GameState& 
 	m_player.setEdges(0, m_worldSize.x);
 	m_player.setWindow(&m_window);
 	m_player.setPosition(m_playerSpawn);
+	m_player.setAudio(&m_audio);
 }
 
 void LevelTemplate::onBegin()

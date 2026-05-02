@@ -104,7 +104,6 @@ int main()
 	levels.loadLevels();
 
 	Menu menu(window, input, gameState, audioManager);
-	LevelWithTiles tile_level(window, input, gameState, audioManager);
 	Scene* currentScene = &menu;
 
 	// Initialise objects for delta time

@@ -5,8 +5,6 @@ namespace fs = std::filesystem;
 LevelManager::LevelManager(sf::RenderWindow& window, Input& input, GameState& gameState, AudioManager& audio) :
 	Scene(window, input, gameState, audio)
 {
-	createTerrainTileSet();
-	createBackgroundTileSet();
 }
 
 void LevelManager::loadLevels()
@@ -120,108 +118,4 @@ void LevelManager::setActiveLevel(std::string name)
 	m_current->onEnd();
 	m_current = getLevel(name);
 	m_current->onBegin();
-}
-
-void LevelManager::createTerrainTileSet()
-{
-	// Repurposed from LevelWithTiles.cpp
-
-	GameObject tile;
-	std::vector<GameObject> tileSet;
-
-	int num_columns = 20;
-	int num_rows = 9;
-	int tile_size = 18;      // Visual size of the tile
-	int sheet_spacing = 1;   // Gap between tiles
-
-	// Set GameObject size (Scaling up 4x for visibility)
-	// 4 * 18 = 3 * 24 = 72 (dino size is 24).
-	tile.setSize(sf::Vector2f(tile_size * 4, tile_size * 4));
-	tile.setCollisionBox({ { 0,0 }, tile.getSize() });
-
-
-	for (int i = 0; i < num_columns * num_rows; i++)
-	{
-		int row = i / num_columns;
-		int col = i % num_columns;
-
-		tile.setTextureRect({
-			{(tile_size + sheet_spacing) * col, (tile_size + sheet_spacing) * row},
-			{tile_size, tile_size} });
-		if (col <= 4 || col >= 12) tile.setCollider(true);
-		else tile.setCollider(false);
-		tileSet.push_back(tile);
-
-		// Add Blank
-		tile.setTextureRect({ {0, 0}, {-24, -24} }); // Empty rect for blank
-		int b = m_tsTerrain.size();
-		tile.setCollider(false);
-		tileSet.push_back(tile);
-	}
-
-	m_tsTerrain = tileSet;
-}
-
-void LevelManager::createBackgroundTileSet()
-{
-	GameObject tile;
-	std::vector<GameObject> tileSet;
-
-	int num_columns = 8;
-	int num_rows = 3;
-	int tile_size = 24;
-	int sheet_spacing = 1;
-
-	// 24 * 9 = 216, a multiple of 72, the LCM of the player and tile size.
-	tile.setSize(sf::Vector2f(tile_size * 9, tile_size * 9));
-
-	for (int i = 0; i < num_columns * num_rows; i++)
-	{
-		int row = i / num_columns;
-		int col = i % num_columns;
-
-		tile.setTextureRect({
-			{(tile_size + sheet_spacing) * col, (tile_size + sheet_spacing) * row},
-			{tile_size, tile_size} });
-		tile.setCollider(false);		// don't collide with background
-		tileSet.push_back(tile);
-	}
-
-	m_tsBackground = tileSet;
-}
-
-TileMap LevelManager::createTerrainTileMap(std::vector<int> tilemap, const sf::Vector2u& dimensions)
-{
-	// get last item for background, and replace the file placeholder (-1) with it
-	int b = m_tsTerrain.size() - 1;
-	std::replace(tilemap.begin(), tilemap.end(), -1, b);
-
-	TileMap tileMap;
-	tileMap.setTexture(m_assets.getTexture(AssetManager::Textures::TERRAIN));
-	tileMap.setTileMap(tilemap, dimensions);
-	tileMap.setPosition({ 100, 0 });
-	tileMap.buildLevel();
-
-	return tileMap;
-}
-
-TileMap LevelManager::createBackgroundTileMap(const sf::Vector2u& dimensions)
-{
-	// get last item for background
-	int b = m_tsTerrain.size() - 1;
-
-	// this is a test
-	std::vector<int> tilemap = {
-		6,6,6,6,6,6,6,6,6,6,6,6,6,6,
-		14,14,14,14,14,14,14,14,14,14,14,14,14,14,
-		22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22
-	};
-
-	TileMap tileMap;
-	tileMap.setTexture(m_assets.getTexture(AssetManager::Textures::BACKGROUND));
-	tileMap.setTileMap(tilemap, dimensions);
-	tileMap.setPosition({ 0, 0 });
-	tileMap.buildLevel();
-
-	return tileMap;
 }

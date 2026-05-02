@@ -40,12 +40,6 @@ private:
 
 	std::map<std::string, LevelTemplate> m_levelIndex;
 	LevelTemplate* m_current;
-	
-	void createTerrainTileSet();
-	void createBackgroundTileSet();
-
-	TileMap createTerrainTileMap(std::vector<int> tilemap, const sf::Vector2u& dimensions);
-	TileMap createBackgroundTileMap(const sf::Vector2u& dimensions);
 
 	AssetManager& m_assets = AssetManager::Instance();
 
