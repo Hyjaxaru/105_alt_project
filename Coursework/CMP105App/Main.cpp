@@ -99,6 +99,7 @@ int main()
 	assets.loadTexture("gfx/dino1.png",               AssetManager::Textures::PLAYER);
 	assets.loadTexture("gfx/gun.png",                 AssetManager::Textures::WEAPON);
 	assets.loadTexture("gfx/bullet.png",              AssetManager::Textures::PROJECTILE);
+	assets.loadTexture("gfx/worm_sheet.png",          AssetManager::Textures::ENEMY);
 
 	assets.loadFont("font/arial.ttf", "Arial", AssetManager::LoadOptions::DEFAULT);
 
