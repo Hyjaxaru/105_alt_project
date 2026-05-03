@@ -176,16 +176,6 @@ void Player::collisionResponse(GameObject& collider)
 	}
 }
 
-bool Player::inLeverRange()
-{
-	return (getPosition() - m_leverPosition).lengthSquared() < ACTIVATE_RANGE_SQUARED;
-}
-
-bool Player::inEndRange()
-{
-	return (getPosition() - m_endPosition).lengthSquared() < ACTIVATE_RANGE_SQUARED;
-}
-
 void Player::reset()
 {
 	setPosition({ 0, 50 });

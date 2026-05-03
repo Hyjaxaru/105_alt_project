@@ -24,8 +24,8 @@ public:
     void setEdges(float left, float right) { m_leftEdge = left; m_rightEdge = right; };
     void setLeverPosition(sf::Vector2f leverPos) { m_leverPosition = leverPos; };
     void setEndGamePosition(sf::Vector2f endPos) { m_endPosition = endPos; };
-    bool inLeverRange();
-    bool inEndRange();
+    bool inLeverRange() { return false; };
+    bool inEndRange() { return false; };
     bool getLeverPulled() { return m_leverPulled; };
     bool getGameEndTriggered() { return m_gameEndTriggered; };
     void reset();
