@@ -1,4 +1,2 @@
 TYPE LEVELENEMIES
-norm 1 1
-norm 2 50
-norm 4 2
+norm 10 5

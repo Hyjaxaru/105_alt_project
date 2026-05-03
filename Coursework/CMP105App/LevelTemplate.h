@@ -9,6 +9,7 @@
 #include "Scene.h"
 #include "Player.h"
 #include "Logger.h"
+#include "Enemy.h";
 
 class LevelTemplate :
 	public Scene
@@ -41,7 +42,7 @@ public:
 	void setViewSize(sf::Vector2i const size)        { m_viewSize     = size; }
 	void setPlayerSpawn(sf::Vector2f const pos)      { m_playerSpawn  = pos; }
 	void setGoalLocation(sf::Vector2f const pos)     { m_goalPosition = pos; }
-	void setEnemies(std::vector<GameObject> enemies) { m_enemies      = enemies; }
+	void setEnemies(std::vector<Enemy*> enemies)     { m_enemies      = enemies; }
 
 	Metadata& getLevelMetadata() { return m_metadata; }
 	void setLevelMetadata(Metadata metadata) { m_metadata = metadata; }
@@ -56,7 +57,7 @@ private:
 	Player m_player;
 	sf::Vector2f m_playerSpawn;
 
-	std::vector<GameObject> m_enemies;
+	std::vector<Enemy*> m_enemies;
 
 	sf::Vector2f m_goalPosition;
 

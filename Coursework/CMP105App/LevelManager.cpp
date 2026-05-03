@@ -151,15 +151,17 @@ void LevelManager::loadEnemies(LevelTemplate& level, const std::string& path)
 	// get the data from the terrain file
 	std::string type;
 	float x, y;
-	std::vector<Enemy> enemies;
+	std::vector<Enemy*> enemies;
 
 	while (file >> type >> x >> y)
 	{
-		auto enemy = Enemy{ { x, y } };
-		enemies.push_back(enemy);
+		enemies.push_back(new Enemy());
+		auto* enemy = enemies.back() - 1;
+		enemy->setSpawnPosition({ x, y });
+		
 	}
 
-	// level.setEnemies();
+	level.setEnemies(enemies);
 }
 
 LevelTemplate* LevelManager::getLevel(std::string name)

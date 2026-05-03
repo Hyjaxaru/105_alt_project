@@ -12,6 +12,7 @@
 #include "Logger.h"
 #include "LevelTemplate.h"
 #include "DataFile.h"
+#include "Enemy.h";
 
 class LevelManager
 	: public Scene
@@ -38,8 +39,6 @@ public:
 private:
 	std::vector<GameObject> m_tsTerrain;
 	std::vector<GameObject> m_tsBackground;
-
-	struct Enemy { sf::Vector2f pos; };
 
 	std::map<std::string, LevelTemplate> m_levelIndex;
 	LevelTemplate* m_current;
