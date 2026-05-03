@@ -64,7 +64,7 @@ public:
 	// source: https://stackoverflow.com/questions/21295935/can-a-c-enum-class-have-methods
 	
 	// Default index entries
-	enum class Textures { TERRAIN, BACKGROUND, PLAYER, WEAPON, PROJECTILE };
+	enum class Textures { TERRAIN, BACKGROUND, PLAYER, WEAPON, PROJECTILE, ENEMY };
 
 	// Load a textrue into the texture index
 	// @param tex:     The texture to load into the index
@@ -203,7 +203,8 @@ private:
 		{ Textures::BACKGROUND, "BACKGROUND" },
 		{ Textures::PLAYER,     "PLAYER" },
 		{ Textures::WEAPON,     "WEAPON" },
-		{ Textures::PROJECTILE, "PROJECTILE" }
+		{ Textures::PROJECTILE, "PROJECTILE" },
+		{ Textures::ENEMY,      "ENEMY" }
 	};
 
 	std::string textureDefaultsToStringValue(const Textures& name) const;
