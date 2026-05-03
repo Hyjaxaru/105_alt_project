@@ -93,17 +93,22 @@ int main()
 
 	// prepare assets that need to be persistent
 	auto& assets = AssetManager::Instance();
+
 	assets.loadTexture("gfx/tilemap.png",             AssetManager::Textures::TERRAIN);
 	assets.loadTexture("gfx/tilemap-backgrounds.png", AssetManager::Textures::BACKGROUND);
 	assets.loadTexture("gfx/dino1.png",               AssetManager::Textures::PLAYER);
 	assets.loadTexture("gfx/gun.png",                 AssetManager::Textures::WEAPON);
 	assets.loadTexture("gfx/bullet.png",              AssetManager::Textures::PROJECTILE);
 
+	assets.loadFont("font/arial.ttf", "Arial", AssetManager::LoadOptions::DEFAULT);
+
 	// Create level objects that may reference manager objects
 	LevelManager levels(window, input, gameState, audioManager);
 	levels.loadLevels();
 
 	Menu menu(window, input, gameState, audioManager);
+	menu.createLevelButtons(*levels.getAllLevels());
+
 	Scene* currentScene = &menu;
 
 	// Initialise objects for delta time
