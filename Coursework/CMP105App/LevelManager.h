@@ -30,8 +30,9 @@ public:
 	std::optional<LevelTemplate> loadLevel(std::string fileName);
 
 	LevelTemplate* getLevel(std::string name);
+	std::map<std::string, LevelTemplate>* getAllLevels() { return &m_levelIndex; }
 
-	std::string getActiveLevel() { return m_current->getLevelMetadata().first; }
+	std::string getActiveLevel() { return m_current->getLevelMetadata().name; }
 	void setActiveLevel(std::string name);
 
 private:

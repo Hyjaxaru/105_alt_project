@@ -24,6 +24,11 @@ public:
 		sf::Vector2u backgroundSize
 	);
 
+	struct Metadata {
+		std::string name;
+		std::string author;
+	};
+
 	void handleInput(float dt) override;
 	void update(float dt) override;
 	void render() override;
@@ -37,12 +42,12 @@ public:
 	void setPlayerSpawn(sf::Vector2f const pos) { m_playerSpawn = pos; }
 	void setGoalLocation(sf::Vector2f const pos) { m_goalPosition = pos; }
 
-	std::pair<std::string, std::string> getLevelMetadata() { return m_metadata; }
-	void setLevelMetadata(std::pair<std::string, std::string> metadata) { m_metadata = metadata; }
+	Metadata& getLevelMetadata() { return m_metadata; }
+	void setLevelMetadata(Metadata metadata) { m_metadata = metadata; }
 
 
 private:
-	std::pair<std::string, std::string> m_metadata;
+	Metadata m_metadata;
 
 	TileMap m_tilemap;
 	TileMap m_bgTilemap;
@@ -59,7 +64,7 @@ private:
 
 	inline std::string debugLevelIdentifier() const
 	{
-		return m_metadata.first + ':' + m_metadata.second;
+		return m_metadata.name + ':' + m_metadata.author;
 	}
 };
 
