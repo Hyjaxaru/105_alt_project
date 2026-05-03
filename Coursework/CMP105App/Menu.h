@@ -44,11 +44,11 @@ private:
     const sf::Color m_defaultButtonColour = sf::Color(100, 250, 100,  50);
     const sf::Color m_hoverButtonColour =   sf::Color( 80, 230,  80, 150);
 
-    const sf::Vector2f BUTTON_INITIAL = {  16, 16 };
-    const sf::Vector2f BUTTON_SIZE =    { 256, 48 };
-    const sf::Vector2f BUTTON_SPACING = {   0, 16 };
+    const sf::Vector2f BUTTON_INITIAL = {   8,  8 };
+    const sf::Vector2f BUTTON_SIZE =    { 256, 38 };
+    const float BUTTON_SPACING =                8.f;
 
     const sf::Vector2f BUTTON_TITLE_OFFSET =    { 4,  2 };
-    const sf::Vector2f BUTTON_SUBTITLE_OFFSET = { 0, 24 };
+    const sf::Vector2f BUTTON_SUBTITLE_OFFSET = { 0, 18 };
 };
 

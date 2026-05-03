@@ -115,7 +115,7 @@ void Menu::createLevelButtons(std::map<std::string, LevelTemplate>& levelIndex)
 
 		// calculate button position
 		// initial position + ( (height + spacing) * number of buttons )
-		auto pos = BUTTON_INITIAL + sf::Vector2f{ 0, (BUTTON_SIZE.y + BUTTON_SPACING.y) * static_cast<float>(i) };
+		auto pos = BUTTON_INITIAL + sf::Vector2f{ 0, (BUTTON_SIZE.y + BUTTON_SPACING) * static_cast<float>(i) };
 
 		// configure button
 		button.obj.setPosition(pos);
@@ -125,12 +125,12 @@ void Menu::createLevelButtons(std::map<std::string, LevelTemplate>& levelIndex)
 
 		// configure the button's title
 		button.title.setPosition(pos + BUTTON_TITLE_OFFSET);
-		button.title.setCharacterSize(20);
+		button.title.setCharacterSize(16);
 		button.title.setString(pair.first);
 		button.title.setFillColor(sf::Color::White);
 
 		button.subtitle.setPosition(pos + BUTTON_TITLE_OFFSET + BUTTON_SUBTITLE_OFFSET);
-		button.subtitle.setCharacterSize(14);
+		button.subtitle.setCharacterSize(12);
 		button.subtitle.setString("Created by " + pair.second.getLevelMetadata().author);
 		button.subtitle.setFillColor(sf::Color::Cyan);
 
