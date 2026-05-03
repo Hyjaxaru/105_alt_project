@@ -39,14 +39,21 @@ private:
 	std::vector<GameObject> m_tsTerrain;
 	std::vector<GameObject> m_tsBackground;
 
+	struct Enemy { sf::Vector2f pos; };
+
 	std::map<std::string, LevelTemplate> m_levelIndex;
 	LevelTemplate* m_current;
 
 	AssetManager& m_assets = AssetManager::Instance();
 
+	void configureLevel(LevelTemplate& level, DataFile& config);
+	std::vector<int> loadTerrain(const std::string& path);
+	void loadEnemies(LevelTemplate& level, const std::string& path);
+
 	// Constants
-	const std::string LEVELS_DIR = "levels/";
-	const std::string LEVEL_LIST_FILE = "_levels.txt";
-	const std::string EXTENSION_CONFIG = ".config.txt";
+	const std::string LEVELS_DIR =        "levels/";
+	const std::string LEVEL_LIST_FILE =   "_levels.txt";
+	const std::string EXTENSION_CONFIG =  ".config.txt";
 	const std::string EXTENSION_TERRAIN = ".terrain.txt";
+	const std::string EXTENSION_ENEMIES = ".enemies.txt";
 };

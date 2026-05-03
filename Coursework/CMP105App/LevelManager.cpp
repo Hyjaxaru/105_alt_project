@@ -49,19 +49,6 @@ std::vector<std::string> LevelManager::loadLevelManifest()
 std::optional<LevelTemplate> LevelManager::loadLevel(std::string fileName)
 {
 	DataFile config(LEVELS_DIR + fileName + EXTENSION_CONFIG);
-	std::vector<int> tilemap;
-
-	// load the terrain file, adn check if it's good
-	std::ifstream terrainFile(LEVELS_DIR + fileName + EXTENSION_TERRAIN);
-	if (!terrainFile.good())
-	{
-		LOG_ERROR(fileName + " | load failed. Cannot access terrain file");
-		return {};
-	}
-
-	// get the data from the terrain file
-	int tile;
-	while (terrainFile >> tile) tilemap.push_back(tile);
 
 	sf::Vector2u terrainSize = {
 		static_cast<unsigned int>(config.getInt("terrainX").value_or(0)),
@@ -74,37 +61,105 @@ std::optional<LevelTemplate> LevelManager::loadLevel(std::string fileName)
 	};
 
 	// begin creating the world
+	auto tilemap = loadTerrain(LEVELS_DIR + fileName + EXTENSION_TERRAIN);
 	auto level = LevelTemplate(m_window, m_input, m_gameState, m_audio, tilemap, terrainSize, backgroundSize);
 
+	// configure the level
+	configureLevel(level, config);
+
+	// load eneimes (if we can)
+	loadEnemies(level, LEVELS_DIR + fileName + EXTENSION_ENEMIES);
+
+	LOG_INFO_NOLINE(fileName + " | loaded successfully!");
+	return level;
+}
+
+void LevelManager::configureLevel(LevelTemplate& level, DataFile& config)
+{
 	// set level metadata
-	level.setLevelMetadata({fileName, config.get("author").value_or("Author Unknown")});
+	level.setLevelMetadata({
+		config.get("name").value_or("Level Name Unknown"),
+		config.get("author").value_or("Author Unknown")
+	});
 
 	// set the world size
 	level.setWorldSize({
 		config.getInt("worldX").value_or(0),
 		config.getInt("worldY").value_or(0)
-	});
+		});
 
 	// set the view size
 	level.setViewSize({
 		config.getInt("viewX").value_or(0),
 		config.getInt("viewY").value_or(0)
-	});
+		});
 
 	// set the player spawn location
 	level.setPlayerSpawn({
 		config.getFloat("playerX").value_or(0.f),
 		config.getFloat("playerY").value_or(0.f)
-	});
+		});
 
 	// set the position of the goal
 	level.setGoalLocation({
 		config.getFloat("goalX").value_or(0.f),
 		config.getFloat("goalY").value_or(0.f)
 	});
+}
 
-	LOG_INFO_NOLINE(fileName + " | loaded successfully!");
-	return level;
+std::vector<int> LevelManager::loadTerrain(const std::string& path)
+{
+	std::ifstream file(path);
+
+	if (!file.good())
+	{
+		LOG_ERROR(path + " | load failed. Cannot access terrain file");
+		return {};
+	}
+
+	// get the data from the terrain file
+	int tile;
+	std::vector<int> tilemap;
+	while (file >> tile) tilemap.push_back(tile);
+
+	return tilemap;
+}
+
+void LevelManager::loadEnemies(LevelTemplate& level, const std::string& path)
+{
+	std::ifstream file(path);
+
+	if (!file.good())
+	{
+		LOG_WARN(path + " | No enemies file found, continuing...");
+		return;
+	}
+	
+
+	// since the file header has to be there (because I said it does)
+	// we check the value and ensure this is an enemies file
+	std::string fType;
+	file >> fType >> fType; // we only care about the second value
+	if (fType != "LEVELENEMIES")
+	{
+		LOG_WARN(path + " | Enemy file is invalud, continuing...");
+		return;
+	}
+	
+	LOG_DEBUG(path + " | Enemy file valid! loading...");
+
+	// get the data from the terrain file
+	std::string type;
+	float x, y;
+	std::vector<Enemy> enemies;
+
+	while (file >> type >> x >> y)
+	{
+		auto enemy = Enemy{ { x, y } };
+		enemies.push_back(enemy);
+	}
+
+	// level.setEnemies();
 }
 
 LevelTemplate* LevelManager::getLevel(std::string name)

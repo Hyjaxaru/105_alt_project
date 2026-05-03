@@ -156,8 +156,6 @@ int main()
 			currentScene->onBegin();
 		}
 
-		
-
 		// run the core loop for the current scene
 		currentScene->handleInput(deltaTime);
 		currentScene->update(deltaTime);
