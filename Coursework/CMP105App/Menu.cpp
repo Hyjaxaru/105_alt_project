@@ -129,6 +129,7 @@ void Menu::createLevelButtons(std::map<std::string, LevelTemplate>& levelIndex)
 		button.title.setString(pair.first);
 		button.title.setFillColor(sf::Color::White);
 
+		// configure the button's subtitle
 		button.subtitle.setPosition(pos + BUTTON_TITLE_OFFSET + BUTTON_SUBTITLE_OFFSET);
 		button.subtitle.setCharacterSize(12);
 		button.subtitle.setString("Created by " + pair.second.getLevelMetadata().author);
