@@ -8,6 +8,8 @@
 #include "Logger.h"
 #include "AssetManager.h"
 
+using KVArray = std::vector<std::pair<std::string, std::string>>;
+
 class DataFile {
 public:
 	// Create a new DataFile with the specified path
@@ -34,9 +36,12 @@ public:
 	template <typename T>
 	void replace(const std::string& key, T value) { replace(key, (std::string)value); }
 
+	// allow accessing the data in vector form
+	KVArray getArray();
+
 	void setAutosave(const bool& state) { m_autosave = state; };
 
-private:
+protected:
 	std::string m_path;
 	std::map<std::string, std::string> m_kv;
 	bool m_autosave;

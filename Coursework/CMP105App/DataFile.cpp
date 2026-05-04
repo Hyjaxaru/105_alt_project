@@ -97,3 +97,9 @@ void DataFile::eraze(const std::string& key)
 
 	if (m_autosave) save();
 }
+
+KVArray DataFile::getArray() {
+	KVArray list;
+	for (auto& pair : m_kv) list.push_back(pair);
+	return list;
+}
