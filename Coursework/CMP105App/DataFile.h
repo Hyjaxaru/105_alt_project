@@ -8,7 +8,6 @@
 #include "Logger.h"
 #include "AssetManager.h"
 
-
 class DataFile {
 public:
 	// Create a new DataFile with the specified path
