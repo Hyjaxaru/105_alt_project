@@ -8,6 +8,8 @@ Bullet::Bullet(sf::Vector2f position, sf::Vector2f dir)
 	setOrigin({ 16, 16 });
 	setScale({ 0.5, 0.5 });
 	setRotation(VMath::calculatePointAngle({0, 0}, dir));
+
+	setCollisionBox({ { 2, 2 }, { 28, 28 } });
 	
 	// set position and velocity
 	setPosition(position);
