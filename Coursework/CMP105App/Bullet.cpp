@@ -3,11 +3,11 @@
 Bullet::Bullet(sf::Vector2f position, sf::Vector2f dir)
 {
 	// set up the underlying GameObject
-	auto& assets = AssetManager::Instance();
-	setTexture(assets.getTexture(AssetManager::Textures::PROJECTILE));
+	setTexture(AssetManager::Instance().getTexture(AssetManager::Textures::PROJECTILE));
 	setSize({ 32, 32 });
 	setOrigin({ 16, 16 });
 	setScale({ 0.5, 0.5 });
+	setRotation(VMath::calculatePointAngle({0, 0}, dir));
 	
 	// set position and velocity
 	setPosition(position);
@@ -15,6 +15,8 @@ Bullet::Bullet(sf::Vector2f position, sf::Vector2f dir)
 
 	// set expiry timer
 	expireTimer = LIFETIME_FRAMES;
+
+	LOG_DEBUG("Bullet created!")
 }
 
 void Bullet::update(float dt)

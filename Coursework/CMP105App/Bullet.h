@@ -4,6 +4,7 @@
 
 #include "Logger.h"
 #include "AssetManager.h"
+#include "VectorMath.h"
 
 class Bullet :
 	public GameObject
@@ -13,13 +14,13 @@ public:
 
 	void update(float dt) override;
 
-	bool isExpired() const { return expireTimer >= 0; }
+	bool isExpired() const { return expireTimer <= 0; }
 
 private:
 	int expireTimer;
 
 
-	const float SPEED = 1.f;
+	const float SPEED = 10.f;
 	const int LIFETIME_FRAMES = 600; // 10 seconds @ 60FPS
 };
 
