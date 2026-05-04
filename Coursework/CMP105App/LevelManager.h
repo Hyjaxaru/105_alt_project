@@ -37,6 +37,15 @@ public:
 	void setActiveLevel(std::string name);
 	void forceSetActiveLevel(std::string name);
 
+	// constants (public and static so they can be accessed outside of LevelManager)
+	inline static const std::string LEVELS_DIR = "levels/";
+	inline static const std::string DATA_DIR = "data/";
+	inline static const std::string LEVEL_LIST_FILE = "_levels.txt";
+	inline static const std::string EXTENSION_CONFIG = ".config.txt";
+	inline static const std::string EXTENSION_TERRAIN = ".terrain.txt";
+	inline static const std::string EXTENSION_ENEMIES = ".enemies.txt";
+	inline static const std::string EXTENSION_LEADERBOARD = ".txt";
+
 private:
 	std::vector<GameObject> m_tsTerrain;
 	std::vector<GameObject> m_tsBackground;
@@ -46,16 +55,7 @@ private:
 
 	AssetManager& m_assets = AssetManager::Instance();
 
-	void configureLevel(LevelTemplate& level, DataFile& config, DataFile& leaderboard);
+	void configureLevel(LevelTemplate& level, DataFile& config);
 	std::vector<int> loadTerrain(const std::string& path);
 	void loadEnemies(LevelTemplate& level, const std::string& path);
-
-	// Constants
-	const std::string LEVELS_DIR            = "levels/";
-	const std::string DATA_DIR              = "data/";
-	const std::string LEVEL_LIST_FILE       = "_levels.txt";
-	const std::string EXTENSION_CONFIG      = ".config.txt";
-	const std::string EXTENSION_TERRAIN     = ".terrain.txt";
-	const std::string EXTENSION_ENEMIES     = ".enemies.txt";
-	const std::string EXTENSION_LEADERBOARD = ".txt";
 };

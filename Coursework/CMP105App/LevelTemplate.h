@@ -30,7 +30,6 @@ public:
 	struct Metadata {
 		std::string name;
 		std::string author;
-		DataFile* leaderboard;
 	};
 
 	void handleInput(float dt) override;
@@ -65,6 +64,7 @@ private:
 	std::vector<Enemy*> m_enemies;
 
 	Goal m_goal;
+	void completeLevel();
 
 	sf::Clock m_timer;
 

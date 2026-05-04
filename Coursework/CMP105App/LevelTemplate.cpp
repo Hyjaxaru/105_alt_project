@@ -139,10 +139,7 @@ void LevelTemplate::update(float dt)
 	// if we are in range, complete the level!
 	auto goalDist = VMath::calculatePointDistance(m_player.getPosition(), m_goal.getPosition());
 	if (goalDist <= GOAL_RANGE)
-	{
-		LOG_INFO(m_metadata.name + " COMPLETE!!!")
-		m_gameState.setCurrentState(State::MENU);
-	}
+		completeLevel();
 
 	std::vector<GameObject>& level = *m_tilemap.getLevel();
 	for (auto& t : level)
@@ -201,7 +198,8 @@ void LevelTemplate::render()
 
 	m_window.draw(m_goal);
 
-	auto pos = m_player.getPosition();
+	// debug
+	/*auto pos = m_player.getPosition();
 	std::stringstream s;
 	s << "X: " << pos.x << ", Y: " << pos.y;
 	auto test = sf::Text(*AssetManager::Instance().getDefaultFont());
@@ -209,7 +207,7 @@ void LevelTemplate::render()
 	test.setCharacterSize(24);
 	test.setFillColor(sf::Color::White);
 	test.setPosition(m_window.getView().getCenter());
-	m_window.draw(test);
+	m_window.draw(test);*/
 
 	endDraw();
 }
@@ -229,4 +227,19 @@ void LevelTemplate::updateCameraAndBackground()
 	m_window.setView(view);
 
 	m_bgTilemap.setPosition({ player_pos.x - halfViewWidth, player_pos.y - halfViewHeight });
+}
+
+void LevelTemplate::completeLevel()
+{
+	auto time = m_timer.restart().asMilliseconds();
+	
+	// save the time if it was faster!
+	DataFile lb("data/" + m_metadata.name + ".txt");
+	std::stringstream s;
+	s << time;
+	lb.replace("You!", s.str());
+	lb.save();
+
+	LOG_INFO(m_metadata.name + " COMPLETE!!!");
+	m_gameState.setCurrentState(State::MENU);
 }

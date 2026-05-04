@@ -15,6 +15,8 @@ DataFile::DataFile(const std::string& path)
 			std::string key, value;
 			while (file >> key >> value)
 			{
+				if (key == "TYPE") continue;
+
 				m_kv.insert({ key, value });
 				LOG_DEBUG(key + ": " + value);
 			}
@@ -99,7 +101,7 @@ void DataFile::eraze(const std::string& key)
 }
 
 KVArray DataFile::getArray() {
-	KVArray list;
+	KVArray list{};
 	for (auto& pair : m_kv) list.push_back(pair);
 	return list;
 }

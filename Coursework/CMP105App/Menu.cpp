@@ -3,40 +3,27 @@
 Menu::Menu(sf::RenderWindow& hwnd, Input& in, GameState& gs, AudioManager& aud) :
 	Scene(hwnd, in, gs, aud)
 {
-//	if (!m_font.openFromFile("font/bitcount.ttf"))
-//		std::cerr << "failed to load bitcount font";
-//
-//	m_playButtonLabel.setCharacterSize(24);		// setup labels
-//	m_playButtonLabel.setPosition({ 185,93 });
-//	m_playButtonLabel.setString("Level 1");
-//	m_playButtonLabel.setFillColor(sf::Color::Black);
-//	m_playButton2Label.setCharacterSize(24);
-//	m_playButton2Label.setPosition({ 185,233 });
-//	m_playButton2Label.setString("Level 2");
-//	m_playButton2Label.setFillColor(sf::Color::Black);
-//
-//
-//	m_playButton.setSize({ 256, 32 });			// setup buttons
-//	m_playButton.setPosition({ 16, 16 });
-//	m_playButton.setCollisionBox({ {0,0}, m_playButton.getSize()});
-//	m_playButton.setFillColor(m_defaultButtonColour); 
-//	m_play2Button.setSize({ 216,100 });			
-//	m_play2Button.setPosition({ 108,198 });
-//	m_play2Button.setCollisionBox({ {0,0}, m_playButton.getSize() });
-//	m_play2Button.setFillColor(m_defaultButtonColour);
-
 	if (!m_titleSplash.loadFromFile("gfx/title_splash.png")) std::cerr << "no splash found";
 	m_titleImage.setTexture(&m_titleSplash);
 	m_titleImage.setSize({ 432,432 });
+
+	// initialise the leaderboard text
+	m_leaderboard = new sf::Text(*AssetManager::Instance().getDefaultFont());
+	m_leaderboard->setCharacterSize(12);
+	m_leaderboard->setFillColor(sf::Color::White);
+	m_leaderboard->setPosition(LEADERBOARD_POS);
 }
 
 void Menu::onBegin()
 {
 	LOG_INFO("starting menu");
+
 	auto view = m_window.getDefaultView();
 	view.setCenter({ 216, 216 });
 	m_window.setView(view);
 	m_audio.playMusicbyName("bgm2");
+
+	createLevelButtons();
 }
 
 void Menu::onEnd()
@@ -79,13 +66,20 @@ void Menu::update(float dt)
 {
 	sf::Vector2i mousePos{ m_input.getMouseX(), m_input.getMouseY() };
 
+	std::string leaderboardText = "";
+
 	for (auto& button : m_buttonIndex)
 	{
 		if (Collision::checkBoundingBox(button.obj, mousePos))
+		{
 			button.obj.setFillColor(m_hoverButtonColour);
+			leaderboardText = createLeaderboardText(button);
+		}
 		else
 			button.obj.setFillColor(m_defaultButtonColour);
 	}
+
+	m_leaderboard->setString(leaderboardText);
 }
 
 void Menu::render()
@@ -101,17 +95,30 @@ void Menu::render()
 		m_window.draw(button.subtitle);
 	}
 
+	m_window.draw(*m_leaderboard);
+
 	endDraw();
 }
 
-void Menu::createLevelButtons(std::map<std::string, LevelTemplate>& levelIndex)
+void Menu::createLevelButtons()
 {
+	m_buttonIndex.clear();
+
 	int i = 0;
-	for (auto& pair : levelIndex)
+	for (auto& pair : *m_levelIndex)
 	{
-		// create a new button
+		// get data
 		auto font = m_assets.getDefaultFont();
-		auto button = LevelButton{ GameObject(), sf::Text(*font), sf::Text(*font), pair.first };
+		auto leaderboard = DataFile(LevelManager::DATA_DIR + pair.first + LevelManager::EXTENSION_LEADERBOARD).getArray();
+		
+		// make sure the leaderboard is sorted ( I love lambda functions!!! )
+		// source: https://stackoverflow.com/a/279878
+		std::sort(leaderboard.begin(), leaderboard.end(), [](auto& left, auto& right) {
+			return left.second < right.second;
+		});
+
+		// create the new button
+		auto button = LevelButton{ GameObject(), sf::Text(*font), sf::Text(*font), pair.first, leaderboard };
 
 		// calculate button position
 		// initial position + ( (height + spacing) * number of buttons )
@@ -143,4 +150,15 @@ void Menu::createLevelButtons(std::map<std::string, LevelTemplate>& levelIndex)
 		// we keep track of the index independantly so we can still calculate the placement offsets and the keys
 		i++;
 	}
+}
+
+std::string Menu::createLeaderboardText(LevelButton& button)
+{
+	std::stringstream s;
+	s << button.levelName << std::endl;
+
+	for (auto& pair : button.leaderboard)
+		s << pair.first << ": " << stof(pair.second)/1000 << 's' << std::endl;
+
+	return s.str();
 }

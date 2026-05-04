@@ -108,7 +108,8 @@ int main()
 	levels.loadLevels();
 
 	Menu menu(window, input, gameState, audioManager);
-	menu.createLevelButtons(*levels.getAllLevels());
+	menu.setLevelIndex(levels.getAllLevels());
+	menu.createLevelButtons();
 
 	Scene* currentScene = &menu;
 
