@@ -15,10 +15,24 @@ PlayerGun::~PlayerGun()
 
 void PlayerGun::update(float dt)
 {
+	// update all the bullets
+	for (auto bullet : m_bullets)
+	{
+		bullet->update(dt);
+
+		// destroy the bullet if it is expired (lifetime ran out)
+		if (bullet->isExpired())
+			m_bullets.erase(std::find(m_bullets.begin(), m_bullets.end(), bullet));
+	}
 }
 
 void PlayerGun::render(sf::RenderWindow* window)
 {
+	window->draw(*this);
+
+	// render all of the bullets in the bullet index
+	for (auto bullet : m_bullets)
+		window->draw(*bullet);
 }
 
 void PlayerGun::pointAtTarget(sf::Vector2f origin, sf::Vector2f target)

@@ -26,7 +26,6 @@ public:
     void setRotationCenter(sf::Vector2f& newValue) { m_origin = newValue; }
     void setTarget(sf::Vector2f& newValue) { m_target = newValue; }
     void setAmmo(const int& ammo) { m_ammo = ammo; }
-    void setBulletIndex(std::vector<Bullet*>* bullets) { m_bullets = bullets; }
 
 private:
     sf::Vector2f m_origin;

@@ -84,6 +84,7 @@ LevelTemplate::LevelTemplate(sf::RenderWindow& window, Input& input, GameState& 
 	m_player.setWindow(&m_window);
 	m_player.setPosition(m_playerSpawn);
 	m_player.setAudio(&m_audio);
+	m_playerWeapon = m_player.getWeapon();
 }
 
 void LevelTemplate::onBegin()

@@ -56,6 +56,7 @@ private:
 	TileMap m_bgTilemap;
 
 	Player m_player;
+	PlayerGun* m_playerWeapon;
 	sf::Vector2f m_playerSpawn;
 
 	std::vector<Enemy*> m_enemies;
