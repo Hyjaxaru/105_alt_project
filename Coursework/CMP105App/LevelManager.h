@@ -20,11 +20,11 @@ class LevelManager
 public:
 	LevelManager(sf::RenderWindow& window, Input& input, GameState& gameState, AudioManager& audio);
 
-	void onBegin() override             { m_current->onBegin(); }
-	void onEnd() override               { m_current->onEnd(); }
+	void onBegin() override { m_current->onBegin(); }
+	void onEnd() override { m_current->onEnd(); }
 	void handleInput(float dt) override { m_current->handleInput(dt); }
-	void update(float dt) override      { m_current->update(dt); }
-	void render() override              { m_current->render(); }
+	void update(float dt) override { m_current->update(dt); }
+	void render() override { m_current->render(); }
 
 	void loadLevels();
 	std::vector<std::string> loadLevelManifest();
@@ -46,14 +46,16 @@ private:
 
 	AssetManager& m_assets = AssetManager::Instance();
 
-	void configureLevel(LevelTemplate& level, DataFile& config);
+	void configureLevel(LevelTemplate& level, DataFile& config, DataFile& leaderboard);
 	std::vector<int> loadTerrain(const std::string& path);
 	void loadEnemies(LevelTemplate& level, const std::string& path);
 
 	// Constants
-	const std::string LEVELS_DIR =        "levels/";
-	const std::string LEVEL_LIST_FILE =   "_levels.txt";
-	const std::string EXTENSION_CONFIG =  ".config.txt";
-	const std::string EXTENSION_TERRAIN = ".terrain.txt";
-	const std::string EXTENSION_ENEMIES = ".enemies.txt";
+	const std::string LEVELS_DIR            = "levels/";
+	const std::string DATA_DIR              = "data/";
+	const std::string LEVEL_LIST_FILE       = "_levels.txt";
+	const std::string EXTENSION_CONFIG      = ".config.txt";
+	const std::string EXTENSION_TERRAIN     = ".terrain.txt";
+	const std::string EXTENSION_ENEMIES     = ".enemies.txt";
+	const std::string EXTENSION_LEADERBOARD = ".txt";
 };

@@ -49,6 +49,7 @@ std::vector<std::string> LevelManager::loadLevelManifest()
 std::optional<LevelTemplate> LevelManager::loadLevel(std::string fileName)
 {
 	DataFile config(LEVELS_DIR + fileName + EXTENSION_CONFIG);
+	DataFile leaderboard(DATA_DIR + fileName + EXTENSION_LEADERBOARD);
 
 	sf::Vector2u terrainSize = {
 		static_cast<unsigned int>(config.getInt("terrainX").value_or(0)),
@@ -60,7 +61,7 @@ std::optional<LevelTemplate> LevelManager::loadLevel(std::string fileName)
 	auto level = LevelTemplate(m_window, m_input, m_gameState, m_audio, tilemap, terrainSize);
 
 	// configure the level
-	configureLevel(level, config);
+	configureLevel(level, config, leaderboard);
 
 	// load eneimes (if we can)
 	loadEnemies(level, LEVELS_DIR + fileName + EXTENSION_ENEMIES);
@@ -69,13 +70,13 @@ std::optional<LevelTemplate> LevelManager::loadLevel(std::string fileName)
 	return level;
 }
 
-void LevelManager::configureLevel(LevelTemplate& level, DataFile& config)
+void LevelManager::configureLevel(LevelTemplate& level, DataFile& config, DataFile& leaderboard)
 {
 	// set level metadata
-	level.setLevelMetadata({
-		config.get("name").value_or("Level Name Unknown"),
-		config.get("author").value_or("Author Unknown")
-	});
+	auto& metadata = level.getLevelMetadata();
+	metadata.name = config.get("name").value_or("Level Name Unknown");
+	metadata.author = config.get("author").value_or("Author Unknown");
+	metadata.leaderboard = std::move(&leaderboard);
 
 	// set the view size
 	level.setViewSize({

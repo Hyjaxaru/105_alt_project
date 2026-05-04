@@ -12,6 +12,7 @@
 #include "Enemy.h";
 #include "Goal.h";
 #include "AssetManager.h";
+#include "DataFile.h";
 
 class LevelTemplate :
 	public Scene
@@ -29,6 +30,7 @@ public:
 	struct Metadata {
 		std::string name;
 		std::string author;
+		DataFile* leaderboard;
 	};
 
 	void handleInput(float dt) override;
@@ -48,7 +50,6 @@ public:
 	void setWeaponAmmo(const int& ammo) { m_player.getWeapon()->setAmmoMax(ammo); }
 
 	Metadata& getLevelMetadata() { return m_metadata; }
-	void setLevelMetadata(Metadata metadata) { m_metadata = metadata; }
 
 
 private:
