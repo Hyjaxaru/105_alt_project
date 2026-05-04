@@ -18,9 +18,9 @@ void LevelManager::loadLevels()
 		{
 			m_levelIndex.insert({ levelName, level.value() });
 
-			// if no current level is loaded, load this
+			// stop crashing on launch
 			if (m_current == nullptr)
-				m_current = &m_levelIndex.at(levelName);
+				forceSetActiveLevel(levelName);
 		}
 	}
 
@@ -160,6 +160,11 @@ LevelTemplate* LevelManager::getLevel(std::string name)
 {
 	if (m_levelIndex.find(name) == m_levelIndex.end()) return nullptr;
 	return &m_levelIndex.at(name);
+}
+
+void LevelManager::forceSetActiveLevel(std::string name)
+{
+	m_current = getLevel(name);
 }
 
 void LevelManager::setActiveLevel(std::string name)

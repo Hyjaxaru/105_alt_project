@@ -7,6 +7,8 @@ PlayerGun::PlayerGun()
 	setSize({ 32, 32 });
 	setOrigin({ 16, 16 });
 	setScale({ -1, 1 });
+
+	m_ammo = m_ammoMax;
 }
 
 PlayerGun::~PlayerGun()
@@ -83,4 +85,9 @@ sf::Vector2f PlayerGun::fireGunWithRecoil() {
 
 	// calculate and return the recoil of the gun (in the opposite direction to fired)
 	return -norm * RECOIL_FORCE;
+}
+
+void PlayerGun::reset()
+{
+	m_ammo = m_ammoMax;
 }

@@ -15,8 +15,6 @@ Bullet::Bullet(sf::Vector2f position, sf::Vector2f dir)
 
 	// set expiry timer
 	expireTimer = LIFETIME_FRAMES;
-
-	LOG_DEBUG("Bullet created!")
 }
 
 void Bullet::update(float dt)

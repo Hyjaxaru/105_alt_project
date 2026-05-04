@@ -49,7 +49,10 @@ void Player::handleInput(float dt)
 	}*/
 
 	if (m_input->isPressed(sf::Keyboard::Scancode::Space))
-		m_velocity = m_gun.fireGunWithRecoil();
+	{
+		auto recoil = m_gun.fireGunWithRecoil();
+		if (recoil.x > 0.f || recoil.y > 0.f) m_velocity = recoil;
+	}
 
 	if (m_input->isKeyDown(sf::Keyboard::Scancode::R))	// Reset (for debugging)
 	{
@@ -182,4 +185,6 @@ void Player::reset()
 	m_velocity = { 0,0 };
 	m_leverPulled = false;
 	m_gameEndTriggered = false;
+
+	m_gun.reset();
 }

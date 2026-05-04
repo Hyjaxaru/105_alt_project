@@ -149,6 +149,21 @@ void LevelTemplate::update(float dt)
 			}
 		}
 	}
+	
+	// collide bullets with enemies (only if there at least one of each)
+	auto* bullets = m_playerWeapon->getBullets();
+	if (m_enemies.size() > 0 && bullets->size() > 0)
+	{
+		for (auto bullet : *m_player.getWeapon()->getBullets())
+		{
+			for (auto enemy : m_enemies)
+			{
+				// no collision response nessesary, we can just do it right here
+				if (Collision::checkBoundingBox(*bullet, *enemy))
+					m_enemies.erase(std::find(m_enemies.begin(), m_enemies.end(), enemy));
+			}
+		}
+	}
 
 	// reset if fallen too far
 	if (m_player.getPosition().y > 1200)

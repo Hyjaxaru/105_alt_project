@@ -35,6 +35,7 @@ public:
 
 	std::string getActiveLevel() { return m_current->getLevelMetadata().name; }
 	void setActiveLevel(std::string name);
+	void forceSetActiveLevel(std::string name);
 
 private:
 	std::vector<GameObject> m_tsTerrain;
