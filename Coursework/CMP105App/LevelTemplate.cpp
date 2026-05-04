@@ -36,7 +36,7 @@ LevelTemplate::LevelTemplate(sf::RenderWindow& window, Input& input, GameState& 
 	int b = tileSet.size();
 	tile.setCollider(false);
 	tileSet.push_back(tile);
-	
+
 	auto& tileMap = terrainSet;
 	std::replace(tileMap.begin(), tileMap.end(), -1, b);
 
@@ -70,7 +70,7 @@ LevelTemplate::LevelTemplate(sf::RenderWindow& window, Input& input, GameState& 
 	tileMap = {
 		 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
 		14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,
-		22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22
+		22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22
 	};
 	m_bgTilemap.setTexture(AssetManager::Instance().getTexture(AssetManager::Textures::BACKGROUND));
 	m_bgTilemap.setTileSet(tileSet);
