@@ -196,6 +196,7 @@ sfml-network.lib;%(AdditionalDependencies)</AdditionalDependencies>
     <ClCompile Include="Framework\GameObject.cpp" />
     <ClCompile Include="Framework\SoundObject.cpp" />
     <ClCompile Include="Framework\TileMap.cpp" />
+    <ClCompile Include="Goal.cpp" />
     <ClCompile Include="HUD.cpp" />
     <ClCompile Include="LevelManager.cpp" />
     <ClCompile Include="LevelTemplate.cpp" />
@@ -226,6 +227,7 @@ sfml-network.lib;%(AdditionalDependencies)</AdditionalDependencies>
     <ClInclude Include="Framework\GameObject.h" />
     <ClInclude Include="Framework\SoundObject.h" />
     <ClInclude Include="Framework\TileMap.h" />
+    <ClInclude Include="Goal.h" />
     <ClInclude Include="HUD.h" />
     <ClInclude Include="LevelManager.h" />
     <ClInclude Include="LevelOne.h" />

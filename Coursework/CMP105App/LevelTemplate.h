@@ -10,6 +10,8 @@
 #include "Player.h"
 #include "Logger.h"
 #include "Enemy.h";
+#include "Goal.h";
+#include "AssetManager.h";
 
 class LevelTemplate :
 	public Scene
@@ -40,9 +42,9 @@ public:
 	void setWorldSize(sf::Vector2i const size)       { m_worldSize    = size; }
 	void setViewSize(sf::Vector2i const size)        { m_viewSize     = size; }
 	void setPlayerSpawn(sf::Vector2f const pos)      { m_playerSpawn  = pos; }
-	void setGoalLocation(sf::Vector2f const pos)     { m_goalPosition = pos; }
 	void setEnemies(std::vector<Enemy*> enemies)     { m_enemies      = enemies; }
 
+	void setGoalLocation(sf::Vector2f const pos) { m_goal.setPosition(pos); }
 	void setWeaponAmmo(const int& ammo) { m_player.getWeapon()->setAmmoMax(ammo); }
 
 	Metadata& getLevelMetadata() { return m_metadata; }
@@ -61,7 +63,7 @@ private:
 
 	std::vector<Enemy*> m_enemies;
 
-	sf::Vector2f m_goalPosition;
+	Goal m_goal;
 
 	sf::Clock m_timer;
 
@@ -69,5 +71,7 @@ private:
 	sf::Vector2i m_viewSize;
 
 	inline std::string debugLevelIdentifier() const { return m_metadata.name + ':' + m_metadata.author; }
+
+	const float GOAL_RANGE = 10.f;
 };
 

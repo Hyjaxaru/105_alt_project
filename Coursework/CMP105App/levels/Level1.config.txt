@@ -8,6 +8,6 @@ viewX 432
 viewY 432
 playerX 5
 playerY 5
-goalX 100
-goalY 5
-bullets 4
+goalX 2650
+goalY 253
+bullets 5
