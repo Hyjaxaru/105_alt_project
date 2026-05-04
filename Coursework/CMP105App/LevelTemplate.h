@@ -21,8 +21,7 @@ public:
 		GameState& gameState,
 		AudioManager& audio,
 		std::vector<int> terrainSet,
-		sf::Vector2u terrainSize,
-		sf::Vector2u backgroundSize
+		sf::Vector2u terrainSize
 	);
 
 	struct Metadata {

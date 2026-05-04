@@ -1,6 +1,6 @@
 #include "LevelTemplate.h"
 
-LevelTemplate::LevelTemplate(sf::RenderWindow& window, Input& input, GameState& gameState, AudioManager& audio, std::vector<int> terrainSet, sf::Vector2u terrainSize, sf::Vector2u backgroundSize) :
+LevelTemplate::LevelTemplate(sf::RenderWindow& window, Input& input, GameState& gameState, AudioManager& audio, std::vector<int> terrainSet, sf::Vector2u terrainSize) :
 	Scene(window, input, gameState, audio)
 {
 	GameObject tile;
@@ -12,7 +12,6 @@ LevelTemplate::LevelTemplate(sf::RenderWindow& window, Input& input, GameState& 
 	int sheet_spacing = 1;   // Gap between tiles
 
 	m_worldSize = sf::Vector2i(terrainSize) * (tile_size * 4);
-
 
 	// Set GameObject size (Scaling up 4x for visibility)
 	// 4 * 18 = 3 * 24 = 72 (dino size is 24).
@@ -69,13 +68,13 @@ LevelTemplate::LevelTemplate(sf::RenderWindow& window, Input& input, GameState& 
 	}
 
 	tileMap = {
-		6,6,6,6,6,6,6,6,6,6,6,6,6,6,
-		14,14,14,14,14,14,14,14,14,14,14,14,14,14,
-		22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22
+		 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
+		14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,
+		22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22
 	};
 	m_bgTilemap.setTexture(AssetManager::Instance().getTexture(AssetManager::Textures::BACKGROUND));
 	m_bgTilemap.setTileSet(tileSet);
-	m_bgTilemap.setTileMap(tileMap, backgroundSize);
+	m_bgTilemap.setTileMap(tileMap, { 28, 3 });
 	m_bgTilemap.setPosition({ 0, 0 });
 	m_bgTilemap.buildLevel();
 
