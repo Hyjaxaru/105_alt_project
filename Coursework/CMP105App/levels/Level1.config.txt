@@ -2,12 +2,8 @@ TYPE LEVELCONFIG
 name Level1
 version 1
 author NoahAlbrock
-worldX 2880
-worldY 648
 terrainX 40
 terrainY 8
-backgroundX 14
-backgroundY 3
 viewX 432
 viewY 432
 playerX 5
