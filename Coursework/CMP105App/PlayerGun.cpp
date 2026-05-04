@@ -16,7 +16,7 @@ PlayerGun::~PlayerGun()
 void PlayerGun::update(float dt)
 {
 	// update all the bullets
-	for (auto* bullet : m_bullets)
+	for (auto bullet : m_bullets)
 	{
 		bullet->update(dt);
 
@@ -31,7 +31,7 @@ void PlayerGun::render(sf::RenderWindow* window)
 	window->draw(*this);
 
 	// render all of the bullets in the bullet index
-	for (auto* bullet : m_bullets)
+	for (auto bullet : m_bullets)
 		window->draw(*bullet);
 }
 
@@ -48,17 +48,12 @@ void PlayerGun::pointAtTarget(sf::Vector2f origin, sf::Vector2f target)
 	auto distC = std::clamp(dist, 0.f, MAX_DIST_FROM_REFERENCE);
 	auto pos = VMath::calculateVector(m_origin, angle, distC);
 
-	// set position
 	setPosition(pos);
-
-	// rotate the gun in the direction of fire
-	auto isFacingBack = angle.asRadians() < 0.f;
-	auto rotOffset = sf::radians(isFacingBack ? PI_ESTIMATION * 1.5f : PI_ESTIMATION * 0.5f);
-	auto rotation = -angle + rotOffset;
-	setRotation(rotation);
+	setRotation(angle);
 
 	// if needed, flip the sprite so the gun always looks correctly held
-	setScale({ isFacingBack ? -1.f : 1.f, 1.f });
+	auto isFacingBack = abs(angle.asRadians()) > 1.5f;
+	setScale({ 1.f, isFacingBack ? -1.f : 1.f });
 }
 
 sf::Vector2f PlayerGun::fireGunWithRecoil() {
