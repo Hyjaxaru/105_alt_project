@@ -10,3 +10,4 @@ playerX 5
 playerY 5
 goalX 100
 goalY 5
+bullets 4
