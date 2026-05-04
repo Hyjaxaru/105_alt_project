@@ -57,6 +57,14 @@ void PlayerGun::pointAtTarget(sf::Vector2f origin, sf::Vector2f target)
 }
 
 sf::Vector2f PlayerGun::fireGunWithRecoil() {
+	// if there is no ammo, we can't shoot!
+	if (m_ammo <= 0)
+	{
+		// Todo: sound!
+		return {};
+	}
+	m_ammo--;
+
 	// claculate the angle to fire
 	auto pos = getPosition();
 	auto dir = pos - m_origin;

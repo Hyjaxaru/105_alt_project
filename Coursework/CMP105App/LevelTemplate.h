@@ -43,6 +43,8 @@ public:
 	void setGoalLocation(sf::Vector2f const pos)     { m_goalPosition = pos; }
 	void setEnemies(std::vector<Enemy*> enemies)     { m_enemies      = enemies; }
 
+	void setWeaponAmmo(const int& ammo) { m_player.getWeapon()->setAmmo(ammo); }
+
 	Metadata& getLevelMetadata() { return m_metadata; }
 	void setLevelMetadata(Metadata metadata) { m_metadata = metadata; }
 

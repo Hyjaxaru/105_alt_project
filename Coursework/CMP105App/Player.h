@@ -33,6 +33,8 @@ public:
     bool canDoubleJump() { return m_canDoubleJump; };
     void setAudio(AudioManager* audio) { m_audio = audio; };
 
+    PlayerGun* getWeapon() { return &m_gun; }
+
 private:
     sf::Texture m_dinoTexture;
     Animation* m_currAnim;

@@ -25,10 +25,13 @@ public:
     void pointAtTarget(sf::Vector2f origin, sf::Vector2f target);
     void setRotationCenter(sf::Vector2f& newValue) { m_origin = newValue; }
     void setTarget(sf::Vector2f& newValue) { m_target = newValue; }
+    void setAmmo(const int& ammo) { m_ammo = ammo; }
 
 private:
     sf::Vector2f m_origin;
     sf::Vector2f m_target;
+
+    int m_ammo;
 
     std::vector<Bullet*> m_bullets;
 

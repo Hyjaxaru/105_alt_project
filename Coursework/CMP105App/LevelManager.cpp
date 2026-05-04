@@ -94,6 +94,9 @@ void LevelManager::configureLevel(LevelTemplate& level, DataFile& config)
 		config.getFloat("goalX").value_or(0.f),
 		config.getFloat("goalY").value_or(0.f)
 	});
+
+	// set weapon ammp
+	level.setWeaponAmmo(config.getInt("bullets").value_or(0));
 }
 
 std::vector<int> LevelManager::loadTerrain(const std::string& path)
