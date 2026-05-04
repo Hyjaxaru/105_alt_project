@@ -90,6 +90,11 @@ LevelTemplate::LevelTemplate(sf::RenderWindow& window, Input& input, GameState& 
 void LevelTemplate::onBegin()
 {
 	LOG_INFO_NOLINE(debugLevelIdentifier() + " | Loaded")
+
+	m_player.reset();
+
+	for (auto enemy : m_enemies)
+		enemy->reset();
 }
 
 void LevelTemplate::onEnd()
@@ -97,6 +102,10 @@ void LevelTemplate::onEnd()
 	// reset player
 	m_player.reset();
 	m_player.setPosition(m_playerSpawn);
+
+	// reset enemies
+	for (auto enemy : m_enemies)
+		enemy->reset();
 
 	// reset audio
 	m_audio.stopAllMusic();
@@ -113,6 +122,9 @@ void LevelTemplate::handleInput(float dt)
 {
 	m_player.handleInput(dt);
 
+	for (auto enemy : m_enemies)
+		enemy->update(dt);
+
 	if (m_input.isPressed(sf::Keyboard::Scancode::Escape))
 		m_gameState.setCurrentState(State::MENU);
 }
@@ -125,8 +137,16 @@ void LevelTemplate::update(float dt)
 	for (auto& t : level)
 	{
 		if (t.isCollider() && Collision::checkBoundingBox(m_player, t))
-		{
 			m_player.collisionResponse(t);
+
+		// if the collision isn't with the player
+		else if (t.isCollider())
+		{
+			for (auto enemy : m_enemies)
+			{
+				if (Collision::checkBoundingBox(*enemy, t))
+					enemy->collisionResponse(t);
+			}
 		}
 	}
 
@@ -150,22 +170,25 @@ void LevelTemplate::render()
 
 	m_player.render();
 
+	for (auto enemy : m_enemies)
+		m_window.draw(*enemy);
+
 	endDraw();
 }
 
 void LevelTemplate::updateCameraAndBackground()
 {
-	auto view = m_window.getView();
+	sf::View view =   m_window.getView();
 	auto player_pos = m_player.getPosition() + m_player.getSize() * 0.5f;
 
-	float halfViewWidth = m_viewSize.x / 2.0f;
+	float halfViewWidth =  m_viewSize.x / 2.0f;
 	float halfViewHeight = m_viewSize.y / 2.0f;
 
-	player_pos.x = std::clamp(player_pos.x, halfViewWidth, m_worldSize.x - halfViewWidth);
+	player_pos.x = std::clamp(player_pos.x, halfViewWidth,  m_worldSize.x - halfViewWidth);
 	player_pos.y = std::clamp(player_pos.y, halfViewHeight, m_worldSize.y - halfViewHeight);
 
 	view.setCenter(player_pos);
 	m_window.setView(view);
 
-	m_bgTilemap.setPosition({ player_pos.x - halfViewWidth, 0 });
+	m_bgTilemap.setPosition({ player_pos.x - halfViewWidth, player_pos.y - halfViewHeight });
 }

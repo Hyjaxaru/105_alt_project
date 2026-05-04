@@ -25,10 +25,9 @@ private:
 	Animation m_idle;
 	Animation m_walk;
 	sf::Vector2f m_accel;
-	bool m_isGrounded;
 
+	bool m_isGrounded = false;
 	bool m_moveRtl = false;
-	int m_movePause = 0;
 
 	AudioManager* m_audio;
 
