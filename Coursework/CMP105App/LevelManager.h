@@ -13,6 +13,7 @@
 #include "LevelTemplate.h"
 #include "DataFile.h"
 #include "Enemy.h";
+#include "Files.h"
 
 class LevelManager
 	: public Scene
@@ -36,17 +37,6 @@ public:
 	std::string getActiveLevel() { return m_current->getLevelMetadata().name; }
 	void setActiveLevel(std::string name);
 	void forceSetActiveLevel(std::string name);
-
-	// constants (public and static so they can be accessed outside of LevelManager)
-	inline static const std::string LEVELS_DIR = "levels/";
-	inline static const std::string DATA_DIR = "data/";
-	inline static const std::string LEADERBOARD_DIR = "lb/";
-	inline static const std::string LEVEL_LIST_FILE = "_levels.txt";
-	inline static const std::string EXTENSION_CONFIG = ".config.txt";
-	inline static const std::string EXTENSION_TERRAIN = ".terrain.txt";
-	inline static const std::string EXTENSION_ENEMIES = ".enemies.txt";
-	inline static const std::string EXTENSION_LEADERBOARD = ".txt";
-	inline static const std::string EXTENSION_DATA = ".txt.";
 
 private:
 	std::vector<GameObject> m_tsTerrain;

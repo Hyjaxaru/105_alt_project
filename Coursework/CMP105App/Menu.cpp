@@ -41,7 +41,7 @@ void Menu::handleInput(float dt)
 		// only do this collision check if the left mouse button is pressed
 		for (auto& button : m_buttonIndex)
 		{
-			if (Collision::checkBoundingBox(button.obj, mousePos))
+			if (Collision::checkBoundingBox(button.button, mousePos))
 			{
 				m_gameState.setCurrentState(State::LEVEL);
 				m_gameState.setCurrentLevel(button.levelName);
@@ -70,13 +70,13 @@ void Menu::update(float dt)
 
 	for (auto& button : m_buttonIndex)
 	{
-		if (Collision::checkBoundingBox(button.obj, mousePos))
+		if (Collision::checkBoundingBox(button.button, mousePos))
 		{
-			button.obj.setFillColor(m_hoverButtonColour);
+			button.button.setFillColor(m_hoverButtonColour);
 			leaderboardText = createLeaderboardText(button);
 		}
 		else
-			button.obj.setFillColor(m_defaultButtonColour);
+			button.button.setFillColor(m_defaultButtonColour);
 	}
 
 	m_leaderboard->setString(leaderboardText);
@@ -90,9 +90,10 @@ void Menu::render()
 
 	for (auto& button : m_buttonIndex)
 	{
-		m_window.draw(button.obj);
+		m_window.draw(button.button);
 		m_window.draw(button.title);
 		m_window.draw(button.subtitle);
+		m_window.draw(button.award);
 	}
 
 	m_window.draw(*m_leaderboard);
@@ -107,7 +108,8 @@ void Menu::createLevelButtons()
 	{
 		// get data
 		auto font = m_assets.getDefaultFont();
-		auto leaderboard = DataFile(LevelManager::DATA_DIR + pair.first + LevelManager::EXTENSION_LEADERBOARD).getArray();
+		auto dFile = DataFile(files::DATA_DIR + pair.first + files::EXTENSION_LEADERBOARD);
+		auto leaderboard = dFile.getArray();
 		
 		// make sure the leaderboard is sorted ( I love lambda functions!!! )
 		// source: https://stackoverflow.com/a/279878
@@ -116,17 +118,17 @@ void Menu::createLevelButtons()
 		});
 
 		// create the new button
-		auto button = LevelButton{ GameObject(), sf::Text(*font), sf::Text(*font), pair.first, leaderboard };
+		auto button = LevelContainer{ GameObject(), { *font }, { *font }, pair.first, leaderboard };
 
 		// calculate button position
 		// initial position + ( (height + spacing) * number of buttons )
 		auto pos = BUTTON_INITIAL + sf::Vector2f{ 0, (BUTTON_SIZE.y + BUTTON_SPACING) * static_cast<float>(i) };
 
 		// configure button
-		button.obj.setPosition(pos);
-		button.obj.setSize(BUTTON_SIZE);
-		button.obj.setCollisionBox({ {0,0}, button.obj.getSize() });
-		button.obj.setFillColor(m_defaultButtonColour);
+		button.button.setPosition(pos);
+		button.button.setSize(BUTTON_SIZE);
+		button.button.setCollisionBox({ {0,0}, button.button.getSize() });
+		button.button.setFillColor(m_defaultButtonColour);
 
 		// configure the button's title
 		button.title.setPosition(pos + BUTTON_TITLE_OFFSET);
@@ -135,10 +137,18 @@ void Menu::createLevelButtons()
 		button.title.setFillColor(sf::Color::White);
 
 		// configure the button's subtitle
-		button.subtitle.setPosition(pos + BUTTON_TITLE_OFFSET + BUTTON_SUBTITLE_OFFSET);
+		button.subtitle.setPosition(pos + BUTTON_SUBTITLE_OFFSET);
 		button.subtitle.setCharacterSize(12);
 		button.subtitle.setString("Created by " + pair.second.getLevelMetadata().author);
 		button.subtitle.setFillColor(sf::Color::Cyan);
+
+		// configure award sprite
+		auto awardID = dFile.getInt("__AWARD").value_or(4);
+		std::stringstream s;
+		s << "Medal" << awardID;
+		button.award.setTexture(m_assets.getTexture(s.str()));
+		button.award.setPosition(pos + BUTTON_AWARD_OFFSET);
+		button.award.setSize({ 24, 32 });
 
 		// add the button to the index
 		m_buttonIndex.push_back(button);
@@ -150,7 +160,7 @@ void Menu::createLevelButtons()
 	}
 }
 
-std::string Menu::createLeaderboardText(LevelButton& button)
+std::string Menu::createLeaderboardText(LevelContainer& button)
 {
 	std::stringstream s;
 	s << button.levelName << std::endl;

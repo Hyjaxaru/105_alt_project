@@ -102,6 +102,9 @@ void DataFile::eraze(const std::string& key)
 
 KVArray DataFile::getArray() {
 	KVArray list{};
-	for (auto& pair : m_kv) list.push_back(pair);
+	for (auto& pair : m_kv) {
+		if (pair.first == "__AWARD") continue; // we don't want this in a leaderboard array
+		list.push_back(pair);
+	}
 	return list;
 }

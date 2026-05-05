@@ -176,12 +176,6 @@ int main()
 		currentScene->update(deltaTime);
 		currentScene->render();
 
-		if (input.isPressed(sf::Keyboard::Scancode::Tab))
-		{
-			LOG_DEBUG("Debug added alert to queue");
-			Alert::Queue::Instance().push({ "AlertImage-Placeholder", "This is a test" });
-		}
-
 		// run the alert layer
 		alerts.update(deltaTime);
 		alerts.render();

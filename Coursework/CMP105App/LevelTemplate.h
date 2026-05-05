@@ -14,6 +14,7 @@
 #include "Alert.h"
 #include "AssetManager.h";
 #include "DataFile.h";
+#include "Files.h";
 
 class LevelTemplate :
 	public Scene

@@ -236,19 +236,23 @@ void LevelTemplate::completeLevel()
 	auto time = m_timer.restart();
 	
 	// save the time if it was faster!
-	DataFile lb("lb/" + m_metadata.name + ".txt");
+	DataFile lb(files::DATA_DIR + m_metadata.name + files::EXTENSION_LEADERBOARD);
 	std::stringstream s;
 	s << time.asMilliseconds();
 	lb.replace("You!", s.str());
-	lb.save();
-
+	
 	// get the correct medal texture
 	auto rank = calculateRank(time);
-	std::stringstream medal;
-	medal << "Medal" << rank;
-	m_alerts.push({ medal.str(), "Completed!"});
+	s.str(""); s.clear(); // clear the string stream
+	s << rank;
+	auto sRank = s.str();
+	m_alerts.push({ "Medal" + sRank, "Completed!"});
 
-	LOG_INFO(m_metadata.name + " completed at " + s.str());
+	// save the medal to the leaderboard file
+	lb.replace("__AWARD", sRank);
+	lb.save();
+
+	LOG_INFO(m_metadata.name + " completed at Rank" + sRank);
 	m_gameState.setCurrentState(State::MENU);
 }
 

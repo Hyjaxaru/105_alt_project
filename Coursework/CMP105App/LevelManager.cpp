@@ -29,7 +29,7 @@ void LevelManager::loadLevels()
 
 std::vector<std::string> LevelManager::loadLevelManifest()
 {
-	std::ifstream levelsFile(LEVELS_DIR + LEVEL_LIST_FILE);
+	std::ifstream levelsFile(files::LEVELS_DIR + files::LEVEL_LIST_FILE);
 	if (!levelsFile.good())
 	{
 		// if the index cant be loaded, then there won't be any levels
@@ -48,7 +48,7 @@ std::vector<std::string> LevelManager::loadLevelManifest()
 
 std::optional<LevelTemplate> LevelManager::loadLevel(std::string fileName)
 {
-	DataFile config(LEVELS_DIR + fileName + EXTENSION_CONFIG);
+	DataFile config(files::LEVELS_DIR + fileName + files::EXTENSION_CONFIG);
 
 	sf::Vector2u terrainSize = {
 		static_cast<unsigned int>(config.getInt("terrainX").value_or(0)),
@@ -56,14 +56,14 @@ std::optional<LevelTemplate> LevelManager::loadLevel(std::string fileName)
 	};
 
 	// begin creating the world
-	auto tilemap = loadTerrain(LEVELS_DIR + fileName + EXTENSION_TERRAIN);
+	auto tilemap = loadTerrain(files::LEVELS_DIR + fileName + files::EXTENSION_TERRAIN);
 	auto level = LevelTemplate(m_window, m_input, m_gameState, m_audio, tilemap, terrainSize);
 
 	// configure the level
 	configureLevel(level, config);
 
 	// load eneimes (if we can)
-	loadEnemies(level, LEVELS_DIR + fileName + EXTENSION_ENEMIES);
+	loadEnemies(level, files::LEVELS_DIR + fileName + files::EXTENSION_ENEMIES);
 
 	LOG_INFO_NOLINE(fileName + " | loaded successfully!");
 	return level;

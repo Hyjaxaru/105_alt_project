@@ -10,7 +10,7 @@
 #include "Logger.h"
 #include "AssetManager.h"
 #include "LevelManager.h"
-#include "LevelTemplate.h"
+#include "Files.h"
 
 
 class Menu :
@@ -29,22 +29,23 @@ public:
     void createLevelButtons();
     
 private:
-    struct LevelButton {
-        GameObject obj;
+    struct LevelContainer {
+        GameObject button;
         sf::Text title;
         sf::Text subtitle;
         std::string levelName;
         KVArray leaderboard;
+        GameObject award;
     };
 
-    std::vector<LevelButton> m_buttonIndex;
+    std::vector<LevelContainer> m_buttonIndex;
     std::map<std::string, LevelTemplate>* m_levelIndex;
 
     GameObject m_titleImage;
     sf::Texture m_titleSplash;
 
     sf::Text* m_leaderboard;
-    std::string createLeaderboardText(LevelButton& button);
+    std::string createLeaderboardText(LevelContainer& button);
 
     AssetManager& m_assets = AssetManager::Instance();
 
@@ -55,10 +56,12 @@ private:
     const sf::Vector2f BUTTON_SIZE =    { 256, 38 };
     const float BUTTON_SPACING =                8.f;
 
-    const sf::Vector2f BUTTON_TITLE_OFFSET =    { 4,  2 };
-    const sf::Vector2f BUTTON_SUBTITLE_OFFSET = { 0, 18 };
+    const sf::Vector2f BUTTON_TITLE_OFFSET =    {   4,  2 };
+    const sf::Vector2f BUTTON_SUBTITLE_OFFSET = {   4, 20 };
+    const sf::Vector2f BUTTON_AWARD_OFFSET =    { 220,  0 };
 
     const sf::Vector2f LEADERBOARD_POS = { 275, 130 };
+    
 };
 
 
