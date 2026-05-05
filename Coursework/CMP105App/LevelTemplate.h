@@ -69,6 +69,7 @@ private:
 	Player m_player;
 	PlayerGun* m_playerWeapon;
 	sf::Vector2f m_playerSpawn;
+	float m_shootStartingPitch;
 
 	std::vector<Enemy*> m_enemies;
 

@@ -86,6 +86,8 @@ LevelTemplate::LevelTemplate(sf::RenderWindow& window, Input& input, GameState& 
 	m_player.setAudio(&m_audio);
 	m_playerWeapon = m_player.getWeapon();
 	m_playerWeapon->setAudio(&m_audio);
+
+	m_shootStartingPitch = m_audio.getSound("gunshoot")->getPitch();
 }
 
 void LevelTemplate::onBegin()
@@ -120,6 +122,9 @@ void LevelTemplate::reset()
 	// reset player
 	m_player.reset();
 	m_player.setPosition(m_playerSpawn);
+
+	m_audio.playSoundbyName("death");
+	m_audio.getSound("gunshoot")->setPitch(m_shootStartingPitch);
 
 	// reset enemies
 	for (auto enemy : m_enemies)
@@ -221,7 +226,6 @@ void LevelTemplate::render()
 
 	m_window.draw(m_goal);
 
-	m_audio.playSoundbyName("death");
 
 	// debug
 	/*auto pos = m_player.getPosition();
