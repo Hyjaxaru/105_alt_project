@@ -137,7 +137,7 @@ void LevelTemplate::update(float dt)
 
 	// calculate distance to goal
 	// if we are in range, complete the level!
-	auto goalDist = VMath::calculatePointDistance(m_player.getPosition(), m_goal.getPosition());
+	auto goalDist = vm::calculatePointDistance(m_player.getPosition(), m_goal.getPosition());
 	if (goalDist <= GOAL_RANGE)
 		completeLevel();
 

@@ -182,11 +182,10 @@ sfml-network.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AlertManager.cpp" />
     <ClCompile Include="AssetManager.cpp" />
     <ClCompile Include="Bullet.cpp" />
-    <ClCompile Include="Coin.cpp" />
     <ClCompile Include="Enemy.cpp" />
-    <ClCompile Include="Flag.cpp" />
     <ClCompile Include="Framework\Animation.cpp" />
     <ClCompile Include="Framework\AudioManager.cpp" />
     <ClCompile Include="Framework\BaseLevel.cpp" />
@@ -197,13 +196,8 @@ sfml-network.lib;%(AdditionalDependencies)</AdditionalDependencies>
     <ClCompile Include="Framework\SoundObject.cpp" />
     <ClCompile Include="Framework\TileMap.cpp" />
     <ClCompile Include="Goal.cpp" />
-    <ClCompile Include="HUD.cpp" />
     <ClCompile Include="LevelManager.cpp" />
     <ClCompile Include="LevelTemplate.cpp" />
-    <ClCompile Include="LevelThatSaves.cpp" />
-    <ClCompile Include="LevelTwoWithTiles.cpp" />
-    <ClCompile Include="LevelWithTiles.cpp" />
-    <ClCompile Include="Lever.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Menu.cpp" />
@@ -213,11 +207,10 @@ sfml-network.lib;%(AdditionalDependencies)</AdditionalDependencies>
     <ClCompile Include="Scene.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AlertManager.h" />
     <ClInclude Include="AssetManager.h" />
     <ClInclude Include="Bullet.h" />
-    <ClInclude Include="Coin.h" />
     <ClInclude Include="Enemy.h" />
-    <ClInclude Include="Flag.h" />
     <ClInclude Include="Framework\Animation.h" />
     <ClInclude Include="Framework\AudioManager.h" />
     <ClInclude Include="Framework\BaseLevel.h" />
@@ -228,14 +221,8 @@ sfml-network.lib;%(AdditionalDependencies)</AdditionalDependencies>
     <ClInclude Include="Framework\SoundObject.h" />
     <ClInclude Include="Framework\TileMap.h" />
     <ClInclude Include="Goal.h" />
-    <ClInclude Include="HUD.h" />
     <ClInclude Include="LevelManager.h" />
-    <ClInclude Include="LevelOne.h" />
     <ClInclude Include="LevelTemplate.h" />
-    <ClInclude Include="LevelThatSaves.h" />
-    <ClInclude Include="LevelTwoWithTiles.h" />
-    <ClInclude Include="LevelWithTiles.h" />
-    <ClInclude Include="Lever.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Player.h" />
