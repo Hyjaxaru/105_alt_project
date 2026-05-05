@@ -247,9 +247,4 @@ private:
 
 	// Clears the text style index
 	void clearTextStyleIndex();
-
-	// --- Audio --- //
-
-	// AudioManager instance
-	AudioManager m_audioManager = AudioManager();
 };
