@@ -1,2 +1,3 @@
 TYPE LEVELENEMIES
-norm 100 5
+norm 500 180
+norm 500 170

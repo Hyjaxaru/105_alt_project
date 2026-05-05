@@ -136,6 +136,10 @@ void Player::update(float dt)
 	auto gunOrigin = getPosition() + sf::Vector2f{ getSize().x * 0.5f, getSize().y * 0.5f };
 	m_gun.pointAtTarget(gunOrigin, gunTarget);
 	m_gun.update(dt);
+
+	std::stringstream s;
+	s << getPosition().x << ", " << getPosition().y;
+	LOG_DEBUG(s.str());
 }
 
 void Player::render()

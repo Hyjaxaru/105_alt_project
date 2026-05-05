@@ -114,7 +114,7 @@ void LevelTemplate::onEnd()
 	m_timer.stop();
 	m_timer.reset();
 
-	LOG_INFO_NOLINE(debugLevelIdentifier() + " | Reset")
+	LOG_INFO_NOLINE(debugLevelIdentifier() + " | Ended")
 }
 
 void LevelTemplate::reset()
@@ -139,11 +139,7 @@ void LevelTemplate::handleInput(float dt)
 		enemy->update(dt);
 
 	if (m_input.isPressed(sf::Keyboard::Scancode::Escape))
-	{
 		m_gameState.setCurrentState(State::MENU);
-
-		m_alerts.push({ "AlertImage-Warning", "Quit Level" });
-	}
 }
 
 void LevelTemplate::update(float dt)

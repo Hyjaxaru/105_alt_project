@@ -8,8 +8,8 @@ viewX 432
 viewY 432
 playerX 10
 playerY 0
-goalX 1000
-goalY 5
+goalX 3545
+goalY 180
 bullets 10
 medalGold 15.0
 medalSilver 20.0
