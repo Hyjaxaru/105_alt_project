@@ -81,7 +81,7 @@ Dino Handyman: The Gun
 
 * Alert System: The alert system will allow the game to display temporary pieces of information to the player. This could be anything from saving the game to getting a new high score in a level.
 
-* Acheivements: The acheivement system will listen for the player completing different actions, and give them visual rewards for completing the challenges. When an acheivement is collected, the alert system will inform the player that they have completed it.  
+* **UPDATED:** Acheivements: The acheivement system will listen for the player completing different actions, and give them visual rewards for completing the challenges. When an acheivement is collected, the alert system will inform the player that they have completed it. 
 
 ## Wish to Have Features
 
@@ -89,4 +89,4 @@ Dino Handyman: The Gun
 
 * **NEW:** User-created Levels: ~~The player will be able to load a file containing enough information to create a new level challenge.~~ All levels are loaded from files, and the user will be able to add custom levels. Custom levels will not count towards the players progression / acheivements, but are a fun feature for players to challenge eachother. These level files will need to be created manually, but will have a clean and semi-human-readable syntax
 
-* Level Builder: If enough time is left after everything else is done, I may attempt to create a visual level creator program. This will be written in Swift using SwiftUI, and not C++. I do not expect to be graded on this contribution, but it seems like a nice to have, so I have mentioned it :) ***UPDATE:*** *I made a visual editor compatible with the DataFile class file format, so you can edit level config and leaderboard files. Microsoft Excell actualy proved to a perfect terrain editor, so I've just used that for terrain instead*
+* **UPDATED:** Level Builder: If enough time is left after everything else is done, I may attempt to create a visual level creator program. This will be written in Swift using SwiftUI, and not C++. I do not expect to be graded on this contribution, but it seems like a nice to have, so I have mentioned it :) *I made a visual editor compatible with the DataFile class file format, so you can edit level config and leaderboard files. Microsoft Excell actualy proved to a perfect terrain editor, so I've just used that for terrain instead*
