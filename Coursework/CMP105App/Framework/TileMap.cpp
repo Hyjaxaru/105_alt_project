@@ -24,7 +24,8 @@ void TileMap::render(sf::RenderWindow& window)
 // Loads and stores the spritesheet containing all the tiles required to build the level/section
 void TileMap::loadTexture(const std::string& filename)
 {
-	if (!m_texture.loadFromFile(filename))
+	m_texture = new sf::Texture();
+	if (!m_texture->loadFromFile(filename))
 	{
 		std::cerr << "Failed to load tilemap file, filename: " << filename << std::endl;
 	}
@@ -78,7 +79,7 @@ void TileMap::buildLevel()
 			});
 
 			// Apply Texture explicitly (pointers need to be fresh)
-			newTile.setTexture(&m_texture);
+			newTile.setTexture(m_texture);
 
 			// Add to world
 			m_levelAssets.push_back(newTile);

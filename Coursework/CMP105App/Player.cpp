@@ -2,20 +2,17 @@
 
 Player::Player()
 {
-	if (!m_dinoTexture.loadFromFile("gfx/dino1.png"))
-		std::cerr << "No dino texture. sad";
-
-	setTexture(&m_dinoTexture);
+	setTexture(AssetManager::Instance().getTexture(AssetManager::Textures::PLAYER));
 	// Dino is 24x24, tiles are 18x18
 	// LCM(18,24) = 72.
-	setSize({ 72,72 });		
+	setSize({ 72,72 });
 	setPosition({ 24, 100 });
 
 	for (int i = 0; i < 4; i++)
-		m_idle.addFrame({{ i * 24, 0 }, { 24, 24} });
+		m_idle.addFrame({ { i * 24, 0 }, { 24, 24} });
 	for (int i = 4; i < 10; ++i)
-		m_walk.addFrame({{ i * 24, 0 }, { 24, 24}});
-	for(int i = 16; i < 24; i++)
+		m_walk.addFrame({ { i * 24, 0 }, { 24, 24} });
+	for (int i = 16; i < 24; i++)
 		m_sprint.addFrame({ { i * 24, 0 }, { 24, 24} });
 
 	m_currAnim = &m_walk;
@@ -36,18 +33,27 @@ void Player::handleInput(float dt)
 		m_accel.x -= SPEED;
 	if (m_input->isKeyDown(sf::Keyboard::Scancode::D))
 		m_accel.x += SPEED;
-	if (m_input->isPressed(sf::Keyboard::Scancode::Space) && m_isGrounded)
-	{
-		m_velocity.y = - JUMP_FORCE;
-		m_isGrounded = false;	// can't be jumping if we're in the air
-		m_audio->playSoundbyName("jump");
-	}
-	else if (m_input->isPressed(sf::Keyboard::Scancode::Space) && !m_isGrounded && m_canDoubleJump && !m_hasDoubleJumped)
+
+	// No more jumping :3
+	//if (m_input->isPressed(sf::Keyboard::Scancode::Space) && m_isGrounded)
+	//{
+	//	m_velocity.y = - JUMP_FORCE;
+	//	m_isGrounded = false;	// can't be jumping if we're in the air
+	//	m_audio->playSoundbyName("jump");
+	//}
+	/*else if (m_input->isPressed(sf::Keyboard::Scancode::Space) && !m_isGrounded && m_canDoubleJump && !m_hasDoubleJumped)
 	{
 		m_velocity.y = - JUMP_FORCE;
 		m_hasDoubleJumped = true;
 		m_audio->playSoundbyName("jump");
+	}*/
+
+	if (m_input->isPressed(sf::Keyboard::Scancode::Space))
+	{
+		auto recoil = m_gun.fireGunWithRecoil();
+		if (recoil != sf::Vector2f{0,0}) m_velocity = recoil;
 	}
+
 	if (m_input->isKeyDown(sf::Keyboard::Scancode::R))	// Reset (for debugging)
 	{
 		setPosition({ 50,0 });
@@ -61,25 +67,24 @@ void Player::handleInput(float dt)
 			m_velocity.x = -SPEED * SPRINT_SPEED_MULT;
 		m_sprintTimer = SPRINT_COOLDOWN;
 	}
-	if (m_input->isPressed(sf::Keyboard::Scancode::F))
-	{
-		if (inLeverRange() && !m_leverPulled)
-		{
-			m_leverPulled = true;
-			m_audio->playSoundbyName("wind");
-		}
-		if (m_leverPulled && inEndRange())
-		{
-			m_gameEndTriggered = true;
-		}
-	}
+	//if (m_input->isPressed(sf::Keyboard::Scancode::F))
+	//{
+	//	if (inLeverRange() && !m_leverPulled)
+	//	{
+	//		m_leverPulled = true;
+	//		//m_audio->playSoundbyName("wind");
+	//	}
+	//	if (m_leverPulled && inEndRange())
+	//	{
+	//		m_gameEndTriggered = true;
+	//	}
+	//}
 
 	// for debugging: "Where am I?"
 	if (m_input->isPressed(sf::Keyboard::Scancode::T))
 	{
 		std::cout << getPosition().x << "/" << getPosition().y << "\n";
 	}
-
 }
 
 void Player::update(float dt)
@@ -124,6 +129,19 @@ void Player::update(float dt)
 
 	m_currAnim->animate(dt);
 	setTextureRect(m_currAnim->getCurrentFrame());
+
+	// update the gun
+	auto mousePos = sf::Vector2i{ m_input->getMouseX(), m_input->getMouseY() };
+	auto gunTarget = m_window->mapPixelToCoords(mousePos);
+	auto gunOrigin = getPosition() + sf::Vector2f{ getSize().x * 0.5f, getSize().y * 0.5f };
+	m_gun.pointAtTarget(gunOrigin, gunTarget);
+	m_gun.update(dt);
+}
+
+void Player::render()
+{
+	m_window->draw(*this);
+	m_gun.render(m_window);
 }
 
 // only used on tiles for now.
@@ -161,20 +179,12 @@ void Player::collisionResponse(GameObject& collider)
 	}
 }
 
-bool Player::inLeverRange()
-{
-	return (getPosition() - m_leverPosition).lengthSquared() < ACTIVATE_RANGE_SQUARED;
-}
-
-bool Player::inEndRange()
-{
-	return (getPosition() - m_endPosition).lengthSquared() < ACTIVATE_RANGE_SQUARED;
-}
-
 void Player::reset()
 {
 	setPosition({ 0, 50 });
 	m_velocity = { 0,0 };
 	m_leverPulled = false;
 	m_gameEndTriggered = false;
+
+	m_gun.reset();
 }

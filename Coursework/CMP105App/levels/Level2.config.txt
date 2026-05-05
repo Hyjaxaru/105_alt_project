@@ -1,0 +1,13 @@
+TYPE LEVELCONFIG
+name Level2
+version 1
+author NoahAlbrock
+terrainX 52
+terrainY 8
+viewX 432
+viewY 432
+playerX 10
+playerY 0
+goalX 100
+goalY 5
+bullets 10

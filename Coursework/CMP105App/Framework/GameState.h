@@ -5,8 +5,10 @@
 
 #pragma once
 
+#include <string>
+
 // Possible states. This enum can be modified to add additional states as required.
-enum class State { MENU, LEVELONE, LEVELTWO, PAUSE, CREDITS };
+enum class State { MENU, LEVEL, PAUSE, CREDITS };
 
 class GameState
 {
@@ -16,6 +18,12 @@ public:
 	// Returns the current state.
 	State getCurrentState();
 
+	// Sets the current level manager level name
+	void setCurrentLevel(std::string name);
+	// Returns the current level manager level name
+	std::string getCurrentLevel();
+
 protected:
 	State m_currentState;
+	std::string m_currentLevel;
 };

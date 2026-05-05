@@ -182,8 +182,10 @@ sfml-network.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Coin.cpp" />
-    <ClCompile Include="Flag.cpp" />
+    <ClCompile Include="Alert.cpp" />
+    <ClCompile Include="AssetManager.cpp" />
+    <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Framework\Animation.cpp" />
     <ClCompile Include="Framework\AudioManager.cpp" />
     <ClCompile Include="Framework\BaseLevel.cpp" />
@@ -193,17 +195,23 @@ sfml-network.lib;%(AdditionalDependencies)</AdditionalDependencies>
     <ClCompile Include="Framework\GameObject.cpp" />
     <ClCompile Include="Framework\SoundObject.cpp" />
     <ClCompile Include="Framework\TileMap.cpp" />
-    <ClCompile Include="LevelTwoWithTiles.cpp" />
-    <ClCompile Include="LevelWithTiles.cpp" />
-    <ClCompile Include="Lever.cpp" />
+    <ClCompile Include="Goal.cpp" />
+    <ClCompile Include="LevelManager.cpp" />
+    <ClCompile Include="LevelTemplate.cpp" />
+    <ClCompile Include="Logger.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerGun.cpp" />
+    <ClCompile Include="DataFile.cpp" />
     <ClCompile Include="Scene.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Coin.h" />
-    <ClInclude Include="Flag.h" />
+    <ClInclude Include="Alert.h" />
+    <ClInclude Include="AssetManager.h" />
+    <ClInclude Include="Bullet.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Files.h" />
     <ClInclude Include="Framework\Animation.h" />
     <ClInclude Include="Framework\AudioManager.h" />
     <ClInclude Include="Framework\BaseLevel.h" />
@@ -213,12 +221,16 @@ sfml-network.lib;%(AdditionalDependencies)</AdditionalDependencies>
     <ClInclude Include="Framework\GameObject.h" />
     <ClInclude Include="Framework\SoundObject.h" />
     <ClInclude Include="Framework\TileMap.h" />
-    <ClInclude Include="LevelTwoWithTiles.h" />
-    <ClInclude Include="LevelWithTiles.h" />
-    <ClInclude Include="Lever.h" />
+    <ClInclude Include="Goal.h" />
+    <ClInclude Include="LevelManager.h" />
+    <ClInclude Include="LevelTemplate.h" />
+    <ClInclude Include="Logger.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerGun.h" />
+    <ClInclude Include="DataFile.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="VectorMath.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

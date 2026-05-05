@@ -6,13 +6,16 @@
 // @reviser William Kavanagh (2025)
 
 #include <iostream>
-#include "Scene.h"
-#include "Menu.h"
-#include "LevelThatSaves.h"
+
 #include "Framework/AudioManager.h"
 #include "Framework/GameState.h"
-#include "LevelWithTiles.h"
-#include "LevelTwoWithTiles.h"
+
+#include "Alert.h"
+#include "AssetManager.h"
+#include "Scene.h"
+#include "Menu.h"
+#include "LevelManager.h"
+#include "DataFile.h"
 
 #ifndef SFML_VERSION_MAJOR
 	#error "SFML 3 is required for this framework."
@@ -77,7 +80,6 @@ void windowProcess(sf::RenderWindow& window, Input& in)
 
 int main()
 {
-
 	//Create the window
 	sf::RenderWindow window(sf::VideoMode({ 432, 432 }), "Dino Handyman");
 	window.setVerticalSyncEnabled(true);
@@ -87,12 +89,41 @@ int main()
 	Input input;
 	GameState gameState;
 
+	// prepare assets that need to be persistent
+	auto& assets = AssetManager::Instance();
+
+	assets.loadTexture("gfx/tilemap.png",             AssetManager::Textures::TERRAIN);
+	assets.loadTexture("gfx/tilemap-backgrounds.png", AssetManager::Textures::BACKGROUND);
+	assets.loadTexture("gfx/dino1.png",               AssetManager::Textures::PLAYER);
+	assets.loadTexture("gfx/gun.png",                 AssetManager::Textures::WEAPON);
+	assets.loadTexture("gfx/bullet.png",              AssetManager::Textures::PROJECTILE);
+	assets.loadTexture("gfx/worm_sheet.png",          AssetManager::Textures::ENEMY);
+
+	assets.loadTexture("gfx/alert/bg.png",       "AlertBG");
+	assets.loadTexture("gfx/alert/ph.png",       "AlertImage-Placeholder");
+	assets.loadTexture("gfx/alert/greeting.png", "AlertImage-Greeting");
+	assets.loadTexture("gfx/alert/warning.png",  "AlertImage-Warning");
+	assets.loadTexture("gfx/alert/error.png",    "AlertImage-Error");
+
+	assets.loadTexture("gfx/alert/Medal1.png", "Medal1");
+	assets.loadTexture("gfx/alert/Medal2.png", "Medal2");
+	assets.loadTexture("gfx/alert/Medal3.png", "Medal3");
+	assets.loadTexture("gfx/alert/Medal4.png", "Medal4");
+
+	assets.loadFont("font/arial.ttf", "Arial", AssetManager::LoadOptions::DEFAULT);
 
 	// Create level objects that may reference manager objects
+	LevelManager levels(window, input, gameState, audioManager);
+	levels.loadLevels();
 
+	// create the alert manager instance
+	auto alerts = Alert::Manager(window, audioManager);
+
+	// initialise the menu
 	Menu menu(window, input, gameState, audioManager);
-	LevelWithTiles tile_level(window, input, gameState, audioManager);
-	LevelTwoWithTiles tile_level_two(window, input, gameState, audioManager);
+	menu.setLevelIndex(levels.getAllLevels());
+	menu.createLevelButtons();
+
 	Scene* currentScene = &menu;
 
 	// Initialise objects for delta time
@@ -105,8 +136,7 @@ int main()
 	std::map<State, Scene*> sceneRegistry =
 	{
 		{State::MENU, &menu},
-		{State::LEVELONE, &tile_level},
-		{State::LEVELTWO, &tile_level_two}
+		{State::LEVEL, &levels},
 	};
 	
 	// Game Loop
@@ -120,21 +150,43 @@ int main()
 		deltaTime = clock.restart().asSeconds();
 		if (deltaTime > 0.1f) deltaTime = 0.1f; // Clamp delta time to avoid large jumps
 
+		// handle level manager level change
 		State requestedState = gameState.getCurrentState();
+		if (requestedState == State::LEVEL)
+		{
+			std::string levelName = gameState.getCurrentLevel();
+			if (levels.getActiveLevel() != levelName)
+			{
+				LOG_INFO("Switching Level");
+				levels.setActiveLevel(levelName);
+			}
+		}
+
+		// manage overall scene change
 		if (sceneRegistry[requestedState] != currentScene)
 		{
+			LOG_INFO("Switching Scene");
 			currentScene->onEnd();
 			currentScene = sceneRegistry[requestedState];
 			currentScene->onBegin();
 		}
+
 		// run the core loop for the current scene
 		currentScene->handleInput(deltaTime);
 		currentScene->update(deltaTime);
 		currentScene->render();
 
+		// run the alert layer
+		alerts.update(deltaTime);
+		alerts.render();
+
+		// endDraw() in Menu and LevelTemplate has been replaced with this line here
+		// This is because I don't want to give the player a seizure when window.display() runs twice
+		// and trys to override what the window draws once every ten microseconds
+		window.display();
+
 		// Update input class, handle pressed keys
 		// Must be done last.
 		input.update();
 	}
-
 }
