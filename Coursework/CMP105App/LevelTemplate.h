@@ -42,6 +42,7 @@ public:
 	void render() override;
 	void onBegin() override;
 	void onEnd() override;
+	void reset();
 
 	void updateCameraAndBackground();
 

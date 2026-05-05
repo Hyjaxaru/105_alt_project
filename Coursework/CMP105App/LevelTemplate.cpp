@@ -85,11 +85,14 @@ LevelTemplate::LevelTemplate(sf::RenderWindow& window, Input& input, GameState& 
 	m_player.setPosition(m_playerSpawn);
 	m_player.setAudio(&m_audio);
 	m_playerWeapon = m_player.getWeapon();
+	m_playerWeapon->setAudio(&m_audio);
 }
 
 void LevelTemplate::onBegin()
 {
-	LOG_INFO_NOLINE(debugLevelIdentifier() + " | Loaded")
+	LOG_INFO_NOLINE(debugLevelIdentifier() + " | Loaded");
+
+	m_audio.playMusicbyName("bgm1");
 
 	m_player.reset();
 
@@ -99,13 +102,7 @@ void LevelTemplate::onBegin()
 
 void LevelTemplate::onEnd()
 {
-	// reset player
-	m_player.reset();
-	m_player.setPosition(m_playerSpawn);
-
-	// reset enemies
-	for (auto enemy : m_enemies)
-		enemy->reset();
+	reset();
 
 	// reset audio
 	m_audio.stopAllMusic();
@@ -116,6 +113,17 @@ void LevelTemplate::onEnd()
 	m_timer.reset();
 
 	LOG_INFO_NOLINE(debugLevelIdentifier() + " | Reset")
+}
+
+void LevelTemplate::reset()
+{
+	// reset player
+	m_player.reset();
+	m_player.setPosition(m_playerSpawn);
+
+	// reset enemies
+	for (auto enemy : m_enemies)
+		enemy->reset();
 }
 
 void LevelTemplate::handleInput(float dt)
@@ -161,10 +169,21 @@ void LevelTemplate::update(float dt)
 			}
 		}
 	}
+
+	// collide enemies with player
+	auto hasEnemies = m_enemies.size() > 0;
+	if (hasEnemies)
+	{
+		for (auto enemy : m_enemies)
+		{
+			if (Collision::checkBoundingBox(m_player, *enemy))
+				reset();
+		}
+	}
 	
 	// collide bullets with enemies (only if there at least one of each)
 	auto* bullets = m_playerWeapon->getBullets();
-	if (m_enemies.size() > 0 && bullets->size() > 0)
+	if (hasEnemies && bullets->size() > 0)
 	{
 		for (auto bullet : *m_player.getWeapon()->getBullets())
 		{
@@ -201,6 +220,8 @@ void LevelTemplate::render()
 		m_window.draw(*enemy);
 
 	m_window.draw(m_goal);
+
+	m_audio.playSoundbyName("death");
 
 	// debug
 	/*auto pos = m_player.getPosition();

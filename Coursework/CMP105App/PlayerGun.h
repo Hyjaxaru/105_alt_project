@@ -28,6 +28,7 @@ public:
     void setRotationCenter(sf::Vector2f& newValue) { m_origin = newValue; }
     void setTarget(sf::Vector2f& newValue) { m_target = newValue; }
     void setAmmoMax(const int& ammo) { m_ammoMax = ammo; }
+    void setAudio(AudioManager* audio) { m_audio = audio; };
 
     std::vector<Bullet*>* getBullets() { return &m_bullets; }
 
@@ -39,6 +40,8 @@ private:
     int m_ammo;
 
     std::vector<Bullet*> m_bullets;
+
+    AudioManager* m_audio;
 
     // --- constants --- //
     const float PI_ESTIMATION = 3.141592654f;

@@ -6,6 +6,10 @@ AudioManager::AudioManager()
 	addSound("wind", "sfx/wind.mp3");
 	addSound("death", "sfx/death.mp3");
 
+	addSound("gunclick", "sfx/gunclick.mp3");
+	addSound("gunshoot", "sfx/gunshoot.mp3");
+	getSound("gunshoot")->setVolume(5.f);
+
 	addMusic("bgm1", "sfx/bgm1.mp3");
 	getMusic("bgm1")->setVolume(20.f);
 	addMusic("bgm2", "sfx/bgm2.mp3");

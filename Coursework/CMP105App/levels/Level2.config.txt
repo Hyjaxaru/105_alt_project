@@ -8,6 +8,6 @@ viewX 432
 viewY 432
 playerX 10
 playerY 0
-goalX 100
+goalX 1000
 goalY 5
 bullets 10

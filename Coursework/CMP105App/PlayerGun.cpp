@@ -62,10 +62,16 @@ sf::Vector2f PlayerGun::fireGunWithRecoil() {
 	// if there is no ammo, we can't shoot!
 	if (m_ammo <= 0)
 	{
-		// Todo: sound!
+		m_audio->playSoundbyName("gunclick");
 		return {};
 	}
+
 	m_ammo--;
+
+	// make the last shot sound different
+	auto sound = m_audio->getSound("gunshoot");
+	if (m_ammo <= 0) sound->setPitch(sound->getPitch() + 0.5f);
+	sound->play();
 
 	// claculate the angle to fire
 	auto pos = getPosition();
