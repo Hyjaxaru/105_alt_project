@@ -1,0 +1,16 @@
+TYPE LEVELCONFIG
+name Level3
+version 1
+author NoahAlbrock
+terrainX 60
+terrainY 8
+viewX 432
+viewY 432
+playerX 10
+playerY 0
+goalX 4150
+goalY 250
+bullets 7
+medalGold 10.0
+medalSilver 15.0
+medalBronze 20.0

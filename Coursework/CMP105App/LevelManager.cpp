@@ -76,9 +76,9 @@ void LevelManager::configureLevel(LevelTemplate& level, DataFile& config)
 	metadata.name = config.get("name").value_or("Level Name Unknown");
 	metadata.author = config.get("author").value_or("Author Unknown");
 
-	metadata.medalGold =   sf::milliseconds(config.getFloat("medalGold")  .value_or(0.f));
-	metadata.medalSilver = sf::milliseconds(config.getFloat("medalSilver").value_or(0.f));
-	metadata.medalBronze = sf::milliseconds(config.getFloat("medalBronze").value_or(0.f));
+	metadata.medalGold =   sf::seconds(config.getFloat("medalGold")  .value_or(0.f));
+	metadata.medalSilver = sf::seconds(config.getFloat("medalSilver").value_or(0.f));
+	metadata.medalBronze = sf::seconds(config.getFloat("medalBronze").value_or(0.f));
 
 	// set the view size
 	level.setViewSize({
@@ -151,9 +151,8 @@ void LevelManager::loadEnemies(LevelTemplate& level, const std::string& path)
 	while (file >> type >> x >> y)
 	{
 		enemies.push_back(new Enemy());
-		auto* enemy = enemies.back() - 1;
+		auto* enemy = enemies.back();
 		enemy->setSpawnPosition({ x, y });
-		
 	}
 
 	level.setEnemies(enemies);
