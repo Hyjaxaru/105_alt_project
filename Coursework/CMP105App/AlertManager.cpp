@@ -1,20 +1,16 @@
 #include "AlertManager.h"
 
-using namespace alert;
+using namespace Alert;
 
-//AlertManager::AlertManager()
-
-AlertManager::AlertManager(sf::RenderWindow& window, AudioManager& audio) :
+Manager::Manager(sf::RenderWindow& window, AudioManager& audio) :
 	m_window(window), m_audio(audio)
 {
-	auto& assets = AssetManager::Instance();
-
-	m_uiBackground = new sf::Sprite(*assets.getTexture("AlertBG"));
+	m_uiBackground = new sf::Sprite(*m_assets.getTexture("AlertBG"));
 	m_uiBackground->setPosition(ALERT_POS_INACTIVE);
 
-	m_uiImage = new sf::Sprite(*assets.getTexture("AlertImage-Placeholder"));
+	m_uiImage = new sf::Sprite(*m_assets.getTexture("AlertImage-Placeholder"));
 
-	m_uiTitle = new sf::Text(*assets.getDefaultFont());
+	m_uiTitle = new sf::Text(*m_assets.getDefaultFont());
 	m_uiTitle->setCharacterSize(16);
 	m_uiTitle->setFillColor(sf::Color::White);
 	m_uiTitle->setString("Ph");
@@ -22,7 +18,7 @@ AlertManager::AlertManager(sf::RenderWindow& window, AudioManager& audio) :
 	LOG_DEBUG("Ready!")
 }
 
-void AlertManager::update(float dt)
+void Manager::update(float dt)
 {
 	// if there isn't an active alert, go looking for one
 	if (m_current == nullptr)
@@ -45,50 +41,47 @@ void AlertManager::update(float dt)
 	m_uiTitle->setPosition(anchor + ALERT_OFFSET_TITLE);
 }
 
-void AlertManager::render()
+void Manager::render()
 {
 	m_window.draw(*m_uiBackground);
 	m_window.draw(*m_uiImage);
 	m_window.draw(*m_uiTitle);
 }
 
-void AlertManager::addToQueue(const Alert& alert)
+std::optional<Alert::Data> Manager::getNext()
 {
-	m_queue.push(alert);
-}
+	auto& queue = m_queue.getQueue();
+	if (queue.empty()) return {};
 
-std::optional<Alert> AlertManager::getNext()
-{
-	if (m_queue.empty()) return {};
-
-	Alert item = m_queue.front();
-	m_queue.pop();
+	Data item = queue.front();
+	queue.pop();
 	return item;
 }
 
-void AlertManager::setCurrentAlert(Alert& alert)
+void Manager::setCurrentAlert(Data& alert)
 {
 	m_current = std::move(&alert);
 	m_activeTimer.restart();
 	LOG_DEBUG("Set current alert");
 
 	m_uiTitle->setString(m_current->title);
+	m_uiImage->setTexture(m_current->image);
 }
 
-bool AlertManager::shouldShowAlert()
+bool Manager::shouldShowAlert()
 {
 	if (m_current == nullptr) return false;
 	return m_activeTimer.getElapsedTime().asMilliseconds() < ALERT_VISIBLE_DURATION.asMilliseconds();
 }
 
-bool AlertManager::readyForNextAlert()
+bool Manager::readyForNextAlert()
 {
 	return m_activeTimer.getElapsedTime().asMilliseconds() > ALERT_VISIBLE_DURATION.asMilliseconds() + ALERT_GAP.asMilliseconds();
 }
 
-sf::Vector2f AlertManager::calculateDisplayPosition()
+sf::Vector2f Manager::calculateDisplayPosition()
 {
-	m_uiAnchor = vm::lerp(m_uiAnchor, shouldShowAlert() ? ALERT_POS_ACTIVE : ALERT_POS_INACTIVE, 0.1f);
+	m_uiAnchor = vm::lerp(m_uiAnchor, shouldShowAlert() ? ALERT_POS_ACTIVE : ALERT_POS_INACTIVE, 0.2f);
 
 	auto& view = m_window.getView();
 	auto size = view.getSize();
