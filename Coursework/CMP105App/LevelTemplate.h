@@ -11,6 +11,7 @@
 #include "Logger.h"
 #include "Enemy.h";
 #include "Goal.h";
+#include "Alert.h"
 #include "AssetManager.h";
 #include "DataFile.h";
 
@@ -53,6 +54,9 @@ public:
 
 private:
 	Metadata m_metadata;
+
+	AssetManager& m_assets = AssetManager::Instance();
+	Alert::Queue& m_alerts = Alert::Queue::Instance();
 
 	TileMap m_tilemap;
 	TileMap m_bgTilemap;

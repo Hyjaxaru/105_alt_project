@@ -40,7 +40,7 @@ LevelTemplate::LevelTemplate(sf::RenderWindow& window, Input& input, GameState& 
 	auto& tileMap = terrainSet;
 	std::replace(tileMap.begin(), tileMap.end(), -1, b);
 
-	m_tilemap.setTexture(AssetManager::Instance().getTexture(AssetManager::Textures::TERRAIN));
+	m_tilemap.setTexture(m_assets.getTexture(AssetManager::Textures::TERRAIN));
 	m_tilemap.setTileSet(tileSet);
 	m_tilemap.setTileMap(tileMap, terrainSize);
 	m_tilemap.setPosition({ 0, 100 });
@@ -72,7 +72,7 @@ LevelTemplate::LevelTemplate(sf::RenderWindow& window, Input& input, GameState& 
 		14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,
 		22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22
 	};
-	m_bgTilemap.setTexture(AssetManager::Instance().getTexture(AssetManager::Textures::BACKGROUND));
+	m_bgTilemap.setTexture(m_assets.getTexture(AssetManager::Textures::BACKGROUND));
 	m_bgTilemap.setTileSet(tileSet);
 	m_bgTilemap.setTileMap(tileMap, { 28, 3 });
 	m_bgTilemap.setPosition({ 0, 0 });
@@ -137,7 +137,7 @@ void LevelTemplate::update(float dt)
 
 	// calculate distance to goal
 	// if we are in range, complete the level!
-	auto goalDist = (m_player.getPosition(), m_goal.getPosition()).length();
+	auto goalDist = (m_player.getPosition() - m_goal.getPosition()).length();
 	if (goalDist <= GOAL_RANGE)
 		completeLevel();
 
@@ -237,6 +237,8 @@ void LevelTemplate::completeLevel()
 	s << time;
 	lb.replace("You!", s.str());
 	lb.save();
+
+	m_alerts.push({ *m_assets.getTexture("AlertImage-Placeholder"), "Completed!" });
 
 	LOG_INFO(m_metadata.name + " COMPLETE!!!");
 	m_gameState.setCurrentState(State::MENU);

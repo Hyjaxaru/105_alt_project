@@ -182,7 +182,7 @@ sfml-network.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AlertManager.cpp" />
+    <ClCompile Include="Alert.cpp" />
     <ClCompile Include="AssetManager.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Enemy.cpp" />
@@ -207,7 +207,7 @@ sfml-network.lib;%(AdditionalDependencies)</AdditionalDependencies>
     <ClCompile Include="Scene.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AlertManager.h" />
+    <ClInclude Include="Alert.h" />
     <ClInclude Include="AssetManager.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Enemy.h" />
