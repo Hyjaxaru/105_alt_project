@@ -344,3 +344,4 @@ ASALocalRun/
 
 # noah was here! :)
 .DS_Store
+/Coursework/CMP105App/data/*.txt
