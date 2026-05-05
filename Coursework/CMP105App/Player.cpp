@@ -51,7 +51,7 @@ void Player::handleInput(float dt)
 	if (m_input->isPressed(sf::Keyboard::Scancode::Space))
 	{
 		auto recoil = m_gun.fireGunWithRecoil();
-		if (recoil.x > 0.f || recoil.y > 0.f) m_velocity = recoil;
+		if (recoil != sf::Vector2f{0,0}) m_velocity = recoil;
 	}
 
 	if (m_input->isKeyDown(sf::Keyboard::Scancode::R))	// Reset (for debugging)

@@ -46,7 +46,7 @@ void PlayerGun::pointAtTarget(sf::Vector2f origin, sf::Vector2f target)
 	auto angle = vm::calculatePointAngle(m_origin, m_target);
 
 	// calculate the position the gun should be placed at
-	auto dist = vm::calculatePointDistance(m_origin, m_target);
+	auto dist = (m_target - m_origin).length();
 	auto distC = std::clamp(dist, 0.f, MAX_DIST_FROM_REFERENCE);
 	auto pos = vm::calculateVector(m_origin, angle, distC);
 
