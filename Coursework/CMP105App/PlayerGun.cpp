@@ -43,12 +43,12 @@ void PlayerGun::pointAtTarget(sf::Vector2f origin, sf::Vector2f target)
 	m_origin = origin; m_target = target;
 
 	// calculate the angle from the reference position to the target position
-	auto angle = VMath::calculatePointAngle(m_origin, m_target);
+	auto angle = vm::calculatePointAngle(m_origin, m_target);
 
 	// calculate the position the gun should be placed at
-	auto dist = VMath::calculatePointDistance(m_origin, m_target);
+	auto dist = vm::calculatePointDistance(m_origin, m_target);
 	auto distC = std::clamp(dist, 0.f, MAX_DIST_FROM_REFERENCE);
-	auto pos = VMath::calculateVector(m_origin, angle, distC);
+	auto pos = vm::calculateVector(m_origin, angle, distC);
 
 	setPosition(pos);
 	setRotation(angle);

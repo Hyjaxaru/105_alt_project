@@ -10,12 +10,10 @@
 #include "Framework/AudioManager.h"
 #include "Framework/GameState.h"
 
+#include "AlertManager.h"
 #include "AssetManager.h"
-#include "LevelWithTiles.h"
-#include "LevelTwoWithTiles.h"
 #include "Scene.h"
 #include "Menu.h"
-#include "LevelThatSaves.h"
 #include "LevelManager.h"
 #include "DataFile.h"
 
@@ -107,6 +105,10 @@ int main()
 	LevelManager levels(window, input, gameState, audioManager);
 	levels.loadLevels();
 
+	// create the alert manager instance
+	alert::AlertManager alerts(window, audioManager);
+
+	// initialise the menu
 	Menu menu(window, input, gameState, audioManager);
 	menu.setLevelIndex(levels.getAllLevels());
 	menu.createLevelButtons();
@@ -162,6 +164,10 @@ int main()
 		currentScene->handleInput(deltaTime);
 		currentScene->update(deltaTime);
 		currentScene->render();
+
+		// run the alert layer
+		alerts.update(deltaTime);
+		alerts.render();
 
 		// Update input class, handle pressed keys
 		// Must be done last.
