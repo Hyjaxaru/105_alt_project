@@ -10,7 +10,7 @@
 #include "Framework/AudioManager.h"
 #include "Framework/GameState.h"
 
-#include "AlertManager.h"
+#include "Alert.h"
 #include "AssetManager.h"
 #include "Scene.h"
 #include "Menu.h"

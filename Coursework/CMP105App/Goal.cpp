@@ -24,7 +24,7 @@ Goal::Goal()
 		{ tileSize, tileSize }
 	});
 
-	m_animation.setFrameSpeed(1.f);
+	m_animation.setFrameSpeed(0.5f);
 }
 
 void Goal::update(float dt)
