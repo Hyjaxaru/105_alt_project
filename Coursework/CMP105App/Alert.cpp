@@ -64,7 +64,7 @@ void Manager::setCurrentAlert(Data& alert)
 	LOG_DEBUG("Set current alert");
 
 	m_uiTitle->setString(m_current->title);
-	m_uiImage->setTexture(m_current->image);
+	m_uiImage->setTexture(*m_assets.getTexture(m_current->imageName));
 }
 
 bool Manager::shouldShowAlert()

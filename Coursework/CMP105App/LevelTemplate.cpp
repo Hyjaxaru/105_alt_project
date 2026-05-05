@@ -126,7 +126,11 @@ void LevelTemplate::handleInput(float dt)
 		enemy->update(dt);
 
 	if (m_input.isPressed(sf::Keyboard::Scancode::Escape))
+	{
 		m_gameState.setCurrentState(State::MENU);
+
+		m_alerts.push({ "AlertImage-Warning", "Quit Level" });
+	}
 }
 
 void LevelTemplate::update(float dt)
@@ -229,17 +233,33 @@ void LevelTemplate::updateCameraAndBackground()
 
 void LevelTemplate::completeLevel()
 {
-	auto time = m_timer.restart().asMilliseconds();
+	auto time = m_timer.restart();
 	
 	// save the time if it was faster!
-	DataFile lb("data/" + m_metadata.name + ".txt");
+	DataFile lb("lb/" + m_metadata.name + ".txt");
 	std::stringstream s;
-	s << time;
+	s << time.asMilliseconds();
 	lb.replace("You!", s.str());
 	lb.save();
 
-	m_alerts.push({ *m_assets.getTexture("AlertImage-Placeholder"), "Completed!" });
+	// get the correct medal texture
+	auto rank = calculateRank(time);
+	std::stringstream medal;
+	medal << "Medal" << rank;
+	m_alerts.push({ medal.str(), "Completed!"});
 
-	LOG_INFO(m_metadata.name + " COMPLETE!!!");
+	LOG_INFO(m_metadata.name + " completed at " + s.str());
 	m_gameState.setCurrentState(State::MENU);
+}
+
+int LevelTemplate::calculateRank(const sf::Time& time)
+{
+	// gold medal will be exactly 0 if there is no data, so deal with this edge case immediately
+	if (m_metadata.medalGold.asMilliseconds() == 0.f) return 1;
+
+	// compare times with level config, and award accordingly
+	if (time < m_metadata.medalGold)   return 1;
+	if (time < m_metadata.medalSilver) return 2;
+	if (time < m_metadata.medalBronze) return 3;
+	else return 4;
 }

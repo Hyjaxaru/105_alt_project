@@ -11,3 +11,6 @@ playerY 5
 goalX 2650
 goalY 253
 bullets 5
+medalGold 10.0
+medalSilver 15.0
+medalBronze 20.0

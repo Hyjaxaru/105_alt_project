@@ -76,6 +76,10 @@ void LevelManager::configureLevel(LevelTemplate& level, DataFile& config)
 	metadata.name = config.get("name").value_or("Level Name Unknown");
 	metadata.author = config.get("author").value_or("Author Unknown");
 
+	metadata.medalGold =   sf::milliseconds(config.getFloat("medalGold")  .value_or(0.f));
+	metadata.medalSilver = sf::milliseconds(config.getFloat("medalSilver").value_or(0.f));
+	metadata.medalBronze = sf::milliseconds(config.getFloat("medalBronze").value_or(0.f));
+
 	// set the view size
 	level.setViewSize({
 		config.getInt("viewX").value_or(0),

@@ -102,6 +102,13 @@ int main()
 	assets.loadTexture("gfx/alert/bg.png",       "AlertBG");
 	assets.loadTexture("gfx/alert/ph.png",       "AlertImage-Placeholder");
 	assets.loadTexture("gfx/alert/greeting.png", "AlertImage-Greeting");
+	assets.loadTexture("gfx/alert/warning.png",  "AlertImage-Warning");
+	assets.loadTexture("gfx/alert/error.png",    "AlertImage-Error");
+
+	assets.loadTexture("gfx/alert/Medal1.png", "Medal1");
+	assets.loadTexture("gfx/alert/Medal2.png", "Medal2");
+	assets.loadTexture("gfx/alert/Medal3.png", "Medal3");
+	assets.loadTexture("gfx/alert/Medal4.png", "Medal4");
 
 	assets.loadFont("font/arial.ttf", "Arial", AssetManager::LoadOptions::DEFAULT);
 
@@ -172,7 +179,7 @@ int main()
 		if (input.isPressed(sf::Keyboard::Scancode::Tab))
 		{
 			LOG_DEBUG("Debug added alert to queue");
-			Alert::Queue::Instance().push({ *assets.getTexture("AlertImage-Placeholder"), "This is a test"});
+			Alert::Queue::Instance().push({ "AlertImage-Placeholder", "This is a test" });
 		}
 
 		// run the alert layer

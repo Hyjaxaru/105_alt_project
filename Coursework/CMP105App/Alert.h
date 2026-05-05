@@ -12,7 +12,7 @@
 namespace Alert
 {
 	struct Data {
-		sf::Texture& image;
+		std::string imageName;
 		std::string title;
 	};
 

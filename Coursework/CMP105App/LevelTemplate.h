@@ -31,6 +31,9 @@ public:
 	struct Metadata {
 		std::string name;
 		std::string author;
+		sf::Time medalGold;
+		sf::Time medalSilver;
+		sf::Time medalBronze;
 	};
 
 	void handleInput(float dt) override;
@@ -76,6 +79,8 @@ private:
 	sf::Vector2i m_viewSize;
 
 	inline std::string debugLevelIdentifier() const { return m_metadata.name + ':' + m_metadata.author; }
+
+	int calculateRank(const sf::Time& time);
 
 	const float GOAL_RANGE = 10.f;
 };
