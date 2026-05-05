@@ -1,4 +1,4 @@
-#include "AlertManager.h"
+#include "Alert.h"
 
 using namespace Alert;
 
@@ -13,7 +13,6 @@ Manager::Manager(sf::RenderWindow& window, AudioManager& audio) :
 	m_uiTitle = new sf::Text(*m_assets.getDefaultFont());
 	m_uiTitle->setCharacterSize(16);
 	m_uiTitle->setFillColor(sf::Color::White);
-	m_uiTitle->setString("Ph");
 	
 	LOG_DEBUG("Ready!")
 }
