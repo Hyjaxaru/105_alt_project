@@ -96,8 +96,6 @@ void Menu::render()
 	}
 
 	m_window.draw(*m_leaderboard);
-
-	endDraw();
 }
 
 void Menu::createLevelButtons()

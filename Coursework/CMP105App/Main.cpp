@@ -99,6 +99,10 @@ int main()
 	assets.loadTexture("gfx/bullet.png",              AssetManager::Textures::PROJECTILE);
 	assets.loadTexture("gfx/worm_sheet.png",          AssetManager::Textures::ENEMY);
 
+	assets.loadTexture("gfx/alert/bg.png",   "AlertBG");
+	assets.loadTexture("gfx/alert/ph.png",   "AlertImage-Placeholder");
+	assets.loadTexture("gfx/alert/greeting", "AlertImage-Greeting");
+
 	assets.loadFont("font/arial.ttf", "Arial", AssetManager::LoadOptions::DEFAULT);
 
 	// Create level objects that may reference manager objects
@@ -106,7 +110,8 @@ int main()
 	levels.loadLevels();
 
 	// create the alert manager instance
-	alert::AlertManager alerts(window, audioManager);
+	auto alerts = alert::AlertManager(window, audioManager);
+	alerts.addToQueue({ "AlertImage-Greeting", "Welcome Back!" });
 
 	// initialise the menu
 	Menu menu(window, input, gameState, audioManager);
@@ -165,13 +170,23 @@ int main()
 		currentScene->update(deltaTime);
 		currentScene->render();
 
+		if (input.isPressed(sf::Keyboard::Scancode::Tab))
+		{
+			LOG_DEBUG("Debug added alert to queue");
+			alerts.addToQueue({ "", "This is a test" });
+		}
+
 		// run the alert layer
 		alerts.update(deltaTime);
 		alerts.render();
+
+		// endDraw() in Menu and LevelTemplate has been replaced with this line here
+		// This is because I don't want to give the player a seizure when window.display() runs twice
+		// and trys to override what the window draws once every ten microseconds
+		window.display();
 
 		// Update input class, handle pressed keys
 		// Must be done last.
 		input.update();
 	}
-
 }

@@ -2,10 +2,24 @@
 
 using namespace alert;
 
+//AlertManager::AlertManager()
+
 AlertManager::AlertManager(sf::RenderWindow& window, AudioManager& audio) :
 	m_window(window), m_audio(audio)
 {
+	auto& assets = AssetManager::Instance();
 
+	m_uiBackground = new sf::Sprite(*assets.getTexture("AlertBG"));
+	m_uiBackground->setPosition(ALERT_POS_INACTIVE);
+
+	m_uiImage = new sf::Sprite(*assets.getTexture("AlertImage-Placeholder"));
+
+	m_uiTitle = new sf::Text(*assets.getDefaultFont());
+	m_uiTitle->setCharacterSize(16);
+	m_uiTitle->setFillColor(sf::Color::White);
+	m_uiTitle->setString("Ph");
+	
+	LOG_DEBUG("Ready!")
 }
 
 void AlertManager::update(float dt)
@@ -16,20 +30,26 @@ void AlertManager::update(float dt)
 		auto attempt = getNext();
 		if (attempt.has_value())
 		{
-			m_current = std::move(&attempt.value());	// move the next alert into the current pointer 
-			m_activeTimer.restart();					// restart the alert active timer 
+			setCurrentAlert(attempt.value());
 			return;
 		}
 	}
 
 	auto showAlert = shouldShowAlert();
+	if (readyForNextAlert()) m_current = nullptr;
 
-	// move the thing
+	// move the things
+	auto anchor = calculateDisplayPosition();
+	m_uiBackground->setPosition(anchor);
+	m_uiImage->setPosition(anchor + ALERT_OFFSET_IMAGE);
+	m_uiTitle->setPosition(anchor + ALERT_OFFSET_TITLE);
 }
 
 void AlertManager::render()
 {
-
+	m_window.draw(*m_uiBackground);
+	m_window.draw(*m_uiImage);
+	m_window.draw(*m_uiTitle);
 }
 
 void AlertManager::addToQueue(const Alert& alert)
@@ -44,4 +64,34 @@ std::optional<Alert> AlertManager::getNext()
 	Alert item = m_queue.front();
 	m_queue.pop();
 	return item;
+}
+
+void AlertManager::setCurrentAlert(Alert& alert)
+{
+	m_current = std::move(&alert);
+	m_activeTimer.restart();
+	LOG_DEBUG("Set current alert");
+
+	m_uiTitle->setString(m_current->title);
+}
+
+bool AlertManager::shouldShowAlert()
+{
+	if (m_current == nullptr) return false;
+	return m_activeTimer.getElapsedTime().asMilliseconds() < ALERT_VISIBLE_DURATION.asMilliseconds();
+}
+
+bool AlertManager::readyForNextAlert()
+{
+	return m_activeTimer.getElapsedTime().asMilliseconds() > ALERT_VISIBLE_DURATION.asMilliseconds() + ALERT_GAP.asMilliseconds();
+}
+
+sf::Vector2f AlertManager::calculateDisplayPosition()
+{
+	m_uiAnchor = vm::lerp(m_uiAnchor, shouldShowAlert() ? ALERT_POS_ACTIVE : ALERT_POS_INACTIVE, 0.1f);
+
+	auto& view = m_window.getView();
+	auto size = view.getSize();
+	auto center = view.getCenter();
+	return center - sf::Vector2f{ size.x * 0.5f, size.y * 0.5f } + m_uiAnchor + ALERT_POS_PADDING;
 }

@@ -137,7 +137,7 @@ void LevelTemplate::update(float dt)
 
 	// calculate distance to goal
 	// if we are in range, complete the level!
-	auto goalDist = vm::calculatePointDistance(m_player.getPosition(), m_goal.getPosition());
+	auto goalDist = (m_player.getPosition(), m_goal.getPosition()).length();
 	if (goalDist <= GOAL_RANGE)
 		completeLevel();
 
@@ -208,8 +208,6 @@ void LevelTemplate::render()
 	test.setFillColor(sf::Color::White);
 	test.setPosition(m_window.getView().getCenter());
 	m_window.draw(test);*/
-
-	endDraw();
 }
 
 void LevelTemplate::updateCameraAndBackground()
